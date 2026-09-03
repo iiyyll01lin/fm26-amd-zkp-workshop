@@ -1,6 +1,6 @@
 # FUTUREMODE 2026 · Verifiable AI × Web3 on an AMD APU — attendee repo
 
-> **35-minute hybrid workshop** · **35 分鐘 hybrid 工作坊**
+> **60-minute hybrid workshop** · **60 分鐘 hybrid 工作坊**
 > Attendee landing page — start here. · 與會者入口頁，從這裡開始。
 > Runs live on one **AMD Ryzen AI MAX+ 395** (Strix Halo) APU — a **~300 W HP Z2 Mini G1a** small-form-factor desktop — and **replays on any laptop**, no GPU required.
 > 現場在一顆 **AMD Ryzen AI MAX+ 395**（Strix Halo）APU 上跑——一台 **~300 W 的 HP Z2 Mini G1a** 小桌機——並可在**任何筆電上 replay**，不需要 GPU。
@@ -15,16 +15,18 @@
 
 ## Start here · 60 秒開始
 
-The clone URL is the QR on your handout card. · clone 網址就是手卡上的 QR。
+The QR on your handout card points at this repo; the URL is below if you would rather type it. · 手卡上的 QR 就是指到這個 repo；不想掃碼就直接打下面的網址。
 
 ```bash
-git clone <URL from the handout QR>
-cd zkp-workshop-futuremode-2026
+git clone https://github.com/iiyyll01lin/fm26-amd-zkp-workshop.git
+cd fm26-amd-zkp-workshop
 make verify          # labkit imports; every artefact the six notebooks need is present
 make replay          # the six curated notebooks, replay-only, non-destructive
 ```
 
-On the **AUP Learning Cloud** seat, open a terminal in Jupyter (*File → New → Terminal*), run the `git clone` above, then open [`lab/01_zkml_embedding_ezkl.ipynb`](lab/01_zkml_embedding_ezkl.ipynb) from the file browser. · 在 AUPLC 座位上開 terminal 跑上面的 clone，再從檔案瀏覽器打開 nb01。
+**HTTPS on purpose** — it needs no key setup, so it works on a bare seat. If your GitHub account already has an SSH key, `git@github.com:iiyyll01lin/fm26-amd-zkp-workshop.git` clones the same repo. · **刻意用 HTTPS**——不需要設金鑰，空機座位也能跑；GitHub 帳號已設 SSH 金鑰的話，`git@github.com:iiyyll01lin/fm26-amd-zkp-workshop.git` clone 到的是同一個 repo。
+
+On the **AMD AUP Learning Cloud** seat, open a terminal in Jupyter (*File → New → Terminal*), run the `git clone` above, then open [`lab/01_zkml_embedding_ezkl.ipynb`](lab/01_zkml_embedding_ezkl.ipynb) from the file browser. · 在 AUPLC 座位上開 terminal 跑上面的 clone，再從檔案瀏覽器打開 nb01。
 
 Dependencies (if your seat is bare): `make install` installs [`lab/requirements.txt`](lab/requirements.txt) — pandas, matplotlib, jupyter. Nothing AMD, nothing CUDA. · 依賴只有 pandas / matplotlib / jupyter。
 
@@ -44,7 +46,7 @@ make install PYTHON=.venv/bin/python
 **ZH** — 這是 *Verifiable AI on an AMD APU* 課程的 hands-on 精簡版：一顆 APU 跑完整條可驗證 pipeline，再用誠實瓶頸鑑識把 capability success 轉成下一個工程目標。你會看六本策展 notebook，並親手跑其中一本。
 
 - **Format · 形式**: presenter demo (replay, with an optional Strix Halo live cameo) + a 3-minute attendee hands-on.
-- **Where you run · 你在哪裡跑**: your **AUP Learning Cloud** seat (a CPU-only replay image) or your own laptop — any Python 3 + browser.
+- **Where you run · 你在哪裡跑**: your **AMD AUP Learning Cloud** seat (a CPU-only replay image) or your own laptop — any Python 3 + browser.
 - **Capacity · 容納**: ~30–50 concurrent CPU replay seats.
 
 ---
@@ -95,8 +97,8 @@ Everyone reproduces `PROOF VERIFIED` themselves — a real zkML proof verified o
 
 每個人親手重現 `PROOF VERIFIED`——一個真 zkML proof 在 CPU-only replay 上被驗證，不需 GPU。
 
-1. **Open the cloud · 開啟雲端**: browse to the **AUP Learning Cloud** URL printed on your handout card and log in with the **workshop account** on the card. · 用手卡上的網址開 **AUP Learning Cloud**，以卡上的 **workshop 帳號**登入。
-2. **Clone this repo · clone 本 repo**: open a terminal in Jupyter (*File → New → Terminal*) and run the `git clone` from the handout card's QR — the same command as [Start here](#start-here--60-秒開始) above. Then `cd` into it. If your seat already has the repo, `git pull` instead. · 在 Jupyter 開 terminal，跑手卡 QR 上的 `git clone`（同上方指令），再 `cd` 進去；座位若已有此 repo 就改 `git pull`。
+1. **Open the cloud · 開啟雲端**: browse to the **AMD AUP Learning Cloud** URL printed on your handout card and log in with the **workshop account** on the card. · 用手卡上的網址開 **AMD AUP Learning Cloud**，以卡上的 **workshop 帳號**登入。
+2. **Clone this repo · clone 本 repo**: open a terminal in Jupyter (*File → New → Terminal*) and run the `git clone` from [Start here](#start-here--60-秒開始) above — the handout card's QR is that same URL. Then `cd fm26-amd-zkp-workshop`. If your seat already has the repo, `git pull` instead. · 在 Jupyter 開 terminal，跑上方〈Start here〉的 `git clone`（手卡 QR 就是同一個網址），再 `cd fm26-amd-zkp-workshop`；座位若已有此 repo 就改 `git pull`。
 3. **Open the notebook · 開 notebook**: [`lab/01_zkml_embedding_ezkl.ipynb`](lab/01_zkml_embedding_ezkl.ipynb).
 4. **Run it · 跑起來**: run the first cell (`lk.capability_badge()`, a read-only AMD probe), then **Run All**. · 先跑第一個 cell，再 **Run All**。
 5. **Watch for the verdict · 等 verdict**:
