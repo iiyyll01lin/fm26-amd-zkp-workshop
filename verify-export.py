@@ -4,9 +4,9 @@
     python3 verify-export.py
 
 `poc/` in this export is pruned to what the six curated notebooks actually need,
-so `labkit.py` — which is copied from upstream unpruned — carries constants that
-point at artefacts this export does not ship. Asserting *every* labkit constant
-would therefore fail by construction. Instead this script asserts the five things
+while `labkit.py` retains the broad upstream API and therefore carries constants
+that point at artefacts this export does not ship. Asserting *every* labkit
+constant would fail by construction. Instead this script asserts the five things
 that actually have to hold:
 
   1. `import labkit` works and resolves REPO_ROOT to *this* directory (the
@@ -62,7 +62,7 @@ REQUIRED = (
     "ZKRAG_CORPUS", "ZKRAG_JOURNAL", "ZKRAG_PROOF_INFO", "ZKRAG_BN254_PROOF",
     # nb23 — Path I Stage-4 seal
     "RISC0_ROCM_BENCH_CSV", "RISC0_ROCM_PHASE_CSV",
-    "RISC0_ROCM_GATE_MD", "RISC0_ROCM_LEDGER_MD", "RISC0_ROCM_PATH_I_MD",
+    "RISC0_ROCM_GATE_MD", "RISC0_ROCM_LEDGER_MD", "RISC0_ROCM_CORRECTNESS_MD",
     # nb24 — Groth16 bottleneck forensics (directory-granular evidence bundles)
     "RISC0_ROCM_GROTH16_BENCH_DIR", "RISC0_ROCM_GROTH16_WITNESS_DIR",
     "RISC0_ROCM_GROTH16_COMPARE_DIR", "RISC0_ROCM_EVAL_TUNING_DIR",
@@ -242,7 +242,7 @@ for attr, value in vars(lk).items():
         if not path.exists():
             pruned.append(name)
 print(f"[verify] upstream constants pointing at pruned artefacts: {len(pruned)} "
-      f"(expected — labkit.py is copied unpruned; see lab/README.md)")
+      f"(expected — labkit.py retains the broad API; see lab/README.md)")
 
 # --- 3. notebook-hardcoded paths -------------------------------------------
 nb_missing = [f"{rel}  (needed by nb{who})"

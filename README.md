@@ -5,7 +5,7 @@
 > Runs live on one **AMD Ryzen AI MAX+ 395** (Strix Halo) APU — a **~300 W HP Z2 Mini G1a** small-form-factor desktop — and **replays on any laptop**, no GPU required.
 > 現場在一顆 **AMD Ryzen AI MAX+ 395**（Strix Halo）APU 上跑——一台 **~300 W 的 HP Z2 Mini G1a** 小桌機——並可在**任何筆電上 replay**，不需要 GPU。
 
-**This repo is a 3.5 MB slice of the full 19 GB course repo, trimmed to the six curated notebooks a CPU-only replay needs.** · 本 repo 是完整 19 GB 課程 repo 的 3.5 MB 精簡版，只留 CPU-only replay 需要的六本策展 notebook。 That is tracked content; `du` reports more, because a tree of small text files rounds up to whole filesystem blocks. · 那是 tracked 內容的口徑；`du` 會報更多，因為小文字檔會進位到整個 block。 See [`PROVENANCE.md`](PROVENANCE.md) — it records the export step, the trim, the `poc/` re-prune, the evidence restored afterwards, the exact byte count, and the `make verify` / `make replay` run that checked all of it.
+**This repo is a 3.3 MB slice of the full 19 GB course repo, trimmed to the six curated notebooks a CPU-only replay needs.** · 本 repo 是完整 19 GB 課程 repo 的 3.3 MB 精簡版，只留 CPU-only replay 需要的六本策展 notebook。 That is tracked content; `du` reports more, because a tree of small text files rounds up to whole filesystem blocks. `make verify` checks the retained evidence and `make replay` executes the six-notebook replay path end to end. · 那是 tracked 內容的口徑；`du` 會報更多，因為小文字檔會進位到整個 block。
 
 > ℹ️ **Links to `zkp-final` need access — they are not broken.** · **指向 `zkp-final` 的連結需要授權，不是壞連結。**
 > Links in this repo that point at `github.com/iiyyll01lin/zkp-final` go to the **full 25-notebook upstream repository**, which is not currently public: without repo access GitHub answers `404`. **That is expected behaviour, not a dead link.** · 本 repo 內指向 `github.com/iiyyll01lin/zkp-final` 的連結都是**完整 25 本的上游 repo**，該 repo 目前未公開；沒有存取權的話 GitHub 會回 `404`。**這是預期行為，不是連結壞了。**
@@ -67,7 +67,7 @@ Full case study · 完整案例：[`docs/INTEGRITY-REPORT.md`](https://github.co
 
 - iGPU / NPU accelerate the **AI model** (embedding, LLM forward). · iGPU / NPU 加速 **AI 模型**（embedding、LLM 前向）。
 - iGPU OpenCL accelerates **SNARK primitives / Groth16**, but **size-gated**. · iGPU OpenCL 加速 **SNARK 原語 / Groth16**，但 **size-gated**。
-- The **stock RISC0 zkVM STARK is CPU-only on AMD** — in the main-line pipeline the iGPU never proves. **This session's climax turns that around (honestly scoped)**: a pinned **v2.3.2 fork** produces a **GPU-run rv32im *segment*-STARK seal the stock `cargo risczero verify` accepts**, **bit-for-bit == CpuHal** (DualHal 15/15) — a **hybrid** (witgen/accum stay CPU; recursion lift/join/succinct and Groth16 now on the iGPU), **5.46×** workload-specific; see [`nb23`](lab/23_risc0_rocm_stark.ipynb) + [path-i](reading-notes/path-i-risc0-rocm-stark.md). The **stock `r0vm` stays CPU-only**; never "the iGPU proves the whole zkVM." · stock RISC0 zkVM STARK 在 AMD 上是 CPU-only；本場高潮誠實 scoped 地翻轉它，但 stock `r0vm` 仍 CPU-only。
+- The **stock RISC0 zkVM STARK is CPU-only on AMD** — in the main-line pipeline the iGPU never proves. **This session's climax turns that around (honestly scoped)**: a pinned **v2.3.2 fork** produces a **GPU-run rv32im *segment*-STARK seal the stock `cargo risczero verify` accepts**, **bit-for-bit == CpuHal** (DualHal 15/15) — a **hybrid** (witgen/accum stay CPU; recursion lift/join/succinct and Groth16 now on the iGPU), **5.46×** workload-specific; see [`nb23`](lab/23_risc0_rocm_stark.ipynb) and the retained [`poc/risc0-rocm-prover` evidence index](poc/risc0-rocm-prover/README.md). The **stock `r0vm` stays CPU-only**; never "the iGPU proves the whole zkVM." · stock RISC0 zkVM STARK 在 AMD 上是 CPU-only；本場高潮誠實 scoped 地翻轉它，但 stock `r0vm` 仍 CPU-only。
 - In the capstone: **retrieval is proven, the LLM output is not.** · 在 capstone 裡：**檢索被證明，LLM 輸出沒有。**
 
 ---
@@ -87,7 +87,7 @@ Six notebooks, one AI × Web3 spine. Lab 24 adds the replayable lesson behind th
 | **5** | [`lab/24_risc0_rocm_bottleneck_lab.ipynb`](lab/24_risc0_rocm_bottleneck_lab.ipynb) | bottleneck forensics · 瓶頸鑑識 | Complete Groth16 receipt **0.973×** + `eval_check` **192-VGPR** negative result → concrete GPU-witness roadmap. | replay-only |
 | **6** | [`lab/14_unified_memory_bigmodel.ipynb`](lab/14_unified_memory_bigmodel.ipynb) | iGPU + 94 GB unified · unified memory | The David-vs-Goliath cameo: Qwen2.5-32B Q4_K_M (~20 GB) held **27.6 GB** GPU-resident. | replay-only |
 
-> These six are the only notebooks in this export. Per-notebook engine focus and the teaching route · 逐本引擎焦點與教學路線：[`lab/README.md`](lab/README.md) · [`lab/TEACHING-GUIDE.md`](lab/TEACHING-GUIDE.md). The other 19 notebooks (00–24 in full) live upstream at [`lab/`](https://github.com/iiyyll01lin/zkp-final/blob/main/lab). · 其餘 19 本在上游。
+> These six are the only notebooks in this export. Per-notebook engine focus · 逐本引擎焦點：[`lab/README.md`](lab/README.md). The other 19 notebooks and the full teaching routes live upstream at [`lab/`](https://github.com/iiyyll01lin/zkp-final/blob/main/lab). · 其餘 19 本與完整教學路線在上游。
 
 ---
 
@@ -130,21 +130,18 @@ Mechanism details · 機制細節：[`lab/README.md`](lab/README.md).
 
 | Path · 路徑 | Contents · 內容 |
 |---|---|
-| [`lab/`](lab/) | The six curated notebooks + [`labkit.py`](lab/labkit.py) (the hybrid live/replay toolkit, upstream's version unabridged — nothing pruned — with provenance printing added on top) + [`requirements.txt`](lab/requirements.txt). · 六本策展 notebook；`labkit.py` 為上游完整版、未精簡，另加出處列印。 |
+| [`lab/`](lab/) | The six curated notebooks + [`labkit.py`](lab/labkit.py) (the hybrid live/replay toolkit, with provenance printing and retained-evidence loaders) + [`requirements.txt`](lab/requirements.txt). · 六本策展 notebook；`labkit.py` 提供 hybrid live/replay、出處列印與 retained-evidence loaders。 |
 | `poc/<demo>/artefacts/` | The committed CSV / JSON / proof evidence every replay cell reads. Path shape is identical to upstream, because `labkit` builds absolute paths from it. · 路徑形狀與上游完全相同。 |
-| [`reading-notes/path-i-risc0-rocm-stark.md`](reading-notes/path-i-risc0-rocm-stark.md) | The Path I write-up nb23 renders inline. |
+| [`poc/risc0-rocm-prover/README.md`](poc/risc0-rocm-prover/README.md) | The retained Path I stage-gate and correctness evidence index nb23 reads. |
 | [`LICENSE`](LICENSE) · [`LICENSE-docs`](LICENSE-docs) | Apache-2.0 for the code, CC-BY-4.0 for the prose. See [License · 授權](#license--授權) below. |
 | [`Makefile`](Makefile) · [`run-replay.sh`](run-replay.sh) · [`verify-export.py`](verify-export.py) | Replay + self-check. The `Makefile` is also the repo-root marker `labkit` looks for — don't delete it. |
-| [`PROVENANCE.md`](PROVENANCE.md) | Where this came from and what was left behind. |
 
-> ℹ️ **`labkit.py` is unabridged, `poc/` is not — so some `labkit` constants point at files this repo does not ship.** · **`labkit.py` 未精簡、`poc/` 已精簡——所以有些 `labkit` 常數指向本包沒有的檔。**
-> `poc/` carries the artefacts the six curated notebooks actually read; [`labkit.py`](lab/labkit.py) is copied from upstream **unpruned**, so it still exposes the loaders written for the other 19 notebooks. Of its 84 `Path` constants, **60 still resolve and 24 point at artefacts that were left upstream**. Calling a loader behind one of those 24 raises `FileNotFoundError` — **that is expected, not a broken install.** · `labkit.py` 仍帶著為其餘 19 本寫的 loader：84 個 `Path` 常數中 **60 個仍解析得到、24 個指向留在上游的 artefact**；呼叫那 24 個對應的 loader 會拿到 `FileNotFoundError`，**這是預期行為，不是安裝壞了**。
+> ℹ️ **`labkit.py` keeps the broad upstream API, while `poc/` is pruned — so some `labkit` constants point at files this repo does not ship.** · **`labkit.py` 保留廣泛的上游 API、`poc/` 已精簡——所以有些 `labkit` 常數指向本包沒有的檔。**
+> `poc/` carries the artefacts the six curated notebooks actually read; [`labkit.py`](lab/labkit.py) still exposes loaders written for the other 19 notebooks. Of its 84 `Path` constants, **60 still resolve and 24 point at artefacts that were left upstream**. Calling a loader behind one of those 24 raises `FileNotFoundError` — **that is expected, not a broken install.** · `labkit.py` 仍帶著為其餘 19 本寫的 loader：84 個 `Path` 常數中 **60 個仍解析得到、24 個指向留在上游的 artefact**；呼叫那 24 個對應的 loader 會拿到 `FileNotFoundError`，**這是預期行為，不是安裝壞了**。
 > `make verify` accounts for this: it asserts the constants the six notebooks can reach, the paths those notebooks hard-code, and the measurement files the prose cites by name but no notebook reads, and reports the pruned upstream constants as expected information rather than failing on them. A green `make verify` and "24 constants don't resolve" are both true at once. · `make verify` 已把這件事納入：它斷言六本可達的常數、notebook 寫死的路徑，以及正文以檔名引用但 notebook 不讀的量測檔，並把剪掉的上游常數列為預期資訊而非錯誤。所以 `make verify` 綠燈與「24 個常數指不到檔」同時成立。
 > The full set of artefacts lives upstream at [`poc/`](https://github.com/iiyyll01lin/zkp-final/blob/main/poc); which constants dangle and why is spelled out in the labkit API reference in [`lab/README.md`](lab/README.md). · 完整 artefact 在上游 `poc/`；逐項說明見 `lab/README.md` 的 labkit API 一節。
 
-> 🔴 **"Unabridged" is not the same as "byte-identical to upstream" — `labkit.py` has provenance printing added, and nothing else.** · 🔴 **「未精簡」不等於「與上游逐位元相同」——`labkit.py` 加了出處列印，而且僅此而已。**
-> Nothing was pruned: every constant, loader and plotter is still there, all **84 `Path` constants** included. What was added is display: each CSV/JSON/markdown loader now prints `[REPLAY] source: <repo-relative path>` when it reads, and ten figures carry the same line as a caption, so a number and the artefact behind it stay together even when a PNG is dragged out of the notebook. Paths are rendered through the existing `_rel_to_repo()` helper, so a provenance string never carries an absolute path, a host name or an account name. · 沒有刪掉任何東西——常數、loader、plotter 全在，**84 個 `Path` 常數**一個不少。加的是顯示：每個 CSV/JSON/markdown loader 讀檔時會印 `[REPLAY] source: <repo 相對路徑>`，十張圖把同一行做成 caption，讓數字與其背後的 artefact 不會分家。路徑一律經過既有的 `_rel_to_repo()`，所以出處字串不會帶絕對路徑、主機名或帳號名。
-> 🔴 **No calculation and no number changed, and that was proved mechanically rather than asserted.** Two checks: an **AST comparison** of the pre- and post-edit file found the multiset of arithmetic and comparison expressions (`BinOp` / `UnaryOp` / `Compare` / `AugAssign`) **identical across all 133 shared functions** and at module level; and **all 17 loaders and derived helpers the six notebooks call return data whose sha256 is identical** under both versions. Re-running the notebooks produced **zero numeric differences**. See [`PROVENANCE.md`](PROVENANCE.md) → *Provenance markers added to the notebook outputs*. · 🔴 **沒有改動任何計算、任何數值，而且這是機器證明的，不是聲稱的。** 兩道核對：改動前後檔案的 **AST 比對**顯示算術與比較運算式（`BinOp`／`UnaryOp`／`Compare`／`AugAssign`）的多重集合在**全部 133 個共用函式**與 module 層級**完全相同**；六本 notebook 會呼叫的 **17 個 loader 與衍生 helper，其回傳資料的 sha256 在兩個版本下完全一致**。重跑 notebook 的**數值差異為零**。詳見 `PROVENANCE.md`〈為 notebook output 加上出處標記〉。
+> For this export, loaders print `[REPLAY] source: <repo-relative path>` and figures carry the same provenance caption. Nb23's correctness loader parses the retained [`poc/risc0-rocm-prover/README.md`](poc/risc0-rocm-prover/README.md) stage-gate table, so the five GPU==CPU rows remain evidence-backed without a separate reading note. `make verify` asserts that retained source exists. · nb23 的 correctness loader 改讀保留的 prover stage-gate table，五列 GPU==CPU 結果仍由 committed evidence 支撐。
 
 ---
 
@@ -166,10 +163,10 @@ Dual-licensed, split by what the file *is*: code is Apache-2.0, prose is CC-BY-4
 | What · 什麼 | Files · 檔案 | Licence |
 |---|---|---|
 | **Code** · 程式碼 | [`lab/labkit.py`](lab/labkit.py), the code cells in `lab/*.ipynb`, the Rust / Python / HIP / shell sources under `poc/`, [`verify-export.py`](verify-export.py), [`run-replay.sh`](run-replay.sh), [`Makefile`](Makefile) | **Apache-2.0** — [`LICENSE`](LICENSE) |
-| **Prose** · 文字 | this `README.md`, [`PROVENANCE.md`](PROVENANCE.md), [`lab/README.md`](lab/README.md), [`lab/TEACHING-GUIDE.md`](lab/TEACHING-GUIDE.md), the markdown cells in `lab/*.ipynb`, [`reading-notes/`](reading-notes/), and the measurement write-ups under `poc/**/artefacts/*.md` | **CC-BY-4.0** — [`LICENSE-docs`](LICENSE-docs) |
+| **Prose** · 文字 | this `README.md`, [`lab/README.md`](lab/README.md), the markdown cells in `lab/*.ipynb`, and the measurement write-ups under `poc/**/artefacts/*.md` | **CC-BY-4.0** — [`LICENSE-docs`](LICENSE-docs) |
 | **Measurement data** · 量測資料 | the committed `*.csv` / `*.json` / `*.info` / `*.log` / proof artefacts under `poc/**/artefacts/` | **CC-BY-4.0** — [`LICENSE-docs`](LICENSE-docs) |
 
-Copyright 2026 Jason YY, Lin. Reuse either way needs attribution to the upstream repo — see [`PROVENANCE.md`](PROVENANCE.md) §"Rules for anything derived from this repo". · 兩種授權都要標明出處，規則見 `PROVENANCE.md`。
+Copyright 2026 Jason YY, Lin. Reuse either way needs attribution to the [upstream repository](https://github.com/iiyyll01lin/zkp-final), and every measurement must stay with its stated scope. · 兩種授權都要標明上游出處，量測數字必須與其範圍註記一起保留。
 
 🔴 **Quoting a number? Bring its scope note.** Every headline figure in this repo is scoped to a specific arm, backend and repetition count — the scope is part of the claim, and it is stated inline wherever the figure appears (see "The one trust hook" above). CC-BY-4.0 lets you reuse the prose; it does **not** license you to restate a figure without the conditions it was measured under. Re-run the artefact instead of vendoring the number. · 引用數字請整組帶走它的範圍註記；CC-BY 授權你重用文字，不授權你把數字從量測條件裡拆出來。
 

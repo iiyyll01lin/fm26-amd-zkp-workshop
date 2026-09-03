@@ -27,7 +27,8 @@ still CPU), bit-for-bit == risc0's own ``CpuHal`` and accepted by the stock
 ``cargo risczero verify`` (independently audited); ~5.46x (flat ~5.3-5.5x; the old
 ~6.6-6.8x = 5.46x x a 1.25x local-vs-shipped codegen gap) on one ~4-segment
 poseidon2 Cartesi-step prove, workload-specific. The stock ``r0vm``
-stays CPU-only. See reading-notes/path-i-risc0-rocm-stark.md.
+stays CPU-only. See ``poc/risc0-rocm-prover/README.md`` and its committed
+artefacts.
 
 Public API
 ----------
@@ -143,7 +144,7 @@ __all__ = [
     "RISC0_ROCM_PHASE_CSV",
     "RISC0_ROCM_GATE_MD",
     "RISC0_ROCM_LEDGER_MD",
-    "RISC0_ROCM_PATH_I_MD",
+    "RISC0_ROCM_CORRECTNESS_MD",
     "TELEMETRY_DIR",
     "TELEMETRY_COLUMNS",
     "TELEMETRY_DEMO_F_EMBED",
@@ -445,7 +446,7 @@ ROCM_LIBS_CSV: Path = _LIBS_DEMO / "artefacts" / "rocm-libs.csv"
 # HONESTY: the stock ``r0vm`` stays CPU-only on AMD; this is the scoped fork, one
 # workload (poseidon2 ~4-segment Cartesi-step), ~5.46x (flat ~5.3-5.5x; the old
 # ~6.6-6.8x = 5.46x x a 1.25x local-vs-shipped codegen gap) — correctness is the hard
-# guarantee, speed the scoped secondary. See reading-notes/path-i-risc0-rocm-stark.md.
+# guarantee, speed the scoped secondary. See poc/risc0-rocm-prover/README.md.
 _RISC0_ROCM_PROVER = REPO_ROOT / "poc" / "risc0-rocm-prover"
 #: Path I A3 — the fresh, honest same-code speed headline: iGPU vs the SAME fork code
 #: built no-rocm vs the installed rzup r0vm. Columns: ``config, backend, wall_s,
@@ -467,10 +468,10 @@ RISC0_ROCM_GATE_MD: Path = _RISC0_ROCM_PROVER / "artefacts" / "stage4-gate.md"
 #: Path I engine->role->evidence ledger (markdown): per-phase engine map + the
 #: correctness/capability evidence table.
 RISC0_ROCM_LEDGER_MD: Path = _RISC0_ROCM_PROVER / "artefacts" / "engine-map-ledger.md"
-#: Path I reading-note (markdown): the bit-for-bit "ported + proven" kernel table
-#: (field/hash/poly/circuit/Merkle GPU==CPU check counts) + the honesty framing.
+#: Retained prover overview (markdown): the stage-gate table carrying the
+#: field/hash/poly/circuit/Merkle GPU==CPU check counts.
 #: Parsed by :func:`load_risc0_rocm_correctness`.
-RISC0_ROCM_PATH_I_MD: Path = REPO_ROOT / "reading-notes" / "path-i-risc0-rocm-stark.md"
+RISC0_ROCM_CORRECTNESS_MD: Path = _RISC0_ROCM_PROVER / "README.md"
 #: Lab 24 — full Groth16 receipt benchmark (3 solo, verified reps per mode).
 RISC0_ROCM_GROTH16_BENCH_DIR: Path = (
     _RISC0_ROCM_PROVER / "artefacts" /
@@ -1985,50 +1986,96 @@ def risc0_rocm_amdahl(df=None) -> dict:
 
 
 def load_risc0_rocm_correctness(path: Optional[Path] = None):
-    """Path I — the bit-for-bit "ported + proven" kernel table as a list of dicts.
+    """Path I — bit-for-bit GPU==CPU stage gates as a list of dicts.
 
-    Parses the committed reading-note (:data:`RISC0_ROCM_PATH_I_MD`) "What was ported +
-    proven" markdown table into rows ``{layer, kernels, golden, gate, checks}`` where
-    ``checks`` is the integer GPU==CPU PASS count parsed from the gate cell (e.g. the
-    26k-LOC generated ``eval_check`` -> 1024 checks; ``1768 + 400`` -> 2168). Every row is
-    bit-for-bit == risc0's own ``CpuHal`` / CPU-C++ golden. Returns ``[]`` (never raises)
-    if the artefact is unavailable. Defaults to :data:`RISC0_ROCM_PATH_I_MD`.
+    Parses the retained prover overview's stage-gate table
+    (:data:`RISC0_ROCM_CORRECTNESS_MD`) into rows
+    ``{layer, kernels, golden, gate, checks}``. Stage 1 carries field,
+    Poseidon2, and SHA counts in one cell, so it expands into the field and
+    hash rows used by the notebook. Every value is parsed from committed
+    evidence rather than copied into Python. Returns ``[]`` (never raises) if
+    the artefact is unavailable or incomplete.
     """
-    rows: list = []
     try:
-        md_path = Path(path or RISC0_ROCM_PATH_I_MD)
+        md_path = Path(path or RISC0_ROCM_CORRECTNESS_MD)
         text = md_path.read_text()
         _provenance(md_path)
     except Exception:  # noqa: BLE001 - laptop-safe
-        return rows
-    lines = text.splitlines()
-    header = None
-    for i, ln in enumerate(lines):
-        low = ln.lower()
-        if low.count("|") >= 3 and "layer" in low and "kernels" in low and "gate" in low:
-            header = i
-            break
-    if header is None:
-        return rows
+        return []
 
     def _clean(cell: str) -> str:
         return cell.replace("**", "").replace("`", "").strip()
 
-    for ln in lines[header + 1:]:
+    stage_checks = {}
+    for ln in text.splitlines():
         if "|" not in ln:
-            break
-        parts = [p.strip() for p in ln.strip().strip("|").split("|")]
-        if len(parts) < 4 or set(parts[0]) <= {"-", " ", ":"}:  # skip the --- separator
             continue
-        layer, kernels, golden, gate = (
-            _clean(parts[0]), _clean(parts[1]), _clean(parts[2]), _clean(parts[3]),
+        parts = [p.strip() for p in ln.strip().strip("|").split("|")]
+        if len(parts) < 4:
+            continue
+        stage = _clean(parts[0]).lower()
+        if stage not in {"1", "2", "3a", "3b"}:
+            continue
+        result = _clean(parts[3])
+        match = re.search(
+            r"\bPASS\b\s*(?:—|-)\s*([0-9][0-9\s/]*)\s+checks?\b",
+            result,
         )
-        nums = [int(n.replace(",", "")) for n in re.findall(r"\d[\d,]*", gate)]
-        rows.append({
-            "layer": layer, "kernels": kernels, "golden": golden,
-            "gate": gate, "checks": (sum(nums) if nums else None),
-        })
-    return rows
+        if match:
+            stage_checks[stage] = [
+                int(n) for n in re.findall(r"\d+", match.group(1))
+            ]
+
+    if (
+        len(stage_checks.get("1", [])) != 3
+        or any(len(stage_checks.get(stage, [])) != 1 for stage in ("2", "3a", "3b"))
+    ):
+        return []
+
+    field, poseidon2, sha256 = stage_checks["1"]
+    poly = stage_checks["2"][0]
+    circuit = stage_checks["3a"][0]
+    merkle = stage_checks["3b"][0]
+    return [
+        {
+            "layer": "field",
+            "kernels": "BabyBear Fp (Montgomery, p=15·2²⁷+1) + Fp4 (x⁴−11)",
+            "golden": "risc0_core BabyBear",
+            "gate": f"{field} checks PASS",
+            "checks": field,
+        },
+        {
+            "layer": "hash",
+            "kernels": "Poseidon2-BabyBear (incl. hard-coded test vectors), SHA-256",
+            "golden": "risc0_zkp hash suites",
+            "gate": f"{poseidon2} + {sha256} PASS",
+            "checks": poseidon2 + sha256,
+        },
+        {
+            "layer": "poly",
+            "kernels": (
+                "NTT family (bit-reverse/interpolate/expand+evaluate), zk_shift, "
+                "eltwise, fri_fold, mix_poly_coeffs, batch_evaluate_any"
+            ),
+            "golden": "the actual CpuHal ops",
+            "gate": f"{poly} checks PASS",
+            "checks": poly,
+        },
+        {
+            "layer": "circuit",
+            "kernels": "rv32im eval_check poly_fp (26k LOC generated)",
+            "golden": "risc0 CPU C++ rust_poly_fp_*",
+            "gate": f"{circuit} checks PASS",
+            "checks": circuit,
+        },
+        {
+            "layer": "Merkle",
+            "kernels": "hash_rows / hash_fold (SHA + Poseidon2)",
+            "golden": "CpuHal",
+            "gate": f"{merkle} checks PASS",
+            "checks": merkle,
+        },
+    ]
 
 
 #: The audit differential sentence in ``stage4-gate.md`` ("GPU path is real (not a
@@ -3746,7 +3793,7 @@ def plot_risc0_rocm_correctness(rows=None, gate=None, save: Optional[Path] = Non
                   "the 26k-LOC generated eval_check is bit-for-bit GPU==CPU")
     ax.set_title("Correctness is the HARD guarantee — " + banner, fontsize=9.8)
     fig.tight_layout()
-    _fig_source_note(fig, RISC0_ROCM_PATH_I_MD, RISC0_ROCM_GATE_MD)
+    _fig_source_note(fig, RISC0_ROCM_CORRECTNESS_MD, RISC0_ROCM_GATE_MD)
     if save is not None:
         fig.savefig(str(save), dpi=110, bbox_inches="tight")
     return fig

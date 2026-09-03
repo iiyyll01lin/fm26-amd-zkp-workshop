@@ -1,8 +1,8 @@
 Copyright 2026 Jason YY, Lin <iiyyll01lin@gmail.com>
 
 This file licenses the DOCUMENTATION and COURSE PROSE in this repository —
-README.md, PROVENANCE.md, lab/README.md, lab/TEACHING-GUIDE.md, the markdown
-narrative inside lab/*.ipynb, and reading-notes/ — under CC-BY-4.0.
+README.md, lab/README.md, the markdown narrative inside lab/*.ipynb, and the
+measurement write-ups under poc/**/artefacts/ — under CC-BY-4.0.
 
 Attribution, when you reuse this prose or a measurement write-up:
 
@@ -11,8 +11,8 @@ Attribution, when you reuse this prose or a measurement write-up:
 
 The measurement numbers quoted in that prose each carry a scope note (which
 arm, which backend, how many repetitions). Attribution does not license you to
-restate a number without its scope note; see PROVENANCE.md §"Rules for
-anything derived from this repo".
+restate a number without its scope note; keep each figure together with the
+conditions stated beside it.
 
 Code (lab/labkit.py, the Rust/Python/HIP sources under poc/) is licensed
 separately under Apache-2.0; see LICENSE. README.md ("License · 授權") has the
