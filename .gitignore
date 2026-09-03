@@ -13,3 +13,9 @@ __pycache__/
 .venv/
 venv/
 .DS_Store
+
+# Local-only workshop documents; do not publish or track.
+lab/TEACHING-GUIDE.md
+reading-notes/path-i-risc0-rocm-stark.md
+PROVENANCE.md
+lab/README.md

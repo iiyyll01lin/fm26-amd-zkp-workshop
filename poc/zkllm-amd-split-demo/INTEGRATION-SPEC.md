@@ -92,9 +92,9 @@ gated by `[_heavy, has_docker]`; replay `load_zkllm_prove_info()`) →
 `load_zkllm_split()` + `plot_zkllm_amd_split()` + per-engine verdict →
 `engine → stage → evidence` table → "What this shows about AMD" + Sources footer.
 
-Engine-map / nav (`lab/00_amd_engine_map.ipynb`, `lab/README.md`): notebook 10
-added as one row — *"zkLLM engine-split — iGPU forward (size-gated) · CPU Halo2
-proof · iGPU MSM frontier"*.
+Engine-map / nav (`lab/00_amd_engine_map.ipynb` and the upstream lab index):
+notebook 10 added as one row — *"zkLLM engine-split — iGPU forward
+(size-gated) · CPU Halo2 proof · iGPU MSM frontier"*.
 
 ---
 
@@ -208,8 +208,8 @@ proof (shipping) · iGPU OpenCL Groth16 MSM (re-cast, size-gated, never EZKL)"*.
 - committed `artefacts/{attention-forward.csv, attention-forward.log, split.json, split.png, split.md}`
 - committed `artefacts/{three-engine.json, three-engine.png, three-engine.md}` (the NPU+CPU+iGPU panorama)
 
-Shared files touched (small, additive): `lab/labkit.py` (constants + 2 loaders +
-1 plotter + `__all__`), `lab/00_amd_engine_map.ipynb` (nav row + walk-the-map
-link), `lab/README.md` (nav row + file tree), `Makefile` (2 targets + help +
-`.PHONY`), `lab/10_zkllm_amd_split.ipynb` (new), and a cross-link in
-`lab/08_zkrag_hnsw_zkvm.ipynb`.
+Shared files touched upstream (small, additive): `lab/labkit.py` (constants +
+2 loaders + 1 plotter + `__all__`), `lab/00_amd_engine_map.ipynb` (nav row +
+walk-the-map link), the upstream lab index (nav row + file tree), `Makefile`
+(2 targets + help + `.PHONY`), `lab/10_zkllm_amd_split.ipynb` (new), and a
+cross-link in `lab/08_zkrag_hnsw_zkvm.ipynb`.

@@ -103,7 +103,7 @@ NOTEBOOK_PATHS = (
 #: Keep this list in step with any number quoted outside a notebook.
 #: ``(relative path, the claim it backs)``.
 EVIDENCE_PATHS = (
-    # lab/README.md honesty layer + poc/zkllm-amd-split-demo/README.md —
+    # Root README honesty layer + poc/zkllm-amd-split-demo/README.md —
     # BN254 G1 MSM crossover (0.654 / 0.814 / 0.845x -> 1.091x at 2^22)
     ("poc/amd-gpu-zk-primitive-demo/artefacts/gpu-bn254.csv", "BN254 G1 MSM crossover"),
     ("poc/amd-gpu-zk-primitive-demo/artefacts/gpu-bn254.log", "BN254 G1 MSM crossover, raw"),
@@ -242,7 +242,7 @@ for attr, value in vars(lk).items():
         if not path.exists():
             pruned.append(name)
 print(f"[verify] upstream constants pointing at pruned artefacts: {len(pruned)} "
-      f"(expected — labkit.py retains the broad API; see lab/README.md)")
+      f"(expected — labkit.py retains the broad API; see README.md)")
 
 # --- 3. notebook-hardcoded paths -------------------------------------------
 nb_missing = [f"{rel}  (needed by nb{who})"

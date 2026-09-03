@@ -5,15 +5,14 @@
 > Runs live on one **AMD Ryzen AI MAX+ 395** (Strix Halo) APU — a **~300 W HP Z2 Mini G1a** small-form-factor desktop — and **replays on any laptop**, no GPU required.
 > 現場在一顆 **AMD Ryzen AI MAX+ 395**（Strix Halo）APU 上跑——一台 **~300 W 的 HP Z2 Mini G1a** 小桌機——並可在**任何筆電上 replay**，不需要 GPU。
 
-**This repo is a 3.3 MB slice of the full 19 GB course repo, trimmed to the six curated notebooks a CPU-only replay needs.** · 本 repo 是完整 19 GB 課程 repo 的 3.3 MB 精簡版，只留 CPU-only replay 需要的六本策展 notebook。 That is tracked content; `du` reports more, because a tree of small text files rounds up to whole filesystem blocks. `make verify` checks the retained evidence and `make replay` executes the six-notebook replay path end to end. · 那是 tracked 內容的口徑；`du` 會報更多，因為小文字檔會進位到整個 block。
+**This repo is a slice of the full 24 course repo, trimmed to the six curated notebooks a CPU-only replay needs.** ·
 
-> ℹ️ **Links to `zkp-final` need access — they are not broken.** · **指向 `zkp-final` 的連結需要授權，不是壞連結。**
-> Links in this repo that point at `github.com/iiyyll01lin/zkp-final` go to the **full 25-notebook upstream repository**, which is not currently public: without repo access GitHub answers `404`. **That is expected behaviour, not a dead link.** · 本 repo 內指向 `github.com/iiyyll01lin/zkp-final` 的連結都是**完整 25 本的上游 repo**，該 repo 目前未公開；沒有存取權的話 GitHub 會回 `404`。**這是預期行為，不是連結壞了。**
-> **Nothing the workshop needs sits behind those links.** All six curated notebooks are in this repo with their outputs already committed, the artefacts every replay cell reads are under `poc/`, and the links *between* the six notebooks are local relative paths — so `make verify` and `make replay` work with no network and no upstream access. The upstream links are there for the other 19 notebooks, the course site and the raw measurement logs. · **工作坊需要的東西一個都不在那些連結後面**：六本策展 notebook 全在這裡、output 已 commit，replay 讀的 artefact 都在 `poc/`，六本之間的相互連結是本地相對路徑——所以 `make verify` 與 `make replay` 不需要網路、也不需要上游存取權。上游連結是給其餘 19 本、course 網站與原始量測 log 用的。
+> ℹ️ **Links to `zkp-final` need access — they are not broken.** · (not public available yet)
+> Links in this repo that point at `github.com/iiyyll01lin/zkp-final` go to the **full 25-notebook upstream repository**, which is not currently public: without repo access GitHub answers `404`. **That is expected behaviour, not a dead link.** ·
 
 ---
 
-## Start here · 60 秒開始
+## Start here
 
 The QR on your handout card points at this repo; the URL is below if you would rather type it. · 手卡上的 QR 就是指到這個 repo；不想掃碼就直接打下面的網址。
 
@@ -41,33 +40,24 @@ make install PYTHON=.venv/bin/python
 
 ## What this is · 這是什麼
 
-**EN** — A hands-on cut of the *Verifiable AI on an AMD APU* course: how one APU runs a complete verifiable pipeline, then how honest bottleneck forensics turns a capability success into the next engineering target. You will watch six curated notebooks and run one yourself.
+A hands-on cut of the *Verifiable AI on an AMD APU* course: how one APU runs a complete verifiable pipeline, then how honest bottleneck forensics turns a capability success into the next engineering target. You will watch six curated notebooks and run yourself.
 
-**ZH** — 這是 *Verifiable AI on an AMD APU* 課程的 hands-on 精簡版：一顆 APU 跑完整條可驗證 pipeline，再用誠實瓶頸鑑識把 capability success 轉成下一個工程目標。你會看六本策展 notebook，並親手跑其中一本。
-
-- **Format · 形式**: presenter demo (replay, with an optional Strix Halo live cameo) + a 3-minute attendee hands-on.
+- **Format · 形式**: presenter demo + attendee hands-on.
 - **Where you run · 你在哪裡跑**: your **AMD AUP Learning Cloud** seat (a CPU-only replay image) or your own laptop — any Python 3 + browser.
 - **Capacity · 容納**: ~30–50 concurrent CPU replay seats.
 
 ---
 
-## The one trust hook — read this first · 先讀這條：誠實原則
+This workshop is built on a repository whose numbers are *deliberately conservative*. 
 
-This workshop is built on a repository whose numbers are committed, reproducible, and *deliberately conservative*. Its opening exhibit is a **correction of our own headline**:
 
-本工作坊建立在一個「數字全部 committed、可重現、且刻意保守」的 repo 上。它的開場展品是一次**對我們自己 headline 的更正**：
-
-> We published an iGPU proof-offload as **`1.34×`**. A contention-guarded **solo** re-measurement showed the clean CPU median was **66.5 s**, making it **`0.70×`** — and **that correction labelled its own replacement a lower bound**, because its GPU sample was `n=1`, contended, and never interleaved with the CPU arm. A properly **paired** re-test (one session, one binary, both arms check-off, arms interleaved, `n=3` each, median) then corrected it **back up**: CPU **60.847 s** vs iGPU **61.206 s** = **`0.994×` — statistical parity**, so the published `0.70×` was pessimistic by **1.42×**. 🔴 Parity is the *only* word for it: the 0.59% arm-to-arm gap is smaller than the 0.93% / 1.21% within-arm spreads, so it is **not** an iGPU win and **not** "0.6% slower" (mean-based `0.990×`, same verdict) — and **parity is not acceleration**. 🔴 Scope: only the **OpenCL G1-only** arm was re-benched; **`gpu-wide`'s `0.74×` was never re-measured and remains a floor**, and native-HIP is a separate pair (**G1-only `1.048×`**, **hip-wide `0.77×`, a floor**). Four arms, four sentences — never mixed, never averaged. We publish the correction — in **both** directions — not the hype.
->
-> 我們曾把一個 iGPU proof-offload 公布為 **`1.34×`**。有 contention 防護的**單機 (solo)** 重測顯示乾淨 CPU 中位數是 **66.5 s**，於是變成 **`0.70×`**——而**那次更正當時就自標「這只是下界」**，因為 GPU 那臂 `n=1`、受競爭、且未與 CPU 臂交錯。之後一次真正**配對**的重測（同 session、同 binary、兩臂皆關 MSM check、arms 交錯、每臂 3 reps 取中位數）把它**往上**修回：CPU **60.847 s** vs iGPU **61.206 s** ＝ **`0.994×` ＝打平 (parity)**，原本的 `0.70×` 悲觀了 **1.42 倍**。🔴 唯一站得住的講法就是「打平」：臂間差距 0.59% 小於臂內離散 0.93% / 1.21%，所以**不是**「iGPU 勝」，也**不是**「慢 0.6%」（用平均 `0.990×`，結論相同）——而**「打平」不是「加速」**。🔴 範圍：只有 **OpenCL G1-only** 這一臂被重測；**`gpu-wide` 的 `0.74×` 未重測、仍只是地板**，native-HIP 是另外兩臂（**G1-only `1.048×`**、**hip-wide `0.77×` 地板**）。四臂四種寫法，不可混講也不可平均。我們公布更正——而且是**兩個方向**的更正——不是行銷話術。
-
-Full case study · 完整案例：[`docs/INTEGRITY-REPORT.md`](https://github.com/iiyyll01lin/zkp-final/blob/main/docs/INTEGRITY-REPORT.md). Evidence index · 證據索引：[`docs/validation-ledger.md`](https://github.com/iiyyll01lin/zkp-final/blob/main/docs/validation-ledger.md).
+Full case study (目前尚未public) · 完整案例：[`docs/INTEGRITY-REPORT.md`](https://github.com/iiyyll01lin/zkp-final/blob/main/docs/INTEGRITY-REPORT.md). Evidence index · 證據索引：[`docs/validation-ledger.md`](https://github.com/iiyyll01lin/zkp-final/blob/main/docs/validation-ledger.md).
 
 **The honesty boundary we repeat all session · 全程重複的誠實邊界:**
 
 - iGPU / NPU accelerate the **AI model** (embedding, LLM forward). · iGPU / NPU 加速 **AI 模型**（embedding、LLM 前向）。
 - iGPU OpenCL accelerates **SNARK primitives / Groth16**, but **size-gated**. · iGPU OpenCL 加速 **SNARK 原語 / Groth16**，但 **size-gated**。
-- The **stock RISC0 zkVM STARK is CPU-only on AMD** — in the main-line pipeline the iGPU never proves. **This session's climax turns that around (honestly scoped)**: a pinned **v2.3.2 fork** produces a **GPU-run rv32im *segment*-STARK seal the stock `cargo risczero verify` accepts**, **bit-for-bit == CpuHal** (DualHal 15/15) — a **hybrid** (witgen/accum stay CPU; recursion lift/join/succinct and Groth16 now on the iGPU), **5.46×** workload-specific; see [`nb23`](lab/23_risc0_rocm_stark.ipynb) and the retained [`poc/risc0-rocm-prover` evidence index](poc/risc0-rocm-prover/README.md). The **stock `r0vm` stays CPU-only**; never "the iGPU proves the whole zkVM." · stock RISC0 zkVM STARK 在 AMD 上是 CPU-only；本場高潮誠實 scoped 地翻轉它，但 stock `r0vm` 仍 CPU-only。
+- The **stock RISC0 zkVM STARK is CPU-only on AMD** — in the main-line pipeline the iGPU never proves. **This session's climax turns that around (honestly scoped)**: a pinned **v2.3.2 fork** produces a **GPU-run rv32im *segment*-STARK seal the stock `cargo risczero verify` accepts**, **bit-for-bit == CpuHal** (DualHal 15/15) — a **hybrid** (witgen/accum stay CPU; recursion lift/join/succinct and Groth16 now on the iGPU), **5.46×** workload-specific; see [`nb23`](lab/23_risc0_rocm_stark.ipynb) and the retained [`poc/risc0-rocm-prover` evidence index](poc/risc0-rocm-prover/README.md). The **stock `r0vm` stays CPU-only**; never "the iGPU proves the whole zkVM." · stock RISC0 zkVM STARK 在 AMD 上是 CPU-only；這次我的implemetation翻轉了它，但 stock `r0vm` 仍 CPU-only。
 - In the capstone: **retrieval is proven, the LLM output is not.** · 在 capstone 裡：**檢索被證明，LLM 輸出沒有。**
 
 ---
@@ -87,11 +77,10 @@ Six notebooks, one AI × Web3 spine. Lab 24 adds the replayable lesson behind th
 | **5** | [`lab/24_risc0_rocm_bottleneck_lab.ipynb`](lab/24_risc0_rocm_bottleneck_lab.ipynb) | bottleneck forensics · 瓶頸鑑識 | Complete Groth16 receipt **0.973×** + `eval_check` **192-VGPR** negative result → concrete GPU-witness roadmap. | replay-only |
 | **6** | [`lab/14_unified_memory_bigmodel.ipynb`](lab/14_unified_memory_bigmodel.ipynb) | iGPU + 94 GB unified · unified memory | The David-vs-Goliath cameo: Qwen2.5-32B Q4_K_M (~20 GB) held **27.6 GB** GPU-resident. | replay-only |
 
-> These six are the only notebooks in this export. Per-notebook engine focus · 逐本引擎焦點：[`lab/README.md`](lab/README.md). The other 19 notebooks and the full teaching routes live upstream at [`lab/`](https://github.com/iiyyll01lin/zkp-final/blob/main/lab). · 其餘 19 本與完整教學路線在上游。
-
+> These six are the only notebooks in this export. Per-notebook engine focus: the table above. The other 19 notebooks and the full teaching routes live upstream at [`lab/`](https://github.com/iiyyll01lin/zkp-final/blob/main/lab). · (not public)
 ---
 
-## The 3-minute hands-on · 3 分鐘 hands-on（13:00–16:00 of the runsheet）
+## hands-on
 
 Everyone reproduces `PROOF VERIFIED` themselves — a real zkML proof verified on a CPU-only replay, no GPU needed.
 
@@ -109,50 +98,18 @@ Everyone reproduces `PROOF VERIFIED` themselves — a real zkML proof verified o
 
 6. **What you just did · 你剛剛做了什麼**: on a laptop with **no GPU and no network**, `labkit` read the committed `proof.json` + `vk.key`, re-checked their structure, and reported the same **`PROOF VERIFIED`** verdict the Strix Halo produces live. · 在一台**沒有 GPU、沒有網路**的筆電上，`labkit` 讀了 committed 的 `proof.json` + `vk.key`、重驗其結構，回報與 Strix Halo live 跑一致的 **`PROOF VERIFIED`**。
 
-> **No wifi / clone failed? · 沒有 wifi / clone 失敗？** Ask for the USB offline kit — it carries this same repo. Then `make replay` works with no network at all. · 跟工作人員拿 USB 離線包，內容相同，`make replay` 完全離線可跑。
+
 
 ---
 
-## Live vs replay — how it runs anywhere · live vs replay：為何到哪都能跑
-
+## Live vs replay
 Every heavy cell calls `labkit.detect()`. Detect real Strix Halo / ROCm → **live**; detect nothing (any laptop) → **replay** the committed artefacts. Priority: `LAB_FORCE_REPLAY` ＞ `LAB_RUN_HEAVY` + hardware precondition ＞ default replay.
 
 每個重運算 cell 都呼叫 `labkit.detect()`。偵測到真 Strix Halo / ROCm → **live**；偵測不到（任何筆電）→ **replay** committed artefacts。
 
-- **Attendees** always run **replay**. This export ships the committed artefacts, not the multi-hundred-MB live inputs, so a live path would simply fall back. · **與會者**永遠走 replay。
-- **Presenter** demos in replay, with an **optional live cameo** on a Strix Halo box. · **簡報者**用 replay demo，並可選 live cameo。
+- **Attendees** always run **replay**. This export ships the committed artefacts, not the multi-hundred-MB live inputs, so a live path would simply fall back.  
 
-Mechanism details · 機制細節：[`lab/README.md`](lab/README.md).
-
----
-
-## What's in this repo · 本 repo 內容
-
-| Path · 路徑 | Contents · 內容 |
-|---|---|
-| [`lab/`](lab/) | The six curated notebooks + [`labkit.py`](lab/labkit.py) (the hybrid live/replay toolkit, with provenance printing and retained-evidence loaders) + [`requirements.txt`](lab/requirements.txt). · 六本策展 notebook；`labkit.py` 提供 hybrid live/replay、出處列印與 retained-evidence loaders。 |
-| `poc/<demo>/artefacts/` | The committed CSV / JSON / proof evidence every replay cell reads. Path shape is identical to upstream, because `labkit` builds absolute paths from it. · 路徑形狀與上游完全相同。 |
-| [`poc/risc0-rocm-prover/README.md`](poc/risc0-rocm-prover/README.md) | The retained Path I stage-gate and correctness evidence index nb23 reads. |
-| [`LICENSE`](LICENSE) · [`LICENSE-docs`](LICENSE-docs) | Apache-2.0 for the code, CC-BY-4.0 for the prose. See [License · 授權](#license--授權) below. |
-| [`Makefile`](Makefile) · [`run-replay.sh`](run-replay.sh) · [`verify-export.py`](verify-export.py) | Replay + self-check. The `Makefile` is also the repo-root marker `labkit` looks for — don't delete it. |
-
-> ℹ️ **`labkit.py` keeps the broad upstream API, while `poc/` is pruned — so some `labkit` constants point at files this repo does not ship.** · **`labkit.py` 保留廣泛的上游 API、`poc/` 已精簡——所以有些 `labkit` 常數指向本包沒有的檔。**
-> `poc/` carries the artefacts the six curated notebooks actually read; [`labkit.py`](lab/labkit.py) still exposes loaders written for the other 19 notebooks. Of its 84 `Path` constants, **60 still resolve and 24 point at artefacts that were left upstream**. Calling a loader behind one of those 24 raises `FileNotFoundError` — **that is expected, not a broken install.** · `labkit.py` 仍帶著為其餘 19 本寫的 loader：84 個 `Path` 常數中 **60 個仍解析得到、24 個指向留在上游的 artefact**；呼叫那 24 個對應的 loader 會拿到 `FileNotFoundError`，**這是預期行為，不是安裝壞了**。
-> `make verify` accounts for this: it asserts the constants the six notebooks can reach, the paths those notebooks hard-code, and the measurement files the prose cites by name but no notebook reads, and reports the pruned upstream constants as expected information rather than failing on them. A green `make verify` and "24 constants don't resolve" are both true at once. · `make verify` 已把這件事納入：它斷言六本可達的常數、notebook 寫死的路徑，以及正文以檔名引用但 notebook 不讀的量測檔，並把剪掉的上游常數列為預期資訊而非錯誤。所以 `make verify` 綠燈與「24 個常數指不到檔」同時成立。
-> The full set of artefacts lives upstream at [`poc/`](https://github.com/iiyyll01lin/zkp-final/blob/main/poc); which constants dangle and why is spelled out in the labkit API reference in [`lab/README.md`](lab/README.md). · 完整 artefact 在上游 `poc/`；逐項說明見 `lab/README.md` 的 labkit API 一節。
-
-> For this export, loaders print `[REPLAY] source: <repo-relative path>` and figures carry the same provenance caption. Nb23's correctness loader parses the retained [`poc/risc0-rocm-prover/README.md`](poc/risc0-rocm-prover/README.md) stage-gate table, so the five GPU==CPU rows remain evidence-backed without a separate reading note. `make verify` asserts that retained source exists. · nb23 的 correctness loader 改讀保留的 prover stage-gate table，五列 GPU==CPU 結果仍由 committed evidence 支撐。
-
----
-
-## Take it home · 帶回家
-
-This export is the replay kit, not the whole course — the take-home material lives upstream. · 本 repo 只是 replay 包；帶回家的材料在上游。
-
-- **7 days**: the take-home 7-day path, upstream at [`study-plan/7-day-checklist.md`](https://github.com/iiyyll01lin/zkp-final/blob/main/study-plan/7-day-checklist.md). · 7 天自學清單在上游。
-- **Build something**: the hackathon starter kit — [`hackathon/futuremode-2026/CHALLENGE.md`](https://github.com/iiyyll01lin/zkp-final/blob/main/hackathon/futuremode-2026/CHALLENGE.md), [`SUBMISSION.md`](https://github.com/iiyyll01lin/zkp-final/blob/main/hackathon/futuremode-2026/SUBMISSION.md) and the fork-me template — upstream at [`hackathon/futuremode-2026/`](https://github.com/iiyyll01lin/zkp-final/tree/main/hackathon/futuremode-2026). · hackathon 起始包在上游。
-- **The other 19 notebooks**: upstream [`lab/`](https://github.com/iiyyll01lin/zkp-final/blob/main/lab), with the five full teaching routes in [`lab/TEACHING-GUIDE.md`](https://github.com/iiyyll01lin/zkp-final/blob/main/lab/TEACHING-GUIDE.md). · 其餘 19 本與五條完整教學路線在上游。
-- **Go deeper**: the full course, the live AMD demos, and every raw measurement live upstream at [`https://github.com/iiyyll01lin/zkp-final`](https://github.com/iiyyll01lin/zkp-final).
+Mechanism implementation · 機制實作：[`lab/labkit.py`](lab/labkit.py).
 
 ---
 
@@ -163,12 +120,12 @@ Dual-licensed, split by what the file *is*: code is Apache-2.0, prose is CC-BY-4
 | What · 什麼 | Files · 檔案 | Licence |
 |---|---|---|
 | **Code** · 程式碼 | [`lab/labkit.py`](lab/labkit.py), the code cells in `lab/*.ipynb`, the Rust / Python / HIP / shell sources under `poc/`, [`verify-export.py`](verify-export.py), [`run-replay.sh`](run-replay.sh), [`Makefile`](Makefile) | **Apache-2.0** — [`LICENSE`](LICENSE) |
-| **Prose** · 文字 | this `README.md`, [`lab/README.md`](lab/README.md), the markdown cells in `lab/*.ipynb`, and the measurement write-ups under `poc/**/artefacts/*.md` | **CC-BY-4.0** — [`LICENSE-docs`](LICENSE-docs) |
+| **Prose** · 文字 | this `README.md`, the markdown cells in `lab/*.ipynb`, and the measurement write-ups under `poc/**/artefacts/*.md` | **CC-BY-4.0** — [`LICENSE-docs`](LICENSE-docs) |
 | **Measurement data** · 量測資料 | the committed `*.csv` / `*.json` / `*.info` / `*.log` / proof artefacts under `poc/**/artefacts/` | **CC-BY-4.0** — [`LICENSE-docs`](LICENSE-docs) |
 
 Copyright 2026 Jason YY, Lin. Reuse either way needs attribution to the [upstream repository](https://github.com/iiyyll01lin/zkp-final), and every measurement must stay with its stated scope. · 兩種授權都要標明上游出處，量測數字必須與其範圍註記一起保留。
 
-🔴 **Quoting a number? Bring its scope note.** Every headline figure in this repo is scoped to a specific arm, backend and repetition count — the scope is part of the claim, and it is stated inline wherever the figure appears (see "The one trust hook" above). CC-BY-4.0 lets you reuse the prose; it does **not** license you to restate a figure without the conditions it was measured under. Re-run the artefact instead of vendoring the number. · 引用數字請整組帶走它的範圍註記；CC-BY 授權你重用文字，不授權你把數字從量測條件裡拆出來。
+
 
 ### Third-party components · 第三方元件
 
