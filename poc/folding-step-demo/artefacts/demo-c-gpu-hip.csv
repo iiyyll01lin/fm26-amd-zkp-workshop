@@ -1,0 +1,4 @@
+mode,fold_n,decider_prove_s,native_verify,onchain_verify,speedup_vs_cpu_median,backend,gpu_device,solo,loadavg,note
+cpu-median,2,66.52,OK,OK,1.00,cpu,,true,6.17,clean-solo CPU median (durable baseline)
+hip-gpu,2,77.450036832,OK,OK,0.86,hip,gfx1151,true,6.17,FOLD_GPU_BACKEND=hip 4 BN254 G1 MSMs via native HIP (G2+FFT CPU)
+hip-wide,2,85.865204104,OK,OK,0.77,hip,gfx1151,true,6.17,FOLD_GPU_BACKEND=hip G1+G2(Fq2) MSM + QAP radix-2 FFT all via native HIP

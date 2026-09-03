@@ -1,0 +1,21 @@
+------------------------------------------------------------------
+[solo-guard] iGPU busy : 0%  (max 25%)
+[solo-guard] loadavg(1m): 0.59   (max 8.00, nproc=32)
+[solo-guard] lockfile  : /tmp/zkp-gpu.lock
+[solo-guard] STATUS    : SOLO (safe to record)
+------------------------------------------------------------------
+[90m06:12:43[0m DBG constraint system loaded [36mtook=[0m326.642299
+[90m06:12:43[0m DBG proving key loaded [36mtook=[0m563.476621
+[90m06:12:44[0m DBG WTNS header [36mnInputs=[0m5635930 [36mnWitnesses=[0m5635930
+[90m06:12:44[0m DBG witness data loaded [36mtook=[0m984.533449
+[90m06:12:45[0m [32mINF[0m [1m[risc0-groth16-rocm] ACTIVE[0m [36macceleration=[0mrocm [36mbackend=[0mgroth16 [36mcompute_units=[0m20 [36mcurve=[0mbn254 [36mdevice=[0m"Radeon 8060S Graphics" [36mnbConstraints=[0m5676573
+[90m06:12:45[0m DBG constraint system solver done [36mnbConstraints=[0m5676573 [36mtook=[0m150.420612
+[90m06:12:54[0m DBG prover done [36macceleration=[0mrocm [36mbackend=[0mgroth16 [36mcurve=[0mbn254 [36mnbConstraints=[0m5676573 [36mtook=[0m8885.429683
++ WITNESS_FILE=/tmp/output.wtns
++ ulimit -s 16384
++ mkfifo /tmp/output.wtns
++ prover stark_verify.cs stark_verify_final.pk.dmp /tmp/output.wtns /mnt/proof.json
++ stark_verify /mnt/input.json /tmp/output.wtns
++ wait
++ rm /tmp/output.wtns
+✅ Receipt is valid!

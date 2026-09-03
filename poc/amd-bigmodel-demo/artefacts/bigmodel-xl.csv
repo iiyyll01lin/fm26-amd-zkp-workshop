@@ -1,0 +1,4 @@
+condition,ngl,weights_gb,peak_vram_gb,peak_gtt_gb,peak_gpu_gb,prefill_tps,gen_tps
+full_igpu,99,42.52,0.39,44.39,44.77,124.64,4.86
+cap_32gb,55,42.52,0.32,30.54,30.87,118.15,3.76
+cpu,0,42.52,0.31,2.09,2.40,111.61,2.55

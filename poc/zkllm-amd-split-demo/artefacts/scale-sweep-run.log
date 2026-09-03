@@ -1,0 +1,25 @@
+[sweep] python=<repo>/poc/zkllm-amd-split-demo/.venv/bin/python
+[sweep] iGPU forward: MIGraphX present (AI_GPU_BACKEND=rocm)
+================ config=head seq=8 ================
+[build] config=head seq=8 -> <repo>/poc/zkllm-amd-split-demo/artefacts/scale-work/head.onnx (opset 17)
+[build] wrote witness input <repo>/poc/zkllm-amd-split-demo/artefacts/scale-work/head.input.json (3072 values)
+[build] wrote reference output <repo>/poc/zkllm-amd-split-demo/artefacts/scale-work/head.ref.json shape=(8, 32)
+[build] OK config=head out_shape=(8, 32) first5=[0.022835, -0.02742, 0.020374, 0.031107, -0.007385]
+[sweep] head: calibrated logrows=16 (ceiling 24)
+[sweep] head: witness=1.685s prove=15.4s proof=545628B peak_rss=2.89GB
+[sweep] head: fwd_cpu=0.018ms fwd_igpu=0.122ms
+================ config=mha seq=8 ================
+[build] config=mha seq=8 -> <repo>/poc/zkllm-amd-split-demo/artefacts/scale-work/mha.onnx (opset 17)
+[build] wrote witness input <repo>/poc/zkllm-amd-split-demo/artefacts/scale-work/mha.input.json (3072 values)
+[build] wrote reference output <repo>/poc/zkllm-amd-split-demo/artefacts/scale-work/mha.ref.json shape=(8, 384)
+[build] OK config=mha out_shape=(8, 384) first5=[0.010217, 0.06707, -0.03225, -0.027815, 0.045699]
+[sweep] mha: calibrated logrows=21 (ceiling 24)
+[sweep] mha: witness=3.518s prove=110.538s proof=972292B peak_rss=81.99GB
+[sweep] mha: fwd_cpu=0.199ms fwd_igpu=0.207ms
+================ config=layer seq=8 ================
+[build] config=layer seq=8 -> <repo>/poc/zkllm-amd-split-demo/artefacts/scale-work/layer.onnx (opset 17)
+[build] wrote witness input <repo>/poc/zkllm-amd-split-demo/artefacts/scale-work/layer.input.json (3072 values)
+[build] wrote reference output <repo>/poc/zkllm-amd-split-demo/artefacts/scale-work/layer.ref.json shape=(8, 384)
+[build] OK config=layer out_shape=(8, 384) first5=[1.025185, 0.51825, 0.333968, -2.024962, 0.746231]
+[sweep] layer: calibrated logrows=22 (ceiling 24)
+[sweep] Demo-G committed artefacts verified unchanged.

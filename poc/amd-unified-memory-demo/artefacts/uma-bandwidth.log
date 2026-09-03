@@ -1,0 +1,27 @@
+######################################################################
+# APU unified-memory microbench (course module M2 backing)
+#   hardware : AMD Ryzen AI MAX+ PRO 395 / Radeon 8060S (gfx1151)
+#   hipcc    : 7.2.53211-c2d9476115
+#   arch     : gfx1151   cpu_threads: 32
+#   date     : 2026-06-18
+#   knobs    : UMA_N=16777216 REPS=50
+######################################################################
+[build] hipcc --offload-arch=gfx1151 -O3 src/uma_bench.hip.cpp -o build/uma_bench
+[run] executing unified-memory microbench on gfx1151 ...
+[uma] device=AMD Radeon Graphics N=16777216 (64.0 MiB) reps=50 | managed=1 concurrentManagedAccess=1 pageableAccess=0
+[uma] done
+[run] complete -> <repo>/poc/amd-unified-memory-demo/artefacts/uma-bandwidth.csv (solo=true loadavg=7.50)
+----- artefacts/uma-bandwidth.csv -----
+alloc_kind,bytes,op,reps,ms_per_iter,gbytes_s,note,device,verify,solo,loadavg
+hipMalloc,67108864,memcpy_h2d,50,1.7903,74.97,explicit-staging-copy,AMD Radeon Graphics,na,true,7.50
+hipMalloc,67108864,kernel_saxpy,50,0.9243,217.80,device-resident,AMD Radeon Graphics,na,true,7.50
+hipMalloc,67108864,memcpy_d2h,50,1.0604,63.29,explicit-staging-copy,AMD Radeon Graphics,na,true,7.50
+hipHostMalloc,67108864,kernel_saxpy,50,0.9617,209.35,zero-copy-no-staging,AMD Radeon Graphics,ok,true,7.50
+hipMallocManaged,67108864,kernel_saxpy_cold,1,1.6243,123.94,first-touch-migrate,AMD Radeon Graphics,na,true,7.50
+hipMallocManaged,67108864,kernel_saxpy_warm,50,0.9471,212.57,pages-resident,AMD Radeon Graphics,ok,true,7.50
+[md] wrote <repo>/poc/amd-unified-memory-demo/artefacts/uma-bandwidth.md
+[run-all] artefacts:
+total 12
+-rw-rw-r-- 1 <user> <user>  707 Jun 18 09:45 uma-bandwidth.csv
+-rw-rw-r-- 1 <user> <user> 1675 Jun 18 09:45 uma-bandwidth.log
+-rw-rw-r-- 1 <user> <user> 1465 Jun 18 09:45 uma-bandwidth.md

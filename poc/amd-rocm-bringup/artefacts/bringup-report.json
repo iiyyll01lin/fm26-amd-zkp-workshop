@@ -1,0 +1,30 @@
+{
+  "schema": "amd-rocm-bringup/1",
+  "generated_utc": "2026-06-18T02:22:19Z",
+  "host": "aup-HP-Z2-Mini-G1a-Workstation-Desktop-PC",
+  "kernel": "6.17.0-35-generic",
+  "gfx": "gfx1151",
+  "rocm": true,
+  "hipcc": "7.2.53211-c2d9476115",
+  "unified_ram_gb": 94,
+  "ttm_pages_limit": "12329039",
+  "ttm_pages_limit_gb": "47.0",
+  "amdgpu_gttsize_mib": "unknown",
+  "needs_hsa_override": false,
+  "ready": true,
+  "n_fail": 0,
+  "n_warn": 2,
+  "checks": [
+    {"name": "kernel", "status": "warn", "detail": "kernel 6.17.0-35-generic below the 6.18.4 recommended line", "hint": "upgrade to kernel >= 6.18.4 (the repo's Path E data was taken on 6.17 — works, but not recommended)"},
+    {"name": "hsa_override", "status": "ok", "detail": "HSA_OVERRIDE_GFX_VERSION=<unset> consistent with kernel 6.17.0-35-generic", "hint": ""},
+    {"name": "hsa_sdma", "status": "warn", "detail": "HSA_ENABLE_SDMA=<unset> — SDMA can intermittently hang on early Halo stacks", "hint": "export HSA_ENABLE_SDMA=0 for stability (harmless on the stable line too)"},
+    {"name": "firmware", "status": "ok", "detail": "linux-firmware 20240318.git3b128b60-0ubuntu2.27 (not the 20251125 trap build)", "hint": ""},
+    {"name": "device_nodes", "status": "ok", "detail": "/dev/kfd + /dev/dri/renderD* readable by <user>", "hint": ""},
+    {"name": "rocm", "status": "ok", "detail": "rocminfo enumerates gfx1151", "hint": ""},
+    {"name": "hipcc", "status": "ok", "detail": "hipcc 7.2.53211-c2d9476115", "hint": ""},
+    {"name": "rocm_libs", "status": "ok", "detail": "rocBLAS + hipBLASLt + rocFFT present under /opt/rocm*/lib", "hint": ""},
+    {"name": "ttm_gtt", "status": "ok", "detail": "ttm.pages_limit=12329039 (~47.0 GB), amdgpu.gttsize=unknown MiB, RAM=94 GB", "hint": "raise the GTT/TTM page limit to use the full 94 GB pool. Boot-time (persistent): add 'amdgpu.gttsize=-1 ttm.pages_limit=<N> ttm.page_pool_size=<N>' to the kernel cmdline (N = bytes/PAGE_SIZE for the GB you want, e.g. ~24641536 pages for 94 GB on 4K pages), update grub, reboot. Runtime check: cat /sys/module/ttm/parameters/pages_limit"},
+    {"name": "docker", "status": "ok", "detail": "docker present — mount ROCm with --device=/dev/kfd --device=/dev/dri --group-add video --group-add render", "hint": ""}
+  ],
+  "honesty": "iGPU/NPU accelerate AI models; iGPU OpenCL accelerates SNARK primitives (size-gated); RISC0 STARK is CPU-only on AMD. This probe reports bring-up readiness only and makes no proving claim."
+}

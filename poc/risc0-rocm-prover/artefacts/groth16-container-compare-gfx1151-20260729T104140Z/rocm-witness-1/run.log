@@ -1,0 +1,18 @@
+[risc0-groth16-stage] run_id=cmp-rocm-witness-1 mode=fifo stage=entrypoint event=start t_ns=957345802773182
+[risc0-groth16-stage] run_id=cmp-rocm-witness-1 mode=fifo stage=fifo event=create t_ns=957345804944886
+[risc0-groth16-stage] run_id=cmp-rocm-witness-1 mode=fifo stage=witness event=start t_ns=957345805607539
+[risc0-groth16-stage] run_id=cmp-rocm-witness-1 mode=fifo stage=prover event=start t_ns=957345806392050
+[90m10:43:08[0m DBG constraint system loaded [36mtook=[0m312.526631
+[90m10:43:09[0m DBG proving key loaded [36mtook=[0m552.390186
+[risc0-groth16-stage] run_id=cmp-rocm-witness-1 mode=fifo stage=fifo event=first_payload t_ns=957347369325162 wchar=1699840 threshold=65536
+[90m10:43:10[0m DBG WTNS header [36mnInputs=[0m5635930 [36mnWitnesses=[0m5635930
+[risc0-groth16-stage] run_id=cmp-rocm-witness-1 mode=fifo stage=witness event=finish t_ns=957347491794654 rc=0
+[90m10:43:10[0m DBG witness data loaded [36mtook=[0m975.248663
+[90m10:43:10[0m [32mINF[0m [1m[risc0-groth16-rocm] ACTIVE[0m [36macceleration=[0mrocm [36mbackend=[0mgroth16 [36mcompute_units=[0m20 [36mcurve=[0mbn254 [36mdevice=[0m"Radeon 8060S Graphics" [36mnbConstraints=[0m5676573
+[90m10:43:10[0m DBG constraint system solver done [36mnbConstraints=[0m5676573 [36mtook=[0m144.981219
+[90m10:43:19[0m DBG prover done [36macceleration=[0mrocm [36mbackend=[0mgroth16 [36mcurve=[0mbn254 [36mnbConstraints=[0m5676573 [36mtook=[0m8837.224342
+[risc0-groth16-stage] run_id=cmp-rocm-witness-1 mode=fifo stage=prover event=finish t_ns=957356881945007 rc=0
+[risc0-groth16-stage] run_id=cmp-rocm-witness-1 mode=fifo stage=wait event=finish t_ns=957356883692985 witness_rc=0 prover_rc=0
+[risc0-groth16-stage] run_id=cmp-rocm-witness-1 mode=fifo stage=artifact event=record t_ns=957356887384029 kind=proof bytes=721 sha256=ad167a16b9da0c7b9282631a6cb3b41f17ac6e79a26fcb3ad6e33b2757a11fac
+[risc0-groth16-stage] run_id=cmp-rocm-witness-1 mode=fifo stage=entrypoint event=finish t_ns=957356888470898 rc=0
+[risc0-groth16-stage] run_id=cmp-rocm-witness-1 mode=fifo stage=total event=finish t_ns=957356889486392 rc=0

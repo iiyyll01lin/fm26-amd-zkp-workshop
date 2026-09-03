@@ -1,0 +1,84 @@
+=== paired check-off re-bench, Demo C DeciderEth @2^24 (FOLD_N=2), OPENCL (gpu-msm) arm ===
+=== driver: single-instance flock'd bash driver, /tmp/opencl-rebench/driver.sh ===
+=== method: one session, one binary, both arms FOLD_GPU_MSM_CHECK=0, arms INTERLEAVED,
+===         3 reps each, median, solo re-verified before EVERY run via rocm-smi + 2 s /proc/stat delta ===
+
+=== OpenCL (gpu-msm) paired check-off re-bench  2026-08-29T10:20:47+08:00 ===
+binary: 2026-08-29 10:14:22.856996301 +0800  6007080 bytes
+host:   gfx1151 / 32 threads
+reps:   3 per arm, INTERLEAVED, FOLD_GPU_MSM_CHECK=0 on BOTH arms
+gate:   iGPU<=2%, foreign CPU<=10% (2 s /proc/stat delta) re-checked before EVERY run
+
+--- round 1 ---
+    [settle] before cpu r1: foreign cpu 0% after 0s
+    [guard] cpu r1: igpu_busy=0% foreign_cpu=0% loadavg=3.64 (decaying, informational)
+    cpu rep1: D::prove=60.847280001s  verify=OK  check=off  (wall 273s)
+    [settle] before gpu r1: foreign cpu 0% after 0s
+    [guard] gpu r1: igpu_busy=0% foreign_cpu=0% loadavg=12.16 (decaying, informational)
+    gpu rep1: D::prove=61.206103573s  verify=OK  check=off  (wall 275s)
+--- round 2 ---
+    [settle] before cpu r2: foreign cpu 0% after 0s
+    [guard] cpu r2: igpu_busy=0% foreign_cpu=0% loadavg=12.37 (decaying, informational)
+    cpu rep2: D::prove=60.55398743s  verify=OK  check=off  (wall 275s)
+    [settle] before gpu r2: foreign cpu 0% after 0s
+    [guard] gpu r2: igpu_busy=0% foreign_cpu=0% loadavg=11.46 (decaying, informational)
+    gpu rep2: D::prove=61.172272645s  verify=OK  check=off  (wall 274s)
+--- round 3 ---
+    [settle] before cpu r3: foreign cpu 0% after 0s
+    [guard] cpu r3: igpu_busy=0% foreign_cpu=0% loadavg=12.91 (decaying, informational)
+    cpu rep3: D::prove=61.114128185s  verify=OK  check=off  (wall 274s)
+    [settle] before gpu r3: foreign cpu 1% after 0s
+    [guard] gpu r3: igpu_busy=0% foreign_cpu=9% loadavg=15.15 (decaying, informational)
+    gpu rep3: D::prove=61.914490225s  verify=OK  check=off  (wall 277s)
+
+cpu reps: 60.847280001 60.55398743 61.114128185   median=60.847280001  spread=0.93%
+gpu reps: 61.206103573 61.172272645 61.914490225   median=61.206103573  spread=1.21%
+speedup (cpu_med/gpu_med) = 0.994x   [published demo-c-gpu.csv gpu row: 0.70x, n=1, solo=false]
+csv staged at /tmp/opencl-rebench/paired.csv
+=== DONE 2026-08-29T10:48:39+08:00  loadavg_end=14.08 ===
+
+=== per-run independent verification (re-parsed from each fold.log AFTER the run) ===
+arm      D::prove          verifyOK  checkLines  gpuCtx
+cpu-r1   60.847280001      1         0           0
+cpu-r2   60.55398743       1         0           0
+cpu-r3   61.114128185      1         0           0
+gpu-r1   61.206103573      1         0           1
+gpu-r2   61.172272645      1         0           1
+gpu-r3   61.914490225      1         0           1
+
+=== GPU context line (gpu arms only) ===
+[gpu-msm] BN254 GPU context -> gfx1151 (20 CUs, 48160 MiB)
+
+=== binary identity ===
+-rwxrwxr-x 1 <user> <user> 6007080 2026-08-29 10:14:22.856996301 +0800 /tmp/opencl-rebench/folding-step-demo
+	libOpenCL.so.1 => /lib/x86_64-linux-gnu/libOpenCL.so.1 (0x00007c53eac36000)
+HIP symbols: 0
+
+=== harness audit (verified from source this session) ===
+16:#   FOLD_GPU_MSM_CHECK=1  also gate every offloaded MSM vs the CPU MSM (slower).
+102:        FOLD_GPU_MSM_CHECK="${FOLD_GPU_MSM_CHECK:-0}" \
+  ^ OpenCL harness: default 0 (CONFIRMED)
+74:        FOLD_GPU_MSM_CHECK="${FOLD_GPU_MSM_CHECK:-1}" RAYON_NUM_THREADS="${RAYON_NUM_THREADS:-32}" \
+  ^ HIP harness: default 1
+CPU_RERUN in OpenCL harness: 0 occurrences (0 = does not exist)
+22:#   FOLD_SKIP_BASE=1      reuse the committed cpu / gpu rows from demo-c-gpu.csv
+36:FOLD_SKIP_BASE="${FOLD_SKIP_BASE:-0}"
+48:CPU_RUNS="${CPU_RUNS:-3}"   # CPU baseline samples (median taken; the 173.8s single
+
+=== full sample log, gpu rep1 ===
+[fold] N=2 chained steps (schema v1), genesis_pre=0xde22660f0b61cae6.. final_post=0x71b586fe83b44c8d..
+[fold] sha256(pre||mcycle_be32||post) journal relation (byte-identical to StepVerifier.verifyStep = sha256(abi.encode(pre,mcycle,post)))
+[fold] preprocessing Nova params...
+[fold] preprocessing DeciderEth (Groth16+KZG) params...
+[fold] Nova::prove_step 0: 293.652989ms
+[fold] Nova::prove_step 1: 307.700687ms
+[fold] generating DeciderEth (Groth16/BN254) proof...
+[gpu-msm] BN254 GPU context -> gfx1151 (20 CUs, 48160 MiB)
+[fold] decider proof generated in 61.206103573s
+[fold] DeciderEth native verification: OK
+[fold] wrote:
+         /tmp/opencl-rebench/gpu-r1/NovaDecider.sol
+         /tmp/opencl-rebench/gpu-r1/folded.proof.json
+         /tmp/opencl-rebench/gpu-r1/folded.public.json
+         /tmp/opencl-rebench/gpu-r1/folded.calldata.hex
+[fold] DONE — N=2 steps folded -> 1 Groth16 proof -> NovaDecider.sol

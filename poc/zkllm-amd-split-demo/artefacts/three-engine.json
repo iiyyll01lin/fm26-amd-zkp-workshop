@@ -1,0 +1,324 @@
+{
+  "schema_version": 1,
+  "title": "Three-engine zkLLM panorama \u2014 Strix Halo NPU + CPU + iGPU (capability map)",
+  "kind": "capability-map",
+  "claim": "a capability MAP of each engine's measured best contribution to a verifiable-inference pipeline \u2014 NOT one monolithic proof flowing through all three engines.",
+  "representative_workload": {
+    "model": "MiniLM",
+    "d_model": 384,
+    "seq_len": 256,
+    "note": "anchors the panorama: matches the NPU mha_qkv_proj_d384_t256 row and the ai-inference b1\u00b7s256 rows."
+  },
+  "host": {
+    "cpu_model": "AMD RYZEN AI MAX+ PRO 395 w/ Radeon 8060S",
+    "threads": 32,
+    "ram_gb": 94,
+    "kernel": "6.17.0-35-generic"
+  },
+  "generated_from": "committed artefacts only (no engine re-run on this host)",
+  "sources": {
+    "npu_forward": "poc/risc0-cartesi-step-demo/artefacts/npu-dispatch.json",
+    "igpu_cpu_forward": "poc/amd-ai-inference-demo/artefacts/ai-inference.csv",
+    "cpu_proof": "poc/zkllm-amd-split-demo/artefacts/scale-sweep.csv",
+    "igpu_proof_msm": "poc/amd-gpu-zk-primitive-demo/artefacts/zkllm-msm.csv"
+  },
+  "stages": [
+    {
+      "stage": 1,
+      "name": "Model forward \u2014 XDNA2 NPU int8 GEMM",
+      "engine": "AMD XDNA2 NPU (int8 GEMM via the proven whole_array harness)",
+      "role": "attention prefill / projection matmuls of the model forward",
+      "headline_number": {
+        "peak_gflops": 608.851,
+        "min_us": 124,
+        "label": "mha_qkv_proj_d384_t256"
+      },
+      "npu_int8": {
+        "label": "mha_qkv_proj_d384_t256",
+        "role": "X.Wq/k/v & attn-out projection (MiniLM d_model=384), T=256 tokens",
+        "shape": {
+          "M": 256,
+          "K": 384,
+          "N": 384
+        },
+        "kind": "real",
+        "peak_gflops": 608.851,
+        "avg_gflops": 278.321,
+        "min_us": 124,
+        "result": "PASS",
+        "precision": "int8 (compute-only GEMM, model forward never the proof)"
+      },
+      "cross_engine_forward": {
+        "note": "NOT directly comparable to the NPU figure: NPU is compute-only int8 GEMM (GFLOPs on one matmul shape), iGPU/CPU are fp32 FULL forward latency (ms). iGPU-vs-CPU is the only apples-to-apples speedup here.",
+        "workload": {
+          "batch": 1,
+          "seq_len": 256,
+          "precision": "fp32"
+        },
+        "igpu": {
+          "fwd_ms": 1.753,
+          "tokens_per_s": 145998.6,
+          "device": "gfx1151"
+        },
+        "cpu": {
+          "fwd_ms": 6.932,
+          "tokens_per_s": 36931.0,
+          "device": "cpu-zen5"
+        },
+        "igpu_vs_cpu_speedup": 3.954
+      },
+      "utilization": {
+        "npu_rep_peak_gflops": 608.851,
+        "npu_best_observed_gflops": 1491.31,
+        "npu_advertised_int8_tops": 50,
+        "pct_of_advertised_ceiling_min": 1.22,
+        "pct_of_advertised_ceiling_max": 2.98,
+        "note": "the generic whole_array harness reaches only ~1-3% of the advertised XDNA2 int8 ceiling (no bespoke MLIR kernel); peak (min-latency) is the representative figure, avg is depressed under concurrent CPU load."
+      },
+      "honesty": "NPU accelerates the model FORWARD only (int8 attention/MiniLM matmuls), NEVER the proof. The peak GFLOPs figure is compute-only on a single GEMM shape and is NOT comparable to the iGPU/CPU fp32 full-forward latency. The harness runs at ~1.22-2.98% of the advertised XDNA2 int8 ceiling (generic, no bespoke kernel). The clean iGPU forward win over the CPU is fp32 and SIZE-GATED (here 3.954x at b1\u00b7s256)."
+    },
+    {
+      "stage": 2,
+      "name": "Proof \u2014 Zen5 CPU + 94 GB unified memory, EZKL Halo2",
+      "engine": "AMD Ryzen AI MAX+ 395 (16c/32t) + 94 GB unified memory",
+      "proof_system": "EZKL Halo2 / KZG over BN254 (the SHIPPING proof)",
+      "role": "the actual zero-knowledge proof of the attention block",
+      "representative": {
+        "config": "mha",
+        "seq": 8,
+        "d_model": 384,
+        "n_heads": 12,
+        "n_layers": 0,
+        "logrows": 21,
+        "witness_s": 3.518,
+        "prove_s": 110.538,
+        "proof_bytes": 972292,
+        "peak_rss_gb": 81.99,
+        "fwd_ms_cpu": 0.199,
+        "fwd_ms_igpu": 0.207,
+        "status": "ok"
+      },
+      "headline_number": {
+        "config": "mha",
+        "prove_s": 110.538,
+        "peak_rss_gb": 81.99,
+        "logrows": 21
+      },
+      "scale_curve": [
+        {
+          "config": "head",
+          "seq": 8,
+          "d_model": 384,
+          "n_heads": 1,
+          "n_layers": 0,
+          "logrows": 16,
+          "witness_s": 1.685,
+          "prove_s": 15.4,
+          "proof_bytes": 545628,
+          "peak_rss_gb": 2.89,
+          "fwd_ms_cpu": 0.018,
+          "fwd_ms_igpu": 0.122,
+          "status": "ok"
+        },
+        {
+          "config": "mha",
+          "seq": 8,
+          "d_model": 384,
+          "n_heads": 12,
+          "n_layers": 0,
+          "logrows": 21,
+          "witness_s": 3.518,
+          "prove_s": 110.538,
+          "proof_bytes": 972292,
+          "peak_rss_gb": 81.99,
+          "fwd_ms_cpu": 0.199,
+          "fwd_ms_igpu": 0.207,
+          "status": "ok"
+        },
+        {
+          "config": "layer",
+          "seq": 8,
+          "d_model": 384,
+          "n_heads": 12,
+          "n_layers": 1,
+          "logrows": 22,
+          "witness_s": null,
+          "prove_s": null,
+          "proof_bytes": null,
+          "peak_rss_gb": null,
+          "fwd_ms_cpu": null,
+          "fwd_ms_igpu": null,
+          "status": "capped"
+        }
+      ],
+      "memory_ceiling_gb": 94,
+      "cap": {
+        "config": "layer",
+        "logrows": 22,
+        "status": "capped",
+        "note": "the full layer (n_layers=1, logrows=22) exceeds the 94 GB unified-memory ceiling and does not complete on this box."
+      },
+      "honesty": "This is the ONLY proof that actually ships \u2014 EZKL Halo2/KZG over BN254, CPU-ONLY on AMD. The Strix Halo win is 32 threads + 94 GB unified memory pushing the proof from a single head (logrows 16, ~2.9 GB) to the full 12-head MHA (logrows 21, ~82 GB) before the full transformer layer caps at the 94 GB ceiling. The iGPU/NPU NEVER touch this proof."
+    },
+    {
+      "stage": 3,
+      "name": "Proof MSM offload \u2014 RDNA iGPU OpenCL Groth16 (RE-CAST)",
+      "engine": "AMD Radeon 8060S iGPU (gfx1151) \u2014 ec-gpu OpenCL",
+      "proof_system": "bellperson Groth16 over BLS12-381 (RE-CAST of the attention matmuls Q,K,V/S=Q\u00b7K\u1d40/Y=A\u00b7V; softmax excluded as a lookup job)",
+      "role": "demonstrates the iGPU CAN accelerate a proof's MSM \u2014 but a different prover/curve than the shipping Stage-2 EZKL proof",
+      "representative": {
+        "config": "s8_dm384_dh32_h1",
+        "seq": 8,
+        "d_model": 384,
+        "d_head": 32,
+        "n_heads": 1,
+        "constraints": 340096,
+        "constraints_pow": 19,
+        "gpu_prove_ms": 1966.0,
+        "cpu_prove_ms": 2833.3,
+        "prove_speedup": 1.441,
+        "verify_ok": true,
+        "bn254_msm_speedup": 0.843,
+        "fft_speedup": 1.94,
+        "gpu_device": "gfx1151",
+        "solo": false,
+        "status": "ok"
+      },
+      "solo_verified": false,
+      "integrity_report": "docs/INTEGRITY-REPORT.md",
+      "durable_claims": [
+        "GPU proof is bit-for-bit equal to the CPU proof (verify_ok=true; every offloaded MSM/NTT primitive is recomputed on the CPU and asserted GPU==CPU before timing) \u2014 a CORRECTNESS result, independent of any speed verdict.",
+        "The iGPU FFT/NTT primitive is the only place the iGPU plausibly helps a KZG/Groth16 prover at all (matching-size attribution proxy; ~2.6-5.2x solo on gpu-primitive.csv) \u2014 and even that needs a solo-guarded number to be quoted as a speed win."
+      ],
+      "headline_number": {
+        "config": "s8_dm384_dh32_h1",
+        "prove_speedup": 1.441,
+        "solo": false,
+        "note": "NOT a solo-verified number: the end-to-end prove_speedup is the SAME contention-prone metric the Demo C integrity track REFUTED (docs/INTEGRITY-REPORT.md \u2014 the published 1.34x/1.64x iGPU folding headline was REFUTED on a fair solo baseline; its 2026-06-16 replacement 0.70x/0.74x was itself published as a LOWER BOUND, and the 2026-08-29 PAIRED re-bench narrowed the OpenCL G1-only arm to 0.994x = PARITY, while gpu-wide 0.74x was NEVER re-measured and stays a floor), so this iGPU re-cast prove_speedup is likely contention-inflated too and is NOT claimed as an end-to-end iGPU proof win. The durable, contention-proof claims are bit-for-bit GPU==CPU correctness and the iGPU NTT primitive (attribution proxy)."
+      },
+      "crossover": [
+        {
+          "config": "s8_dm96_dh16_h1",
+          "seq": 8,
+          "d_model": 96,
+          "d_head": 16,
+          "n_heads": 1,
+          "constraints": 44928,
+          "constraints_pow": 16,
+          "gpu_prove_ms": 370.2,
+          "cpu_prove_ms": 476.3,
+          "prove_speedup": 1.287,
+          "verify_ok": true,
+          "bn254_msm_speedup": 0.727,
+          "fft_speedup": 6.951,
+          "gpu_device": "gfx1151",
+          "solo": false,
+          "status": "ok"
+        },
+        {
+          "config": "s8_dm384_dh32_h1",
+          "seq": 8,
+          "d_model": 384,
+          "d_head": 32,
+          "n_heads": 1,
+          "constraints": 340096,
+          "constraints_pow": 19,
+          "gpu_prove_ms": 1966.0,
+          "cpu_prove_ms": 2833.3,
+          "prove_speedup": 1.441,
+          "verify_ok": true,
+          "bn254_msm_speedup": 0.843,
+          "fft_speedup": 1.94,
+          "gpu_device": "gfx1151",
+          "solo": false,
+          "status": "ok"
+        },
+        {
+          "config": "s8_dm384_dh32_h12",
+          "seq": 8,
+          "d_model": 384,
+          "d_head": 32,
+          "n_heads": 12,
+          "constraints": 4047360,
+          "constraints_pow": 22,
+          "gpu_prove_ms": 14503.2,
+          "cpu_prove_ms": 16244.6,
+          "prove_speedup": 1.12,
+          "verify_ok": true,
+          "bn254_msm_speedup": 1.174,
+          "fft_speedup": 2.666,
+          "gpu_device": "gfx1151",
+          "solo": false,
+          "status": "ok"
+        },
+        {
+          "config": "s16_dm384_dh32_h12",
+          "seq": 16,
+          "d_model": 384,
+          "d_head": 32,
+          "n_heads": 12,
+          "constraints": 7753728,
+          "constraints_pow": 23,
+          "gpu_prove_ms": 22358.8,
+          "cpu_prove_ms": 30300.1,
+          "prove_speedup": 1.355,
+          "verify_ok": true,
+          "bn254_msm_speedup": 1.362,
+          "fft_speedup": 2.673,
+          "gpu_device": "gfx1151",
+          "solo": false,
+          "status": "ok"
+        },
+        {
+          "config": "s32_dm384_dh32_h12",
+          "seq": 32,
+          "d_model": 384,
+          "d_head": 32,
+          "n_heads": 12,
+          "constraints": 15470592,
+          "constraints_pow": 24,
+          "gpu_prove_ms": 40528.8,
+          "cpu_prove_ms": 57208.5,
+          "prove_speedup": 1.412,
+          "verify_ok": true,
+          "bn254_msm_speedup": 1.422,
+          "fft_speedup": 2.362,
+          "gpu_device": "gfx1151",
+          "solo": false,
+          "status": "ok"
+        }
+      ],
+      "fft_attribution": {
+        "proxy": "BN254 Fr NTT at log_n=ceil_log2(m) (matching-size attribution proxy, same basis as the bn254 MSM column) \u2014 NOT the BLS12-381 prover's internal FFT",
+        "fft_speedup_min": 1.94,
+        "fft_speedup_max": 6.951,
+        "bn254_msm_speedup_min": 0.727,
+        "bn254_msm_speedup_max": 1.422,
+        "note": "the iGPU FFT/NTT (~2.6-5.2x solo) outpaces the iGPU MSM by a wide margin: the clean-solo BN254 G1 MSM is 0.654-1.091x (below parity until ~2^22; the old ~1.1-1.35x solo figure was contention-inflated and is retired), so the NTT -- not the MSM -- is where the iGPU helps the proof most. The live end-to-end win is the prove_speedup column."
+      },
+      "cap": null,
+      "best": {
+        "config": "s32_dm384_dh32_h12",
+        "constraints_pow": 24,
+        "prove_speedup": 1.412
+      },
+      "prove_speedup_min": 1.12,
+      "prove_speedup_max": 1.441,
+      "crossover_pow": 24,
+      "blocker": "EZKL-GPU-BLOCKED-ON-AMD",
+      "honesty": "This is a RE-CAST, not the shipping proof: EZKL itself CANNOT dispatch to the iGPU (it wires only CUDA/icicle + Apple Metal \u2014 blocker EZKL-GPU-BLOCKED-ON-AMD), so to put the iGPU on a proof at all the attention matmuls are re-cast into a bellperson Groth16 circuit over BLS12-381 (DIFFERENT prover and DIFFERENT curve from the Stage-2 Halo2/BN254 proof; softmax is excluded as a lookup job). The circuit is now MULTI-HEAD (a real 12-head MiniLM layer, one CRS). INTEGRITY RECONCILE (docs/INTEGRITY-REPORT.md): the end-to-end prove_speedup (1.120x -> 1.441x) is the SAME contention-prone metric the integrity track REFUTED for Demo C \u2014 there the published 1.34x/1.64x iGPU folding headline was REFUTED once the CPU baseline was measured on a fair, contention-guarded solo window; the 2026-06-16 replacement (0.70x/0.74x) was self-labelled a LOWER BOUND, and the 2026-08-29 PAIRED re-bench (interleaved arms, n=3 each, both arms check-off) lands the OpenCL G1-only arm at 0.994x = PARITY (never 'a win', never '0.6% slower'), with gpu-wide's 0.74x NEVER re-measured and therefore a floor. Parity is not acceleration. This re-cast prove runs on the same shared-LPDDR5X iGPU, was NOT taken under the solo guard (solo_verified=false), and is therefore likely inflated the same way; it is NOT claimed as an end-to-end iGPU proof speed win. The DURABLE, contention-proof claims are: (a) the GPU proof is bit-for-bit equal to the CPU proof (verify_ok=true; every offloaded MSM/NTT primitive is recomputed on the CPU and asserted GPU==CPU before timing) \u2014 a correctness result; and (b) the iGPU FFT/NTT primitive is the only place the iGPU plausibly helps a KZG/Groth16 prover (matching-size attribution proxy, ~2.6-5.2x solo) \u2014 and even that needs a solo-guarded number to quote as a speed win. The iGPU never touches EZKL Halo2."
+    }
+  ],
+  "honesty": "CAPABILITY MAP, not one monolithic proof. (1) NPU int8 GEMM and iGPU/CPU fp32 forward accelerate the MODEL, never the proof; the NPU figure is compute-only and not comparable to the fp32 full-forward latency, and runs at ~1-3% of its advertised int8 ceiling. (2) The SHIPPING proof is EZKL Halo2/KZG over BN254, CPU-only \u2014 and the TRUE Strix Halo proving enabler is 32 threads + 94 GB unified memory (the 12-head MHA proves at ~82 GB; the full transformer layer caps at the 94 GB ceiling). (3) The iGPU touches a proof ONLY as a RE-CAST MULTI-HEAD bellperson/OpenCL Groth16 over BLS12-381 of the attention matmuls (different prover + curve; EZKL cannot dispatch to the iGPU \u2014 blocker EZKL-GPU-BLOCKED-ON-AMD). INTEGRITY RECONCILE (docs/INTEGRITY-REPORT.md): the iGPU re-cast end-to-end prove_speedup is the SAME contention-prone metric the integrity track refuted for Demo C (the 1.34x/1.64x iGPU folding headline was REFUTED under a fair solo baseline; its 0.70x/0.74x replacement was a self-labelled lower bound, and the paired re-bench puts the OpenCL G1-only arm at 0.994x = PARITY while gpu-wide's 0.74x was never re-measured and is a floor -- parity is not acceleration), was NOT taken under the solo guard, and is therefore NOT claimed as an end-to-end iGPU proof speed win. The iGPU's durable proof contribution is the bit-for-bit GPU==CPU correctness of the re-cast proof plus the iGPU NTT primitive (matching-size attribution proxy) \u2014 NOT a speed win. Repo rule intact: the only iGPU-on-proof is the re-cast OpenCL MSM, NEVER EZKL Halo2.",
+  "honesty_boundary": [
+    "Capability map of measured best contributions, not one proof end-to-end.",
+    "Stage 2 = EZKL Halo2/KZG over BN254 on the CPU (the shipping proof); the real proving enabler is the CPU + 94 GB unified memory.",
+    "Stage 3 = RE-CAST bellperson/OpenCL Groth16 over BLS12-381 (different prover + curve; softmax excluded); EZKL cannot dispatch to the iGPU.",
+    "Stage 3 prove_speedup is NOT solo-verified: it is the same contention-prone metric Demo C's integrity track refuted (docs/INTEGRITY-REPORT.md), so it is NOT an end-to-end iGPU proof speed win.",
+    "The iGPU's durable proof contribution = bit-for-bit GPU==CPU correctness + the iGPU NTT primitive (attribution proxy), NOT an end-to-end speedup.",
+    "Cross-precision: NPU int8 (compute-only GEMM) vs iGPU fp32 full forward vs CPU.",
+    "NPU runs at ~1-3% of its advertised int8 ceiling (generic harness).",
+    "The forward iGPU win is SIZE-GATED; the iGPU proof speedup is contention-prone (unverified).",
+    "Repo honesty rule intact: iGPU/NPU accelerate the forward; the only iGPU-on-proof is the re-cast OpenCL MSM (Stage 3), never EZKL."
+  ]
+}

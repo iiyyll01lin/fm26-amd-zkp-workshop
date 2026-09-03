@@ -1,0 +1,15 @@
+# Attendee workshop repo — keep this list short on purpose.
+#
+# NOTE: do NOT add `*.key` here. The upstream repo ignores it globally and
+# force-adds the exception, but this repo genuinely needs
+# poc/ezkl-embedding-demo/artefacts/vk.key committed: nb01's replay branch
+# reads it to print PROOF VERIFIED. If your global gitignore drops it,
+# `git add -f` that one path. Upstream force-adds a second vk.key under
+# poc/zkml-faithful-demo/zkllm/artefacts/ that this export pruned.
+
+__pycache__/
+*.py[cod]
+.ipynb_checkpoints/
+.venv/
+venv/
+.DS_Store

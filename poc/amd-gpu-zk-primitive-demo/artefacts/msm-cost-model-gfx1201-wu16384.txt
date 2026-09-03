@@ -1,0 +1,24 @@
+n 4194304, work_units 16384
+accumulation 1.596 ns per mixed add
+reduction    3.201 ms per 1e6 buckets
+  w     pred     meas     err   accum  reduce
+  8   227.55   226.14   0.62%   94.1%    5.9%
+  9   220.85   223.08  -1.00%   87.9%   12.1%
+ 10   227.65   226.89   0.34%   76.4%   23.6%
+
+arithmetic floor per mixed add 0.946 ns
+accumulation efficiency 59.3%, headroom 1.69x
+
+Companion to msm-cost-model-gfx1201.txt, which fitted the same kernel at
+work_units=10240 and reported 44.1% / 2.27x. Same code, same card, same n, same
+three windows; only the work-unit count differs. The earlier figure is a property
+of an under-occupied configuration, not of the kernel, and 59.3% is the one that
+describes a production-shaped run.
+
+Reproduce:
+  scripts/fit-msm-cost-model.py --work-units 16384 \
+      8=226.14497 9=223.07744 10=226.89108
+
+Measured 2026-08-07 on 0000:23:00.0, all four cards idle, card isolated through
+gpu-select.sh. Every window passed the GPU MSM == arkworks bit-for-bit gate
+before it was timed; the min over 10 reps is recorded.

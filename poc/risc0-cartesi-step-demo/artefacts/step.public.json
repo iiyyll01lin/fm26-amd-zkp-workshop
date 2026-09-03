@@ -1,0 +1,12 @@
+{
+  "mode": "full-rootfs",
+  "image_id": "3aec8c717d9b47f9b617c1695955d75e2bb525085283c1076591f97ae643c990",
+  "pre_root":  "0xc9067ff04efcf6e968a1f66716db8a446327850919064c4feb2d0beb35a5f800",
+  "post_root": "0x67ad4ca97cc3de2f5eda3f74a01865c301e51a5bf919a0beb4281c6ad2525eed",
+  "mcycle":    100,
+  "real_stark": true,
+  "dev_receipt": false,
+  "receipt_bytes": 1112064,
+  "rayon_threads": "32",
+  "note": "Real r0vm STARK seal (no RISC0_DEV_MODE) — cryptographically sound proof of the Cartesi mcycle step transition."
+}

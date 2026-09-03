@@ -1,0 +1,62 @@
+[
+    {
+        "Id": "sha256:5196774f1312a68a5766d5e6df83485175269bf3ebe848c2d77068e3e9d5a8b4",
+        "RepoTags": [
+            "risc0-groth16-prover:rocm-witgen-o0"
+        ],
+        "RepoDigests": [
+            "risc0-groth16-prover@sha256:5196774f1312a68a5766d5e6df83485175269bf3ebe848c2d77068e3e9d5a8b4"
+        ],
+        "Comment": "buildkit.dockerfile.v0",
+        "Created": "2026-07-27T21:06:27.058294688+08:00",
+        "Config": {
+            "Env": [
+                "PATH=/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin",
+                "LD_LIBRARY_PATH=/opt/risc0-rocm/lib:/opt/rocm/lib",
+                "RISC0_GROTH16_ACCELERATOR=rocm",
+                "RISC0_GROTH16_ROCM_LIB=/opt/risc0-rocm/lib/libzkp_hip.so"
+            ],
+            "Entrypoint": [
+                "/app/prover.sh"
+            ],
+            "WorkingDir": "/app",
+            "Labels": {
+                "maintainer": "dl.mlsedevops@amd.com",
+                "org.opencontainers.image.version": "24.04",
+                "org.risczero.rocm.devices": "/dev/kfd,/dev/dri"
+            }
+        },
+        "Architecture": "amd64",
+        "Os": "linux",
+        "Size": 9770789463,
+        "RootFS": {
+            "Type": "layers",
+            "Layers": [
+                "sha256:538812a4b9bd45adaac2b5e5b967daa6999aa44eb110aa32ae7c69702b906475",
+                "sha256:30f663511be63b788c06cd874c494ee7d52ddcfd9cd5ceb593a1b63399cd9010",
+                "sha256:1ba0c5097bf392a384f2f4da499885c17cb76cce9960ba9efb0649310183b81f",
+                "sha256:c78d195c724af5d951045272b0fcaf43148ef878550c7ff02112c2867e1b812f",
+                "sha256:9649e40c27bd403cf87bd1250dff669b583e477fee4b780bf063ead2e57a2678",
+                "sha256:270a0d6e402f21a3fd46eb73ca79af042b7dd8523cbdecbd338d2a9d14492f5e",
+                "sha256:467da26ea345cbd1b91adf93beec055f2d347211170495f6c6f8a31f9e0d3aeb",
+                "sha256:839df6c449026156203f88ff94b80a9b1bbc94d1e354770980c09eb871204a6e",
+                "sha256:39e7733abbe03bf04b88854c630a45cca6b4b71f9a300f7ce469012bbabec096",
+                "sha256:94e8c1e6faea592e180eec0c956f4ec8179a7c381fc1818f11b6d939cea3a2c4",
+                "sha256:0d342044878e3ef58aa5cd2f33247f42ff72723792724dc7a574936587536d64",
+                "sha256:bd155243e747b2d19174973fa4b9fc29f2977fc66f9806b971284d7533cb3e4b",
+                "sha256:8258fbc176b962069073ede58cef10458cfb48ff9e1e543c2931df55fc2d467d",
+                "sha256:0bb4f2b9137cb5bec6e3aad461661f88e9e627c51c4564eadbe753579102d85c",
+                "sha256:f3dfcc82ddbb2d9a8b1c66cd51a19d5706a75bb7bf21f3285c344d6658ff6365",
+                "sha256:5f70bf18a086007016e948b04aed3b82103a36bea41755b6cddfaf10ace3c6ef"
+            ]
+        },
+        "Metadata": {
+            "LastTagTime": "2026-07-27T13:06:29.032478894Z"
+        },
+        "Descriptor": {
+            "mediaType": "application/vnd.oci.image.index.v1+json",
+            "digest": "sha256:5196774f1312a68a5766d5e6df83485175269bf3ebe848c2d77068e3e9d5a8b4",
+            "size": 856
+        }
+    }
+]

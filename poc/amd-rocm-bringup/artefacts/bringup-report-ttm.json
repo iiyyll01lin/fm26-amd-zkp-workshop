@@ -1,0 +1,33 @@
+{
+  "schema": "amd-rocm-bringup/1",
+  "generated_utc": "2026-07-18T19:10:39Z",
+  "host": "aup-HP-Z2-Mini-G1a-Workstation-Desktop-PC",
+  "kernel": "6.17.0-29-generic",
+  "gfx": "gfx1151",
+  "rocm": true,
+  "hipcc": "7.2.53211-c2d9476115",
+  "unified_ram_gb": 94,
+  "ttm_pages_limit": "15728640",
+  "ttm_pages_limit_gb": "60.0",
+  "ttm_page_pool_size": "12329420",
+  "ttm_page_pool_size_gb": "47.0",
+  "ttm_effective_pool_gb": "47.0",
+  "amdgpu_gttsize_mib": "unknown",
+  "needs_hsa_override": false,
+  "ready": true,
+  "n_fail": 0,
+  "n_warn": 3,
+  "checks": [
+    {"name": "kernel", "status": "warn", "detail": "kernel 6.17.0-29-generic below the 6.18.4 recommended line", "hint": "upgrade to kernel >= 6.18.4 (the repo's Path E data was taken on 6.17 — works, but not recommended)"},
+    {"name": "hsa_override", "status": "ok", "detail": "HSA_OVERRIDE_GFX_VERSION=<unset> consistent with kernel 6.17.0-29-generic", "hint": ""},
+    {"name": "hsa_sdma", "status": "warn", "detail": "HSA_ENABLE_SDMA=<unset> — SDMA can intermittently hang on early Halo stacks", "hint": "export HSA_ENABLE_SDMA=0 for stability (harmless on the stable line too)"},
+    {"name": "firmware", "status": "ok", "detail": "linux-firmware 20240318.git3b128b60-0ubuntu2.27 (not the 20251125 trap build)", "hint": ""},
+    {"name": "device_nodes", "status": "ok", "detail": "/dev/kfd + /dev/dri/renderD* readable by <user>", "hint": ""},
+    {"name": "rocm", "status": "ok", "detail": "rocminfo enumerates gfx1151", "hint": ""},
+    {"name": "hipcc", "status": "ok", "detail": "hipcc 7.2.53211-c2d9476115", "hint": ""},
+    {"name": "rocm_libs", "status": "ok", "detail": "rocBLAS + hipBLASLt + rocFFT present under /opt/rocm*/lib", "hint": ""},
+    {"name": "ttm_gtt", "status": "warn", "detail": "ttm.pages_limit=15728640 (~60.0 GiB), ttm.page_pool_size=12329420 (~47.0 GiB), effective pool ~47.0 GiB, amdgpu.gttsize=unknown MiB, RAM=94 GB", "hint": "PARTIAL RAISE: ttm.pages_limit is ~60.0 GiB but ttm.page_pool_size is only ~47.0 GiB, so the ROCr/HIP pool (and every full-offload model) is still capped at ~47.0 GiB — a model larger than that 'fails to load'. Raise page_pool_size TOO: persist via poc/amd-rocm-bringup/config/ (kernel cmdline 'amdgpu.gttsize=-1 ttm.pages_limit=24641536 ttm.page_pool_size=24641536' or /etc/modprobe.d), update-grub/initramfs, reboot; then re-check. See poc/amd-rocm-bringup/TTM-RUNBOOK.md."},
+    {"name": "docker", "status": "ok", "detail": "docker present — mount ROCm with --device=/dev/kfd --device=/dev/dri --group-add video --group-add render", "hint": ""}
+  ],
+  "honesty": "iGPU/NPU accelerate AI models; iGPU OpenCL accelerates SNARK primitives (size-gated); RISC0 STARK is CPU-only on AMD. This probe reports bring-up readiness only and makes no proving claim."
+}

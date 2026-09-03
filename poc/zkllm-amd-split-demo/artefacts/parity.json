@@ -1,0 +1,33 @@
+{
+  "unit": "head \u2014 proven attention.onnx (seq=8, d_model=384, d_head=32, softmax inside)",
+  "n_values": 256,
+  "output_scale": 11,
+  "quant_step": 0.00048828125,
+  "tolerance_abs": 0.0078125,
+  "igpu_captured": true,
+  "cpu_captured": true,
+  "igpu_vs_circuit_max_abs": 0.0006009489297866821,
+  "cpu_vs_circuit_max_abs": 0.000600963830947876,
+  "within_tolerance": true,
+  "errors": {
+    "igpu_vs_circuit": {
+      "max_abs": 0.0006009489297866821,
+      "mean_abs": 0.00015824253885199369
+    },
+    "cpu_vs_circuit": {
+      "max_abs": 0.000600963830947876,
+      "mean_abs": 0.00015824342745673903
+    },
+    "torch_vs_circuit": {
+      "max_abs": 0.0006009787321090698,
+      "mean_abs": 0.00015824402063913112
+    },
+    "igpu_vs_cpu": {
+      "max_abs": 4.470348358154297e-08,
+      "mean_abs": 9.990145599658717e-09
+    }
+  },
+  "circuit_vs_torch_rel": 0.0052141959396603335,
+  "statement": "The iGPU/CPU forward output and the EZKL Halo2 public output agree within the circuit's fixed-point quantisation tolerance (output scale 2^11, step 4.883e-04); the proof therefore attests the SAME attn_out the engines computed from the committed weights. Exact equality is impossible \u2014 the proof is fixed-point, the forward is fp32 \u2014 so parity is asserted within tolerance, the strongest claim a quantised SNARK supports.",
+  "captured": "live"
+}

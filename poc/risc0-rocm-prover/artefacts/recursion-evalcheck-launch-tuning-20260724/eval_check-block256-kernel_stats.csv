@@ -1,0 +1,3 @@
+"Name","Calls","TotalDurationNs","AverageNs","Percentage","MinNs","MaxNs","StdDev"
+"risc0::circuit::recursion::eval_check(Fp*, Fp const*, Fp const*, Fp const*, Fp const*, Fp const*, Fp, unsigned int, unsigned int)",1,1215411,1215411.000000,99.09,1215411,1215411,0.00000000e+00
+"__amd_rocclr_copyBuffer",1,11141,11141.000000,0.9083,11141,11141,0.00000000e+00

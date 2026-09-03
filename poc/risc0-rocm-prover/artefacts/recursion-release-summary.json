@@ -1,0 +1,129 @@
+{
+  "benchmark_rows": [
+    {
+      "backend": "rocm",
+      "gpu_markers_min": "1",
+      "max_ms": "770.083",
+      "median_ms": "762.817",
+      "min_ms": "747.997",
+      "peak_rss_median_mb": "1611.207",
+      "reps": "3",
+      "solo": "True",
+      "stage": "lift"
+    },
+    {
+      "backend": "rocm",
+      "gpu_markers_min": "1",
+      "max_ms": "1006.958",
+      "median_ms": "1001.862",
+      "min_ms": "928.205",
+      "peak_rss_median_mb": "1718.723",
+      "reps": "3",
+      "solo": "True",
+      "stage": "join"
+    },
+    {
+      "backend": "rocm",
+      "gpu_markers_min": "1",
+      "max_ms": "3365.05",
+      "median_ms": "3349.863",
+      "min_ms": "3340.246",
+      "peak_rss_median_mb": "2537.82",
+      "reps": "3",
+      "solo": "True",
+      "stage": "succinct"
+    },
+    {
+      "backend": "cpu-generic",
+      "gpu_markers_min": "0",
+      "max_ms": "3959.559",
+      "median_ms": "3959.373",
+      "min_ms": "3920.574",
+      "peak_rss_median_mb": "1453.113",
+      "reps": "3",
+      "solo": "True",
+      "stage": "lift"
+    },
+    {
+      "backend": "cpu-generic",
+      "gpu_markers_min": "0",
+      "max_ms": "4134.409",
+      "median_ms": "4101.962",
+      "min_ms": "4100.836",
+      "peak_rss_median_mb": "1548.25",
+      "reps": "3",
+      "solo": "True",
+      "stage": "join"
+    },
+    {
+      "backend": "cpu-generic",
+      "gpu_markers_min": "0",
+      "max_ms": "13549.524",
+      "median_ms": "13532.395",
+      "min_ms": "13419.618",
+      "peak_rss_median_mb": "2340.891",
+      "reps": "3",
+      "solo": "True",
+      "stage": "succinct"
+    },
+    {
+      "backend": "cpu-native",
+      "gpu_markers_min": "0",
+      "max_ms": "3161.901",
+      "median_ms": "3140.152",
+      "min_ms": "3135.193",
+      "peak_rss_median_mb": "1453.578",
+      "reps": "3",
+      "solo": "True",
+      "stage": "lift"
+    },
+    {
+      "backend": "cpu-native",
+      "gpu_markers_min": "0",
+      "max_ms": "3441.746",
+      "median_ms": "3350.499",
+      "min_ms": "3311.807",
+      "peak_rss_median_mb": "1545.426",
+      "reps": "3",
+      "solo": "True",
+      "stage": "join"
+    },
+    {
+      "backend": "cpu-native",
+      "gpu_markers_min": "0",
+      "max_ms": "11610.91",
+      "median_ms": "11542.031",
+      "min_ms": "11474.413",
+      "peak_rss_median_mb": "2341.082",
+      "reps": "3",
+      "solo": "True",
+      "stage": "succinct"
+    }
+  ],
+  "clean_room": "PASS",
+  "evidence_dirs": [
+    "recursion-receipt-equality-20260723",
+    "recursion-profile-20260723",
+    "recursion-clean-room-20260723",
+    "recursion-bench-20260723T090710Z",
+    "recursion-finish-driver-20260723"
+  ],
+  "profile_kernel_matches": {
+    "eval_check": 4,
+    "step_compute_accum": 2,
+    "step_verify_accum": 2
+  },
+  "receipt_equality": {
+    "equal_fields": [
+      "kind",
+      "journal_bytes",
+      "journal_digest",
+      "journal_hex"
+    ],
+    "journal_bytes": 96,
+    "journal_digest": "6ffd15b4566971e82332ddfb05c81c7a95f484bd0621bebcc1aaa000769ab50d",
+    "kind": "succinct",
+    "verdict": "PASS"
+  },
+  "verdict": "PASS"
+}

@@ -1,0 +1,13 @@
+------------------------------------------------------------------
+[solo-guard] iGPU busy : 0%  (max 25%)
+[solo-guard] loadavg(1m): 0.11   (max 8.00, nproc=32)
+[solo-guard] lockfile  : /tmp/zkp-gpu.lock
+[solo-guard] STATUS    : SOLO (safe to record)
+------------------------------------------------------------------
+applied Groth16 ROCm seam to risc0 218e3bc4a8ffcd203a9cd4e46f921bf60aa7e2bd at <repo-groth16-seam>/poc/risc0-rocm-prover/vendor/risc0
+built <repo-groth16-seam>/poc/risc0-rocm-prover/artefacts/groth16-seam-validation/lib/libzkp_hip.so for gfx1151
+=== RUN   TestPrimitivesGPUEqualCPU
+    integration_test.go:23: device=AMD Radeon Graphics compute_units=20 memory_bytes=50501304320
+--- PASS: TestPrimitivesGPUEqualCPU (0.23s)
+PASS
+ok  	github.com/consensys/gnark/backend/groth16/bn254/rocm	0.248s

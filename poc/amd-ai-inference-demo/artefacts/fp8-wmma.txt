@@ -1,0 +1,82 @@
+############################################################
+# FP8 native-WMMA vs convert+upcast probe — raw evidence
+#   hardware : AMD Ryzen AI MAX+ 395 / Radeon 8060S (gfx1151)
+#   ROCm     : 7.2.3    MIGraphX python binding (ROCm tree)
+#   probe    : MiniLM ONNX -> migraphx.quantize_fp8 / quantize_fp16 -> gpu target
+#   date     : 2026-06-22    solo=false loadavg=5.27
+############################################################
+
+== (1) MLIR dot operand element types (MIGRAPHX_MLIR_DUMP) ==
+-- FP8 program: every migraphx.dot operand/result element type --
+     30 f32
+   fp8-typed dot tokens: 0 ; f32: 30 ; f16: 0
+-- FP16 control: every migraphx.dot operand/result element type --
+     18 f16
+   f16 dot tokens: 18 ; f32: 0
+
+-- sample FP8 dot module (note: dequantizelinear upcasts to f32 around an f32 dot) --
+### mlir_dot_dequantizelinear_add_1x32x384_1x384x1152.mlir
+module {
+  func.func @mlir_dot_dequantizelinear_add(%arg0: !migraphx.shaped<1x32x384xf32, 12288x384x1>, %arg1: !migraphx.shaped<1x384x1152xf32, 442368x1152x1>, %arg2: !migraphx.shaped<1152xf32, 1>) -> !migraphx.shaped<1x32x1152xf32, 36864x1152x1> attributes {arch = "", kernel = "mixr", num_cu = 0 : i64} {
+    %0 = migraphx.literal(dense<1.39982114E-6> : tensor<1xf32>) : <1xf32, 0>
+    %1 = migraphx.dot %arg0, %arg1 : <1x32x384xf32, 12288x384x1>, <1x384x1152xf32, 442368x1152x1> -> <1x32x1152xf32, 36864x1152x1>
+    %2 = migraphx.multibroadcast %arg2 {out_dyn_dims = [], out_lens = [1, 32, 1152]} : <1152xf32, 1> -> <1x32x1152xf32, 0x0x1>
+    %3 = migraphx.multibroadcast %0 {out_dyn_dims = [], out_lens = [1, 32, 1152]} : <1xf32, 0> -> <1x32x1152xf32, 0x0x0>
+    %4 = migraphx.dequantizelinear %1, %3 : <1x32x1152xf32, 36864x1152x1>, <1x32x1152xf32, 0x0x0> -> <1x32x1152xf32, 36864x1152x1>
+    %5 = migraphx.add %4, %2 : <1x32x1152xf32, 36864x1152x1>, <1x32x1152xf32, 0x0x1> -> <1x32x1152xf32, 36864x1152x1>
+    return %5 : !migraphx.shaped<1x32x1152xf32, 36864x1152x1>
+  }
+}
+
+-- sample FP16 dot module (note: f16 operands fed straight into the dot) --
+### mlir_dot_1x32x1536_1x1536x384.mlir
+module {
+  func.func @mlir_dot(%arg0: !migraphx.shaped<1x32x1536xf16, 49152x1536x1>, %arg1: !migraphx.shaped<1x1536x384xf16, 589824x384x1>) -> !migraphx.shaped<1x32x384xf16, 12288x384x1> attributes {arch = "", kernel = "mixr", num_cu = 0 : i64} {
+    %0 = migraphx.dot %arg0, %arg1 : <1x32x1536xf16, 49152x1536x1>, <1x1536x384xf16, 589824x384x1> -> <1x32x384xf16, 12288x384x1>
+    return %0 : !migraphx.shaped<1x32x384xf16, 12288x384x1>
+  }
+}
+== (2) ISA of the JIT pointwise/convert kernels (AMD_COMGR_SAVE_TEMPS) ==
+FP8  : v_wmma=0  v_cvt_*=66  v_fma_f32*=609  convert/quant kernels=8
+FP16 : v_wmma=0  (control)
+-- FP8 compiled JIT kernel symbol names (elementwise glue) --
+add_add_mul_reduce_sum_mul_mul_reduce_sum_mul_sub_add_rsqrt_sub_mul_quantizelinear_kernel
+add_kernel
+contiguous_kernel
+convert_kernel
+dequantizelinear_add_mul_erf_mul_add_mul_quantizelinear_convert_kernel
+dequantizelinear_dequantizelinear_add_add_mul_reduce_sum_mul_mul_reduce_sum_mul_sub_add_rsqrt_sub_mul_mul_kernel
+dequantizelinear_dequantizelinear_add_add_mul_reduce_sum_mul_mul_reduce_sum_mul_sub_add_rsqrt_sub_mul_quantizelinear_kernel
+dequantizelinear_mul_reduce_max_sub_exp_reduce_sum_div_quantizelinear_convert_kernel
+dequantizelinear_quantizelinear_convert_kernel
+erf_kernel
+gather_kernel
+mul_kernel
+mul_reduce_sum_kernel
+quantizelinear_convert_kernel
+reduce_max_sub_exp_reduce_sum_div_kernel
+reduce_sum_kernel
+rsqrt_kernel
+sqdiff_kernel
+sub_kernel
+-- FP16 compiled JIT kernel symbol names --
+add_add_mul_reduce_sum_mul_reduce_sum_mul_sub_rsqrt_sub_mul_convert_mul_kernel
+add_add_mul_reduce_sum_mul_reduce_sum_mul_sub_rsqrt_sub_mul_kernel
+convert_kernel
+convert_mul_reduce_max_sub_exp_reduce_sum_div_convert_kernel
+gather_kernel
+reduce_sum_kernel
+
+NOTE: the dot/GEMM itself is compiled by rocMLIR IN-PROCESS and is not
+written to a separately disassemblable code object by any supported knob
+(comgr SAVE_TEMPS captures only the elementwise/convert JIT kernels above;
+MLIR_DUMP_TO_MXR emits the PRE-compile module). So no v_wmma_* appears in
+EITHER precision's comgr objects — that is expected and is NOT evidence of
+absence in the gemm. The decisive gemm signal is the MLIR operand type in (1).
+
+== (3) rocprofv3 --kernel-trace dispatched GPU kernels ==
+kernel-trace: SKIPPED — no clean solo window (solo=false, loadavg=5.27) or rocprofv3 absent; verdict rests on the compile-time MLIR + ISA evidence
+
+== VERDICT ==
+CONVERT + UPCAST + FP32 FMA  (NOT native WMMA FP8)
+every migraphx.dot in the FP8 program consumes f32 operands (the fp8 is upcast to f32 BEFORE the matmul); the FP16 control instead feeds f16 operands straight into the dot. gfx1151 WMMA has no f32xf32 input mode, so an f32 dot cannot use WMMA — it runs on v_fma_f32 VALU.

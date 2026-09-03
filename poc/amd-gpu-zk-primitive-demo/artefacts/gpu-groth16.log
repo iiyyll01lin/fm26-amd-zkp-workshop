@@ -1,0 +1,5 @@
+[path-e][g16] GPU: gfx1151 | CPU baseline: 32 threads | samples/cell=3
+[path-e][g16] 2^16 (    65536 cons) setup=   2011ms gpu_prove=    821ms cpu_prove=    526ms speedup=0.64x verify=true
+[path-e][g16] 2^18 (   262144 cons) setup=   7368ms gpu_prove=   2529ms cpu_prove=   1868ms speedup=0.74x verify=true
+[path-e][g16] 2^20 (  1048576 cons) setup=  28415ms gpu_prove=   8415ms cpu_prove=   7295ms speedup=0.87x verify=true
+[path-e][g16] 2^22 (  4194304 cons) setup= 111069ms gpu_prove=  28932ms cpu_prove=  29374ms speedup=1.02x verify=true

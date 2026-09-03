@@ -1,0 +1,40 @@
+######################################################################
+# TTM page-pool ceiling probe — why a >47 GiB model needs the page_pool_size raise
+#   host   : aup-HP-Z2-Mini-G1a-Workstation-Desktop-PC (the presenter Z2)
+#   silicon: AMD Ryzen AI MAX+ PRO 395 / Radeon 8060S (gfx1151), ROCm 7.2.3
+#   kernel : 6.17.0-29-generic ; unified RAM 94 GB ; solo (loadavg ~0.3, GPU 0%)
+#   model  : google_gemma-3-27b-it BF16 (2 shards, 54.03 GB on disk)
+#   date   : 2026-07-18   (read-only capacity probe; no public claim flipped)
+#
+# STATE AT PROBE TIME (partial raise — the trap this runbook fixes):
+#   ttm.pages_limit    = 15728640 pages = 60.0 GiB   (raised)
+#   ttm.page_pool_size = 12329420 pages = 47.0 GiB   (STILL the default)
+#   effective pool     = min(pages_limit, page_pool_size) = 47.0 GiB   <-- binding
+#   llama.cpp/HIP sees : ROCm0 "AMD Radeon Graphics (48161 MiB, 92477 MiB free)"
+#                        (48161 MiB == page_pool_size, NOT the 60 GiB pages_limit)
+######################################################################
+
+=== full_igpu  (-ngl 99, full offload of the 54 GB BF16 model) — FAILS ===
+# Verbatim from the llama.cpp loader (the weights buffer alloc is > the pool):
+ggml_backend_cuda_buffer_type_alloc_buffer: allocating 51518.17 MiB on device 0: cudaMalloc failed: out of memory
+alloc_tensor_range: failed to allocate ROCm0 buffer of size 54020713472
+llama_model_load: error loading model: unable to allocate ROCm0 buffer
+llama_model_load_from_file_impl: failed to load model
+  -> the 51518.17 MiB (54.02 GB) weights buffer exceeds the 48161 MiB (47 GiB)
+     effective pool set by ttm.page_pool_size. Full offload OOMs at load.
+
+=== cap  (-ngl 34, partial offload ~32 GB) — LOADS FINE ===
+# The SAME model loads and runs when the offload fits under the 47 GiB pool:
+condition,ngl,weights_gb,peak_vram_gb,peak_gtt_gb,peak_gpu_gb,prefill_tps,gen_tps
+cap_16gb,34,54.03,0.25,31.53,31.79,329.88,2.67
+  -> peak GPU-resident 31.79 GB (VRAM 0.25 + GTT 31.53) — well under the pool.
+
+=== CONCLUSION ===
+# The Z2's effective GPU pool is bound by ttm.page_pool_size (~47 GiB), NOT by the
+# already-raised ttm.pages_limit (60 GiB). Raising pages_limit ALONE is a no-op for
+# a full-offload model; page_pool_size (and gttsize) must be raised TOO — a root +
+# reboot step (see ../config/ + ../TTM-RUNBOOK.md). After that raise the same 54 GB
+# model is expected to hold resident on the Z2, matching Halo B's committed
+# 56.13 GB (bigmodel-xl-gemma-bf16.csv, 96 GB carveout). This is a CAPACITY fact
+# (does the model fit?), never a cross-vendor speed claim; the iGPU accelerates the
+# AI model, not the proof; RISC0 STARK stays CPU-only.

@@ -1,0 +1,45 @@
+{
+  "model": "Qwen2.5-32B-Instruct-Q4_K_M.gguf",
+  "weights_gb": 19.85,
+  "carveout_gb": 32.0,
+  "unified_pool_gb": 94.0,
+  "discrete_budget_gb": 16.0,
+  "ctx": 8192,
+  "prompt_toks": 4096,
+  "gen_toks": 256,
+  "reps": 3,
+  "peak_gpu_gb_full_igpu": 27.62,
+  "peak_vram_gb_full_igpu": 2.13,
+  "peak_gtt_gb_full_igpu": 25.51,
+  "exceeds_16gb": true,
+  "conditions": {
+    "full_igpu": {
+      "ngl": 99,
+      "peak_vram_gb": 2.13,
+      "peak_gtt_gb": 25.51,
+      "peak_gpu_gb": 27.62,
+      "prefill_tps": 287.44,
+      "gen_tps": 10.12
+    },
+    "cap_16gb": {
+      "ngl": 32,
+      "peak_vram_gb": 2.33,
+      "peak_gtt_gb": 15.32,
+      "peak_gpu_gb": 17.59,
+      "prefill_tps": 259.15,
+      "gen_tps": 6.3
+    },
+    "cpu": {
+      "ngl": 0,
+      "peak_vram_gb": 2.36,
+      "peak_gtt_gb": 5.71,
+      "peak_gpu_gb": 8.04,
+      "prefill_tps": 242.91,
+      "gen_tps": 4.7
+    }
+  },
+  "host": "AMD Ryzen AI MAX+ PRO 395 / Radeon 8060S (gfx1151), ROCm 7.2.3",
+  "mem_note": "GPU-resident footprint = VRAM carveout used + GTT used (both GPU-addressable, backed by the 94GB unified LPDDR5X). On this APU llama.cpp/HIP maps the weights primarily into GTT; a smaller slice lands in the 32GB VRAM carveout. The headline peak_gpu_gb is the sum.",
+  "honesty": "Accelerates the AI model (RAG generator), NOT the proof; RISC0 STARK stays CPU-only. iGPU memory is part of the 94GB unified pool (32GB VRAM carveout + GTT). The 16GB-cap contrast is generous to a discrete card (CPU spill here is the same LPDDR5X, not PCIe).",
+  "captured": "2026-06-16T11:41:25"
+}

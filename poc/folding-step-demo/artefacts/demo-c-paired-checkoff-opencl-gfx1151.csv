@@ -1,0 +1,92 @@
+# Demo C DeciderEth @2^24 (FOLD_N=2) — PAIRED, same-session, check-OFF re-bench of
+# the OPENCL (`gpu-msm`) arm. This is the path behind the deck's S2/S16 0.70x headline.
+#
+# Why this file exists. The published OpenCL rows in demo-c-gpu.csv (gpu 0.70x,
+# gpu-wide 0.74x) are unpaired, but NOT in the same way the native-HIP rows were.
+# The HIP defects were (1) FOLD_GPU_MSM_CHECK defaulting ON for the GPU arm only and
+# (2) a stale durable CPU_MED. Neither applies here — see "harness audit" below.
+# The OpenCL defects are:
+#   (1) n ASYMMETRY: run-gpu-fold.sh runs the CPU arm CPU_RUNS=3 times and takes a
+#       median (line 155), but the GPU arm EXACTLY ONCE (line 162, `run_fold gpu 1`).
+#       A single GPU sample was compared against a 3-sample CPU median.
+#   (2) CONTENTION: that single GPU run was preempted mid-flight by a third-party
+#       `train_language.py` (pid194983, woke 08:43:52 on 2026-06-16). The row is
+#       stamped solo=false and self-labelled "CONTENDED upper-bound".
+#   (3) NOT INTERLEAVED: the harness runs cpu,cpu,cpu then an on-chain replay
+#       (forge build + anvil) and only then the gpu arm, so thermal/clock drift and
+#       ~5 min of unrelated host work sit between the two arms rather than being
+#       averaged across them.
+# This run fixes all three: one session, one binary, both arms
+# FOLD_GPU_MSM_CHECK=0, arms INTERLEAVED (cpu, gpu, cpu, gpu, cpu, gpu), 3 reps each,
+# median, solo re-verified before EVERY run, no on-chain replay between arms.
+#
+# RESULT: the slowdown essentially disappears. cpu median 60.847 s vs opencl-gpu
+# median 61.206 s = 0.994x — STATISTICAL PARITY, not the published 0.70x. The
+# published figure was 1.42x too pessimistic.
+# Read this carefully and do NOT upgrade it to a win: the arm-to-arm gap is 0.59%
+# (GPU slower) while the WITHIN-arm spreads are 0.93% (cpu) and 1.21% (gpu). The gap
+# is smaller than the noise, so the honest statement is "the two arms are
+# indistinguishable at n=3", NOT "the iGPU is 0.6% slower" and NOT "the iGPU wins".
+# Unlike the native-HIP arm (which flipped to a real 1.048x win, see
+# demo-c-paired-checkoff-gfx1151.csv), the OpenCL arm lands at parity.
+#
+# Harness audit (verified against the source this session, NOT inherited):
+#   * poc/folding-step-demo/scripts/run-gpu-fold.sh line 102 reads
+#     FOLD_GPU_MSM_CHECK="${FOLD_GPU_MSM_CHECK:-0}" — the check defaults OFF here.
+#     The claim that the OpenCL harness defaults CHECK=0 is CONFIRMED. (Its HIP
+#     sibling, run-gpu-fold-hip.sh line 74, defaults it to 1 — the two harnesses
+#     disagree with each other.) So the published 0.70x does NOT carry the 18.5%
+#     check overhead that inverted the HIP figure.
+#   * CPU_RERUN DOES NOT EXIST in the OpenCL harness. It is a run-gpu-fold-hip.sh
+#     variable (default 0). run-gpu-fold.sh instead has FOLD_SKIP_BASE (default 0 =
+#     DO re-run the CPU arm) and CPU_RUNS (default 3), so demo-c-gpu.csv's CPU
+#     denominator was measured in the SAME session as its GPU row and is NOT stale.
+#     Any statement that the OpenCL rows "divide by a stale 2026-06-16 baseline" is
+#     wrong: 66.52 s is that session's own median. The defect is n=1 + contention.
+#
+# Cross-check against the Amdahl denominator: demo-c-phase-split-gfx1151 measured the
+# four offloadable BN254 G1 MSMs at 7.730 s of a 60.625 s D::prove = 12.75%, giving a
+# ceiling of 1.146x. A measured 0.994x sits below that ceiling, so the two
+# independent measurements agree. Parity is what a ~13% offloadable slice on a
+# kernel with no net primitive advantage should look like.
+#
+# Provenance: 2026-08-29T10:20:47+08:00 .. 10:48:39+08:00, gfx1151 / 16C-32T Zen 5,
+# 20 CUs / 48160 MiB reported by the GPU context line. Binary built this session
+# 2026-08-29 10:09 with `--features gpu-msm` (6,007,080 bytes); it links
+# libOpenCL.so.1 and contains ZERO HIP symbols, confirming the OpenCL/ec-gpu path
+# and not the HIP one (the HIP binary is a different size, 7,746,976 bytes).
+# RAYON_NUM_THREADS=32, shipped defaults work_units=2560 window=10.
+# Solo re-verified before EVERY run: iGPU busy 0% (rocm-smi) on all 6, foreign CPU
+# 0% on 5 of 6 measured as a 2 s /proc/stat delta. The 1-min loadavg is NOT used as
+# a gate because it is still decaying from our own previous arm (it read 11-15
+# throughout and is recorded as informational only).
+# HONEST EXCEPTION: the gpu rep3 guard measured foreign CPU 9% (agent shell activity
+# on the host, under the 10% abort threshold). That rep is the slowest GPU sample
+# (61.914 s) and the median EXCLUDES it by construction. It does not change the
+# verdict: mean-based ratio is 0.990x, median-based 0.994x, both parity.
+# Every timed run asserted "DeciderEth native verification: OK" (6/6), ran with ZERO
+# `[gpu-msm][check]` lines (check genuinely off on both arms), and the GPU context
+# line appears in exactly the 3 gpu reps and in none of the 3 cpu reps.
+# Raw log: demo-c-paired-checkoff-opencl-gfx1151.log
+#
+# SCOPE: this measures the OpenCL `gpu` arm, G1-only (four BN254 G1 MSMs offloaded;
+# G2 and the QAP FFT stay on the CPU). It does NOT re-measure `gpu-wide` (G1+G2+FFT),
+# whose published 0.74x carries the same n=1 + contention defects UNCORRECTED and
+# remains a lower bound. It does NOT re-measure the native-HIP arms (already done in
+# demo-c-paired-checkoff-gfx1151.csv). No on-chain replay was run this session; the
+# on-chain VERIFIED claim rests on the committed runs in demo-c-gpu.csv and is
+# independent of timing. demo-c-gpu.csv is NOT modified by this run.
+# NOT ESTABLISHED: why the contended 2026-06-16 GPU sample was 95.330 s when a clean
+# one is 61.2 s. A 56% inflation from GPU sharing alone is plausible but unproven;
+# that run's per-run log was overwritten by a later 2026-06-23 invocation, so the
+# original evidence no longer exists. Treat 95.330 s as unreproducible, not as a
+# measurement of contention cost.
+arm,rep,decider_prove_s,native_verify,msm_check,gpu_ctx_opened,backend,gpu_device,cpu_threads,fold_n,solo,igpu_busy_pct,foreign_cpu_pct,wall_s,note
+cpu,1,60.847280001,OK,off,0,cpu,,32,2,true,0,0,273,paired same-session check-off CPU arm
+cpu,2,60.55398743,OK,off,0,cpu,,32,2,true,0,0,275,paired same-session check-off CPU arm
+cpu,3,61.114128185,OK,off,0,cpu,,32,2,true,0,0,274,paired same-session check-off CPU arm
+opencl-gpu,1,61.206103573,OK,off,1,opencl,gfx1151,32,2,true,0,0,275,paired same-session check-off OpenCL G1-only arm
+opencl-gpu,2,61.172272645,OK,off,1,opencl,gfx1151,32,2,true,0,0,274,paired same-session check-off OpenCL G1-only arm
+opencl-gpu,3,61.914490225,OK,off,1,opencl,gfx1151,32,2,true,0,9,277,paired same-session check-off OpenCL G1-only arm; foreign CPU 9% at guard (agent shell); slowest GPU sample; EXCLUDED from median by construction
+cpu-median,,60.847280001,OK,off,0,cpu,,32,2,true,,,,median of 3 reps; spread 0.93%
+opencl-gpu-median,,61.206103573,OK,off,1,opencl,gfx1151,32,2,true,,,,median of 3 reps; spread 1.21%; speedup_vs_cpu_median=0.994; gap 0.59% is SMALLER than both within-arm spreads => statistical parity

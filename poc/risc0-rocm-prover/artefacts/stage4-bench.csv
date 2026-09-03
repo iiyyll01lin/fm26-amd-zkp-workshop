@@ -1,0 +1,6 @@
+config,backend,threads,workload,wall_s,receipt_bytes,verify,solo,loadavg,notes
+fork-cpu,cpu(no-rocm),32,~4seg-cartesi-step(po2=20 per-seg limit),172.9,1112064,valid,true,0.59,same-code baseline (min of 1); audit re-measured 178.0
+fork-gpu,rocm gfx1151,32,~4seg-cartesi-step(po2=20 per-seg limit),26.2,1112064,valid,true,0.59,STARK+eval_check iGPU / witgen+accum CPU (min of 2: 26.6/26.2)
+installed-r0vm,cpu(rzup 2.3.2),32,~4seg-cartesi-step(po2=20 per-seg limit),254.3,1112064,valid,true,0.59,official build different codegen (min of 1)
+# workload = one ~4-segment composite Cartesi-step prove (marker fires 4x; preflight 3xpo2=20 + 1xpo2=19). Both CPU and GPU prove the identical session.
+# speedup: fork iGPU vs fork-CPU = 6.6x (172.9/26.2); independent audit re-measured 6.79x (178.0/26.2). Workload/hashfn(poseidon2)/hybrid-specific; correctness is the hard guarantee.

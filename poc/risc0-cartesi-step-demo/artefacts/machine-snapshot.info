@@ -1,0 +1,43 @@
+snapshot_dir=/work/artefacts/machine-snapshot
+size_human=313M
+size_bytes=509203252
+hash_function=sha256
+phtc_size=64
+max_mcycle=0
+ram_image=linux-6.5.13-ctsi-1-v0.20.0.bin
+root_flash_drive=rootfs-tools.ext2
+entrypoint=/bin/echo hello from a real cartesi rootfs (full-rootfs demo)
+files:
+  total 319564
+  drwxr-xr-x 2 root root      4096 Jun 10 13:06 .
+  drwxrwxr-x 5 1000 1000      4096 Jun 10 13:06 ..
+  -rw-r--r-- 1 root root     32768 Jun 10 13:06 0000000000000000-8000.bin
+  -rw-r--r-- 1 root root       512 Jun 10 13:06 0000000000000000-8000.dht
+  -rw-r--r-- 1 root root        16 Jun 10 13:06 0000000000000000-8000.dpt
+  -r--r--r-- 1 root root      4096 Jun 10 13:06 0000000000010000-1000.bin
+  -rw-r--r-- 1 root root        64 Jun 10 13:06 0000000000010000-1000.dht
+  -rw-r--r-- 1 root root         2 Jun 10 13:06 0000000000010000-1000.dpt
+  -rw-r--r-- 1 root root      4096 Jun 10 13:06 0000000000400000-1000.bin
+  -rw-r--r-- 1 root root        64 Jun 10 13:06 0000000000400000-1000.dht
+  -rw-r--r-- 1 root root         2 Jun 10 13:06 0000000000400000-1000.dpt
+  -rw-r--r-- 1 root root   2097152 Jun 10 13:06 0000000000600000-200000.bin
+  -rw-r--r-- 1 root root     32768 Jun 10 13:06 0000000000600000-200000.dht
+  -rw-r--r-- 1 root root      1024 Jun 10 13:06 0000000000600000-200000.dpt
+  -rw-r--r-- 1 root root   2097152 Jun 10 13:06 0000000060000000-200000.bin
+  -rw-r--r-- 1 root root     32768 Jun 10 13:06 0000000060000000-200000.dht
+  -rw-r--r-- 1 root root      1024 Jun 10 13:06 0000000060000000-200000.dpt
+  -rw-r--r-- 1 root root   2097152 Jun 10 13:06 0000000060800000-200000.bin
+  -rw-r--r-- 1 root root     32768 Jun 10 13:06 0000000060800000-200000.dht
+  -rw-r--r-- 1 root root      1024 Jun 10 13:06 0000000060800000-200000.dpt
+  -rw-r--r-- 1 root root   1048576 Jun 10 13:06 000000007ff00000-100000.bin
+  -rw-r--r-- 1 root root     16384 Jun 10 13:06 000000007ff00000-100000.dht
+  -rw-r--r-- 1 root root       512 Jun 10 13:06 000000007ff00000-100000.dpt
+  -rw-r--r-- 1 root root 134217728 Jun 10 13:06 0000000080000000-8000000.bin
+  -rw-r--r-- 1 root root   2097152 Jun 10 13:06 0000000080000000-8000000.dht
+  -rw-r--r-- 1 root root     65536 Jun 10 13:06 0000000080000000-8000000.dpt
+  -rw-r--r-- 1 root root 355872768 Jun 10 13:06 0080000000000000-15363000.bin
+  -rw-r--r-- 1 root root   8388608 Jun 10 13:06 0080000000000000-15363000.dht
+  -rw-r--r-- 1 root root    262144 Jun 10 13:06 0080000000000000-15363000.dpt
+  -rw-r--r-- 1 root root      4104 Jun 10 13:06 config.json
+  -rw-r--r-- 1 root root    787480 Jun 10 13:06 hash_tree.phtc
+  -rw-r--r-- 1 root root      7808 Jun 10 13:06 hash_tree.sht

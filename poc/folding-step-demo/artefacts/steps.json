@@ -1,0 +1,23 @@
+{
+  "version": "1",
+  "hash_function": "sha256",
+  "abi_encoding": "abi.encode(bytes32,uint256,bytes32) == pre||mcycle||post (96 bytes)",
+  "n": 2,
+  "genesis_pre_root": "0xde22660f0b61cae65731ba5bc3e5707dceccc2c5e5d4902768c7645ca4d48104",
+  "final_post_root": "0x71b586fe83b44c8dbae33ba6d3cb0b8fa14b51798896bb0936483049fb98d89a",
+  "steps": [
+    {
+      "index": 0,
+      "pre_root": "0xde22660f0b61cae65731ba5bc3e5707dceccc2c5e5d4902768c7645ca4d48104",
+      "post_root": "0x3b64f9b917a9d9eac7329929aa5b2d02471d4c30c2a1b6a131b68c59344f50fe",
+      "mcycle_count": 1
+    },
+    {
+      "index": 1,
+      "pre_root": "0x3b64f9b917a9d9eac7329929aa5b2d02471d4c30c2a1b6a131b68c59344f50fe",
+      "post_root": "0x71b586fe83b44c8dbae33ba6d3cb0b8fa14b51798896bb0936483049fb98d89a",
+      "mcycle_count": 1
+    }
+  ],
+  "note": "Chained single-mcycle cartesi-machine steps; consumed by folding-step-demo."
+}

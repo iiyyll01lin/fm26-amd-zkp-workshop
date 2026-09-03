@@ -1,0 +1,106 @@
+######################################################################
+# AMD XDNA2 NPU dispatch run (2026-06-15T05:02:53Z) — OPT-IN / heavy / research
+#   host   : aup-HP-Z2-Mini-G1a-Workstation-Desktop-PC
+#   kernel : 6.17.0-29-generic
+#   cpu    : AMD RYZEN AI MAX+ PRO 395 w/ Radeon 8060S
+#   cache  : ~/.cache/zkp-npu   (no sudo, no system writes)
+######################################################################
+# [2026-06-15T05:02:53Z] stage 1/5: kernel-side readiness (read-only)
+#   amdxdna loaded : yes
+#   accel node     : /dev/accel/accel0 (readable=yes, render-group=yes)
+#   NPU firmware   : fw_version=1.0.0.166
+#   PCI            : c4:00.1 Signal processing controller [1180]: Advanced Micro Devices, Inc. [AMD] Device [1022:17f0] (rev 11)
+# [2026-06-15T05:02:53Z] stage 2/5: locate user-space XRT runtime + amdxdna shim
+#   xrt-smi        : /opt/xilinx/xrt/bin/xrt-smi
+#   amdxdna shim   : /opt/xilinx/xrt/lib/libxrt_driver_xdna.so.2
+# [2026-06-15T05:02:53Z] stage 3/5: authoring toolchain (Peano + MLIR-AIE + IRON) in venv
+#   authoring      : yes (mlir-aie=3940144f8772e14f794022d9a50c1410090d6fc3, peano=21.0.0.2026052701+9e603b76)
+#   pyxrt runtime  : no
+# [2026-06-15T05:02:54Z] stage 4/5: enumerate the NPU through XRT
+#   xrt-smi> System Configuration
+#   xrt-smi>   OS Name              : Linux
+#   xrt-smi>   Release              : 6.17.0-29-generic
+#   xrt-smi>   Machine              : x86_64
+#   xrt-smi>   CPU Cores            : 32
+#   xrt-smi>   Memory               : 96320 MB
+#   xrt-smi>   Distribution         : Ubuntu 24.04.4 LTS
+#   xrt-smi>   GLIBC                : 2.39
+#   xrt-smi>   Model                : HP Z2 Mini G1a Workstation Desktop PC
+#   xrt-smi>   BIOS Vendor          : HP
+#   xrt-smi>   BIOS Version         : X53 Ver. 01.05.02
+#   xrt-smi>   Processor            : AMD RYZEN AI MAX+ PRO 395 w/ Radeon 8060S
+#   xrt-smi> 
+#   xrt-smi> XRT
+#   xrt-smi>   Version              : 2.25.0
+#   xrt-smi>   Branch               : HEAD
+#   xrt-smi>   Hash                 : 943586a79b5a714463cb13d3ba7e178b8532c817
+#   xrt-smi>   Hash Date            : Tue, 9 Jun 2026 19:31:23 -0700
+#   xrt-smi>   amdxdna Version      : 6.17.0-29-generic
+#   xrt-smi>   virtio-pci Version   : 6.17.0-29-generic
+#   xrt-smi>   NPU Firmware Version : 1.0.0.166
+#   xrt-smi> 
+#   xrt-smi> Device(s) Present
+#   xrt-smi> |BDF             |Name          |Architecture  |Topology  |
+#   xrt-smi> |----------------|--------------|--------------|----------|
+#   xrt-smi> |[0000:c4:00.1]  |RyzenAI-npu5  |aie2p         |6x8       |
+#   ENUMERATED: XRT sees the NPU (firmware=1.0.0.166)
+# [2026-06-15T05:02:54Z] stage 5/5: dispatch IRON axpy (+ int8 GEMM) on the NPU
+# [2026-06-15T05:02:54Z]   pinned mlir-aie examples to wheel commit 3940144
+#   axpy> Correct output 1003 == 1003
+#   axpy> Correct output 1004 == 1004
+#   axpy> Correct output 1005 == 1005
+#   axpy> Correct output 1006 == 1006
+#   axpy> Correct output 1007 == 1007
+#   axpy> Correct output 1008 == 1008
+#   axpy> Correct output 1009 == 1009
+#   axpy> Correct output 1010 == 1010
+#   axpy> Correct output 1011 == 1011
+#   axpy> Correct output 1012 == 1012
+#   axpy> Correct output 1013 == 1013
+#   axpy> Correct output 1014 == 1014
+#   axpy> Correct output 1015 == 1015
+#   axpy> Correct output 1016 == 1016
+#   axpy> Correct output 1017 == 1017
+#   axpy> Correct output 1018 == 1018
+#   axpy> Correct output 1019 == 1019
+#   axpy> Correct output 1020 == 1020
+#   axpy> Correct output 1021 == 1021
+#   axpy> Correct output 1022 == 1022
+#   axpy> Correct output 1023 == 1023
+#   axpy> Correct output 1024 == 1024
+#   axpy> Correct output 1025 == 1025
+#   axpy> 
+#   axpy> PASS!
+#   DISPATCH-OK: axpy  PASS in 5.752s
+#   int8_gemm> Verifying against reference matmul ...
+#   int8_gemm> Verify time: 0 s.
+#   int8_gemm> Running Kernel (iteration 51).
+#   int8_gemm> Verifying against reference matmul ...
+#   int8_gemm> Verify time: 0 s.
+#   int8_gemm> Running Kernel (iteration 52).
+#   int8_gemm> Verifying against reference matmul ...
+#   int8_gemm> Verify time: 0 s.
+#   int8_gemm> Running Kernel (iteration 53).
+#   int8_gemm> Verifying against reference matmul ...
+#   int8_gemm> Verify time: 0 s.
+#   int8_gemm> Running Kernel (iteration 54).
+#   int8_gemm> Verifying against reference matmul ...
+#   int8_gemm> Verify time: 0 s.
+#   int8_gemm> 
+#   int8_gemm> Avg NPU matmul time: 521.22us.
+#   int8_gemm> Avg NPU gflops: 515.014
+#   int8_gemm> 
+#   int8_gemm> Min NPU matmul time: 246us.
+#   int8_gemm> Max NPU gflops: 1091.2
+#   int8_gemm> 
+#   int8_gemm> Max NPU matmul time: 3235us.
+#   int8_gemm> Min NPU gflops: 82.9785
+#   int8_gemm> 
+#   int8_gemm> PASS!
+#   int8 GEMM (512x512x512 i8): PASS  avg 521.22us / 515.014 GFLOPs (min 246us, peak 1091.2 GFLOPs)
+# [2026-06-15T05:03:34Z] verdict=DISPATCH-OK enumerated=yes dispatch_ok=yes
+# [2026-06-15T05:03:34Z] artefacts: <repo>/poc/risc0-cartesi-step-demo/artefacts/npu-dispatch.log ; <repo>/poc/risc0-cartesi-step-demo/artefacts/npu-dispatch.json
+######################################################################
+# XDNA2 NPU dispatch — VERDICT: DISPATCH-OK
+#   (research track; NPU accelerates the AI model, NOT the ZK proof)
+######################################################################

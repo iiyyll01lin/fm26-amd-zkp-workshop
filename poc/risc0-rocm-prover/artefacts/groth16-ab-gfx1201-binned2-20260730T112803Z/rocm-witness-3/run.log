@@ -1,0 +1,22 @@
+[risc0-groth16-stage] run_id=cmp-rocm-witness-3 mode=fifo stage=entrypoint event=start t_ns=729553020922876
+[risc0-groth16-stage] run_id=cmp-rocm-witness-3 mode=fifo stage=fifo event=create t_ns=729553022343446
+[risc0-groth16-stage] run_id=cmp-rocm-witness-3 mode=fifo stage=witness event=start t_ns=729553023059212
+[risc0-groth16-stage] run_id=cmp-rocm-witness-3 mode=fifo stage=prover event=start t_ns=729553023715396
+[90m11:31:14[0m DBG constraint system loaded [36mtook=[0m327.682955
+[90m11:31:15[0m DBG proving key loaded [36mtook=[0m580.976151
+[90m11:31:15[0m DBG WTNS header [36mnInputs=[0m5635930 [36mnWitnesses=[0m5635930
+[risc0-groth16-stage] run_id=cmp-rocm-witness-3 mode=fifo stage=witness event=finish t_ns=729554638096277 rc=0
+[90m11:31:15[0m DBG witness data loaded [36mtook=[0m844.688952
+[90m11:31:15[0m [32mINF[0m [1m[risc0-groth16-rocm] ACTIVE[0m [36macceleration=[0mrocm [36mbackend=[0mgroth16 [36mcompute_units=[0m32 [36mcurve=[0mbn254 [36mdevice=[0m"AMD Radeon Graphics" [36mnbConstraints=[0m5676573
+[90m11:31:16[0m DBG constraint system solver done [36mnbConstraints=[0m5676573 [36mtook=[0m158.199497
+[zkp-hip] msm_g1 n=5209981 work_units=16384 window=10 kernel=2
+[zkp-hip] msm_g1 n=5278569 work_units=16384 window=10 kernel=2
+[zkp-hip] msm_g1 n=5635924 work_units=16384 window=10 kernel=2
+[zkp-hip] msm_g1 n=8388608 work_units=16384 window=10 kernel=2
+[90m11:31:19[0m DBG prover done [36macceleration=[0mrocm [36mbackend=[0mgroth16 [36mcurve=[0mbn254 [36mnbConstraints=[0m5676573 [36mtook=[0m3501.402768
+[zkp-hip] stage_ms msm_g1=1494.420 msm_g2=840.170 ntt=435.282 calls=4/1/6 kernel=binned
+[risc0-groth16-stage] run_id=cmp-rocm-witness-3 mode=fifo stage=prover event=finish t_ns=729558738242654 rc=0
+[risc0-groth16-stage] run_id=cmp-rocm-witness-3 mode=fifo stage=wait event=finish t_ns=729558739042130 witness_rc=0 prover_rc=0
+[risc0-groth16-stage] run_id=cmp-rocm-witness-3 mode=fifo stage=artifact event=record t_ns=729558742362184 kind=proof bytes=724 sha256=3c63436821c1e4f6c0f1ebae7cdd3aa01b3cee1070a65cbdb30e2eccf062836d
+[risc0-groth16-stage] run_id=cmp-rocm-witness-3 mode=fifo stage=entrypoint event=finish t_ns=729558743114410 rc=0
+[risc0-groth16-stage] run_id=cmp-rocm-witness-3 mode=fifo stage=total event=finish t_ns=729558743867105 rc=0

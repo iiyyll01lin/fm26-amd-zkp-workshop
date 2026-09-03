@@ -1,0 +1,22 @@
+{
+  "comparison_kind": "same-box same-workload wall-clock; workload-specific, not cross-vendor",
+  "image_id": "3aec8c717d9b47f9b617c1695955d75e2bb525085283c1076591f97ae643c990",
+  "modes": {
+    "cpu-shipped": {
+      "count": 3,
+      "max_s": 182.42,
+      "median_s": 182.37,
+      "min_s": 181.9
+    },
+    "gpu-rocm": {
+      "count": 3,
+      "max_s": 187.53,
+      "median_s": 187.44,
+      "min_s": 186.66
+    }
+  },
+  "sign_off": "project-owner authorized for workshop/labs (2026-07-24)",
+  "speedups": {
+    "gpu_vs_cpu_shipped": 0.973
+  }
+}

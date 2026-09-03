@@ -1,0 +1,3 @@
+"Kind","Agent_Id","Queue_Id","Stream_Id","Thread_Id","Dispatch_Id","Kernel_Id","Kernel_Name","Correlation_Id","Start_Timestamp","End_Timestamp","LDS_Block_Size","Scratch_Size","VGPR_Count","Accum_VGPR_Count","SGPR_Count","Workgroup_Size_X","Workgroup_Size_Y","Workgroup_Size_Z","Grid_Size_X","Grid_Size_Y","Grid_Size_Z"
+"KERNEL_DISPATCH","Agent 1",1,0,3308099,1,6,"__amd_rocclr_copyBuffer",1,517207081198833,517207081209974,0,0,16,0,128,512,1,1,512,1,1
+"KERNEL_DISPATCH","Agent 1",1,0,3308099,2,1,"risc0::circuit::recursion::eval_check(Fp*, Fp const*, Fp const*, Fp const*, Fp const*, Fp const*, Fp, unsigned int, unsigned int)",2,517207081714584,517207082929995,0,3824,192,0,128,256,1,1,256,1,1

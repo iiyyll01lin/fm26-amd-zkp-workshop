@@ -1,0 +1,3 @@
+kernel,work_units,window_size,msm_g1_ms,alloc_ms,h2d_ms,kernel_ms,d2h_ms,free_ms,msm_g2_ms,ntt_ms,prover_median_ms,cpu_median_ms
+ported,16384,10,1244.253,0.799,51.810,1190.104,0.582,0.957,857.127,435.936,3244.676,1670.909
+binned,16384,10,1462.738,0.646,61.924,1397.330,1.433,1.404,883.795,429.694,3497.555,1681.305

@@ -1,0 +1,5 @@
+start=2026-07-24T14:08:45+08:00
+commit=2ef5eaa736e21778eb50e3d66e5319ee6fc76a1f
+validation_dir=<repo-groth16-seam>/poc/risc0-rocm-prover/artefacts/groth16-seam-validation
+end=2026-07-24T14:38:53+08:00
+verdict=PASS

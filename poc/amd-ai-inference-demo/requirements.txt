@@ -1,0 +1,15 @@
+# Demo F (Path F) — iGPU AI-inference harness deps (Python 3.13).
+#
+# torch is installed separately from the CPU index in run-all.sh:
+#   pip install --index-url https://download.pytorch.org/whl/cpu torch
+# (it is only the AUTHORING tool that builds + exports the MiniLM ONNX, plus the
+# reference for the architecture; the CPU baseline runs through onnxruntime).
+#
+# The iGPU backend uses AMD's MIGraphX python bindings, which ship with ROCm at
+# /opt/rocm-*/lib (added to PYTHONPATH by run-all.sh) and are NOT on PyPI.
+onnx>=1.21
+onnxscript>=0.5            # required by torch>=2.9 onnx exporter
+onnxruntime>=1.26          # CPU baseline (CPUExecutionProvider)
+numpy>=2.0
+pandas>=2.0
+matplotlib>=3.8

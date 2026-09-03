@@ -1,0 +1,13 @@
+# Three-engine zkLLM panorama — Strix Halo NPU + CPU + iGPU
+
+_Source: `three-engine.json` — rendered alongside PNG. Capability map, NOT one monolithic proof._
+
+Representative workload: **MiniLM d_model=384, T=256**.
+
+| stage | engine | measured contribution | honesty |
+| --- | --- | --- | --- |
+| 1 · forward | AMD XDNA2 NPU (int8 GEMM via the proven whole_array harness) | NPU int8 **608.851 GFLOPs** (mha_qkv_proj_d384_t256, 124 µs); iGPU/CPU fp32 **3.954×** (b1·s256) | model forward only; NPU int8 ≠ fp32, ~1-3% of ceiling; size-gated |
+| 2 · prove | AMD Ryzen AI MAX+ 395 (16c/32t) + 94 GB unified memory | EZKL Halo2/BN254 **110.538 s** @ 81.99 GB (logrows 21) | the SHIPPING proof; CPU-only; full layer caps at 94 GB |
+| 3 · proof MSM | AMD Radeon 8060S iGPU (gfx1151) — ec-gpu OpenCL | re-cast **multi-head** Groth16/BLS12-381 prove 1.12→1.441× (**NOT solo-verified**); durable: **bit-for-bit GPU==CPU** + iGPU FFT/NTT proxy **1.94→6.951×** | RE-CAST, not EZKL; prove_speedup contention-prone (Demo C reversed — see INTEGRITY-REPORT); durable win = correctness + NTT; EZKL-GPU-BLOCKED-ON-AMD |
+
+CAPABILITY MAP, not one monolithic proof. (1) NPU int8 GEMM and iGPU/CPU fp32 forward accelerate the MODEL, never the proof; the NPU figure is compute-only and not comparable to the fp32 full-forward latency, and runs at ~1-3% of its advertised int8 ceiling. (2) The SHIPPING proof is EZKL Halo2/KZG over BN254, CPU-only — and the TRUE Strix Halo proving enabler is 32 threads + 94 GB unified memory (the 12-head MHA proves at ~82 GB; the full transformer layer caps at the 94 GB ceiling). (3) The iGPU touches a proof ONLY as a RE-CAST MULTI-HEAD bellperson/OpenCL Groth16 over BLS12-381 of the attention matmuls (different prover + curve; EZKL cannot dispatch to the iGPU — blocker EZKL-GPU-BLOCKED-ON-AMD). INTEGRITY RECONCILE (docs/INTEGRITY-REPORT.md): the iGPU re-cast end-to-end prove_speedup is the SAME contention-prone metric the integrity track refuted for Demo C (the 1.34x/1.64x iGPU folding headline was REFUTED under a fair solo baseline; its 0.70x/0.74x replacement was a self-labelled lower bound, and the paired re-bench puts the OpenCL G1-only arm at 0.994x = PARITY while gpu-wide's 0.74x was never re-measured and is a floor -- parity is not acceleration), was NOT taken under the solo guard, and is therefore NOT claimed as an end-to-end iGPU proof speed win. The iGPU's durable proof contribution is the bit-for-bit GPU==CPU correctness of the re-cast proof plus the iGPU NTT primitive (matching-size attribution proxy) — NOT a speed win. Repo rule intact: the only iGPU-on-proof is the re-cast OpenCL MSM, NEVER EZKL Halo2.

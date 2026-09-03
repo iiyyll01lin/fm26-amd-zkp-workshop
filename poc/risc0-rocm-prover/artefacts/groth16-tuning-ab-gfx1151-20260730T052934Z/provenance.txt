@@ -1,0 +1,3 @@
+started_utc=2026-07-30T05:29:34Z
+image=risc0-groth16-prover:rocm-witgen-o0
+image_digest=sha256:91f515e2995be1cb61b4ae458fa6f998c724db3324af1813e1acaff54466e4ef

@@ -1,0 +1,128 @@
+kernels/hip/steps_ffi.hip:325:3: warning: ignoring return value of type 'hipError_t' declared with 'nodiscard' attribute [-Wunused-value]
+  325 |   hipFree(tab.tableU16);
+      |   ^~~~~~~~~~~~~~~~~~~~~
+kernels/hip/steps_ffi.hip:326:3: warning: ignoring return value of type 'hipError_t' declared with 'nodiscard' attribute [-Wunused-value]
+  326 |   hipFree(tab.tableU8);
+      |   ^~~~~~~~~~~~~~~~~~~~
+kernels/hip/steps_ffi.hip:327:3: warning: ignoring return value of type 'hipError_t' declared with 'nodiscard' attribute [-Wunused-value]
+  327 |   hipFree(ctx->tables);
+      |   ^~~~~~~~~~~~~~~~~~~~
+kernels/hip/steps_ffi.hip:328:3: warning: ignoring return value of type 'hipError_t' declared with 'nodiscard' attribute [-Wunused-value]
+  328 |   hipFree(pf.bigintBytes);
+      |   ^~~~~~~~~~~~~~~~~~~~~~~
+kernels/hip/steps_ffi.hip:329:3: warning: ignoring return value of type 'hipError_t' declared with 'nodiscard' attribute [-Wunused-value]
+  329 |   hipFree(pf.txns);
+      |   ^~~~~~~~~~~~~~~~
+kernels/hip/steps_ffi.hip:330:3: warning: ignoring return value of type 'hipError_t' declared with 'nodiscard' attribute [-Wunused-value]
+  330 |   hipFree(pf.cycles);
+      |   ^~~~~~~~~~~~~~~~~~
+kernels/hip/steps_ffi.hip:331:3: warning: ignoring return value of type 'hipError_t' declared with 'nodiscard' attribute [-Wunused-value]
+  331 |   hipFree(ctx->preflight);
+      |   ^~~~~~~~~~~~~~~~~~~~~~~
+kernels/hip/steps_ffi.hip:332:3: warning: ignoring return value of type 'hipError_t' declared with 'nodiscard' attribute [-Wunused-value]
+  332 |   hipFree(ctx->global);
+      |   ^~~~~~~~~~~~~~~~~~~~
+kernels/hip/steps_ffi.hip:333:3: warning: ignoring return value of type 'hipError_t' declared with 'nodiscard' attribute [-Wunused-value]
+  333 |   hipFree(ctx->data);
+      |   ^~~~~~~~~~~~~~~~~~
+kernels/hip/steps_ffi.hip:334:3: warning: ignoring return value of type 'hipError_t' declared with 'nodiscard' attribute [-Wunused-value]
+  334 |   hipFree(ctx);
+      |   ^~~~~~~~~~~~
+kernels/hip/steps_ffi.hip:398:3: warning: ignoring return value of type 'hipError_t' declared with 'nodiscard' attribute [-Wunused-value]
+  398 |   hipFree(tab.tableU16);
+      |   ^~~~~~~~~~~~~~~~~~~~~
+kernels/hip/steps_ffi.hip:399:3: warning: ignoring return value of type 'hipError_t' declared with 'nodiscard' attribute [-Wunused-value]
+  399 |   hipFree(tab.tableU8);
+      |   ^~~~~~~~~~~~~~~~~~~~
+kernels/hip/steps_ffi.hip:400:3: warning: ignoring return value of type 'hipError_t' declared with 'nodiscard' attribute [-Wunused-value]
+  400 |   hipFree(ctx->tables);
+      |   ^~~~~~~~~~~~~~~~~~~~
+kernels/hip/steps_ffi.hip:401:3: warning: ignoring return value of type 'hipError_t' declared with 'nodiscard' attribute [-Wunused-value]
+  401 |   hipFree(pf.txns);
+      |   ^~~~~~~~~~~~~~~~
+kernels/hip/steps_ffi.hip:402:3: warning: ignoring return value of type 'hipError_t' declared with 'nodiscard' attribute [-Wunused-value]
+  402 |   hipFree(pf.cycles);
+      |   ^~~~~~~~~~~~~~~~~~
+kernels/hip/steps_ffi.hip:403:3: warning: ignoring return value of type 'hipError_t' declared with 'nodiscard' attribute [-Wunused-value]
+  403 |   hipFree(ctx->preflight);
+      |   ^~~~~~~~~~~~~~~~~~~~~~~
+kernels/hip/steps_ffi.hip:404:3: warning: ignoring return value of type 'hipError_t' declared with 'nodiscard' attribute [-Wunused-value]
+  404 |   hipFree(ctx->mix);
+      |   ^~~~~~~~~~~~~~~~~
+kernels/hip/steps_ffi.hip:405:3: warning: ignoring return value of type 'hipError_t' declared with 'nodiscard' attribute [-Wunused-value]
+  405 |   hipFree(ctx->global);
+      |   ^~~~~~~~~~~~~~~~~~~~
+kernels/hip/steps_ffi.hip:406:3: warning: ignoring return value of type 'hipError_t' declared with 'nodiscard' attribute [-Wunused-value]
+  406 |   hipFree(ctx->accum);
+      |   ^~~~~~~~~~~~~~~~~~~
+kernels/hip/steps_ffi.hip:407:3: warning: ignoring return value of type 'hipError_t' declared with 'nodiscard' attribute [-Wunused-value]
+  407 |   hipFree(ctx->data);
+      |   ^~~~~~~~~~~~~~~~~~
+kernels/hip/steps_ffi.hip:408:3: warning: ignoring return value of type 'hipError_t' declared with 'nodiscard' attribute [-Wunused-value]
+  408 |   hipFree(ctx);
+      |   ^~~~~~~~~~~~
+21 warnings generated when compiling for gfx1151.
+kernels/hip/steps_ffi.hip:325:3: warning: ignoring return value of type 'hipError_t' declared with 'nodiscard' attribute [-Wunused-value]
+  325 |   hipFree(tab.tableU16);
+      |   ^~~~~~~~~~~~~~~~~~~~~
+kernels/hip/steps_ffi.hip:326:3: warning: ignoring return value of type 'hipError_t' declared with 'nodiscard' attribute [-Wunused-value]
+  326 |   hipFree(tab.tableU8);
+      |   ^~~~~~~~~~~~~~~~~~~~
+kernels/hip/steps_ffi.hip:327:3: warning: ignoring return value of type 'hipError_t' declared with 'nodiscard' attribute [-Wunused-value]
+  327 |   hipFree(ctx->tables);
+      |   ^~~~~~~~~~~~~~~~~~~~
+kernels/hip/steps_ffi.hip:328:3: warning: ignoring return value of type 'hipError_t' declared with 'nodiscard' attribute [-Wunused-value]
+  328 |   hipFree(pf.bigintBytes);
+      |   ^~~~~~~~~~~~~~~~~~~~~~~
+kernels/hip/steps_ffi.hip:329:3: warning: ignoring return value of type 'hipError_t' declared with 'nodiscard' attribute [-Wunused-value]
+  329 |   hipFree(pf.txns);
+      |   ^~~~~~~~~~~~~~~~
+kernels/hip/steps_ffi.hip:330:3: warning: ignoring return value of type 'hipError_t' declared with 'nodiscard' attribute [-Wunused-value]
+  330 |   hipFree(pf.cycles);
+      |   ^~~~~~~~~~~~~~~~~~
+kernels/hip/steps_ffi.hip:331:3: warning: ignoring return value of type 'hipError_t' declared with 'nodiscard' attribute [-Wunused-value]
+  331 |   hipFree(ctx->preflight);
+      |   ^~~~~~~~~~~~~~~~~~~~~~~
+kernels/hip/steps_ffi.hip:332:3: warning: ignoring return value of type 'hipError_t' declared with 'nodiscard' attribute [-Wunused-value]
+  332 |   hipFree(ctx->global);
+      |   ^~~~~~~~~~~~~~~~~~~~
+kernels/hip/steps_ffi.hip:333:3: warning: ignoring return value of type 'hipError_t' declared with 'nodiscard' attribute [-Wunused-value]
+  333 |   hipFree(ctx->data);
+      |   ^~~~~~~~~~~~~~~~~~
+kernels/hip/steps_ffi.hip:334:3: warning: ignoring return value of type 'hipError_t' declared with 'nodiscard' attribute [-Wunused-value]
+  334 |   hipFree(ctx);
+      |   ^~~~~~~~~~~~
+kernels/hip/steps_ffi.hip:398:3: warning: ignoring return value of type 'hipError_t' declared with 'nodiscard' attribute [-Wunused-value]
+  398 |   hipFree(tab.tableU16);
+      |   ^~~~~~~~~~~~~~~~~~~~~
+kernels/hip/steps_ffi.hip:399:3: warning: ignoring return value of type 'hipError_t' declared with 'nodiscard' attribute [-Wunused-value]
+  399 |   hipFree(tab.tableU8);
+      |   ^~~~~~~~~~~~~~~~~~~~
+kernels/hip/steps_ffi.hip:400:3: warning: ignoring return value of type 'hipError_t' declared with 'nodiscard' attribute [-Wunused-value]
+  400 |   hipFree(ctx->tables);
+      |   ^~~~~~~~~~~~~~~~~~~~
+kernels/hip/steps_ffi.hip:401:3: warning: ignoring return value of type 'hipError_t' declared with 'nodiscard' attribute [-Wunused-value]
+  401 |   hipFree(pf.txns);
+      |   ^~~~~~~~~~~~~~~~
+kernels/hip/steps_ffi.hip:402:3: warning: ignoring return value of type 'hipError_t' declared with 'nodiscard' attribute [-Wunused-value]
+  402 |   hipFree(pf.cycles);
+      |   ^~~~~~~~~~~~~~~~~~
+kernels/hip/steps_ffi.hip:403:3: warning: ignoring return value of type 'hipError_t' declared with 'nodiscard' attribute [-Wunused-value]
+  403 |   hipFree(ctx->preflight);
+      |   ^~~~~~~~~~~~~~~~~~~~~~~
+kernels/hip/steps_ffi.hip:404:3: warning: ignoring return value of type 'hipError_t' declared with 'nodiscard' attribute [-Wunused-value]
+  404 |   hipFree(ctx->mix);
+      |   ^~~~~~~~~~~~~~~~~
+kernels/hip/steps_ffi.hip:405:3: warning: ignoring return value of type 'hipError_t' declared with 'nodiscard' attribute [-Wunused-value]
+  405 |   hipFree(ctx->global);
+      |   ^~~~~~~~~~~~~~~~~~~~
+kernels/hip/steps_ffi.hip:406:3: warning: ignoring return value of type 'hipError_t' declared with 'nodiscard' attribute [-Wunused-value]
+  406 |   hipFree(ctx->accum);
+      |   ^~~~~~~~~~~~~~~~~~~
+kernels/hip/steps_ffi.hip:407:3: warning: ignoring return value of type 'hipError_t' declared with 'nodiscard' attribute [-Wunused-value]
+  407 |   hipFree(ctx->data);
+      |   ^~~~~~~~~~~~~~~~~~
+kernels/hip/steps_ffi.hip:408:3: warning: ignoring return value of type 'hipError_t' declared with 'nodiscard' attribute [-Wunused-value]
+  408 |   hipFree(ctx);
+      |   ^~~~~~~~~~~~
+21 warnings generated when compiling for host.

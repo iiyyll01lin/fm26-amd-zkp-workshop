@@ -1,0 +1,4 @@
+config,seq,d_model,n_heads,n_layers,logrows,witness_s,prove_s,proof_bytes,peak_rss_gb,fwd_ms_cpu,fwd_ms_igpu,status
+head,8,384,1,0,16,1.685,15.4,545628,2.89,0.018,0.122,ok
+mha,8,384,12,0,21,3.518,110.538,972292,81.99,0.199,0.207,ok
+layer,8,384,12,1,22,,,,,,,capped

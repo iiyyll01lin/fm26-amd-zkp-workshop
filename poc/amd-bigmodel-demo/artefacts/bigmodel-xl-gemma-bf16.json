@@ -1,0 +1,39 @@
+{
+  "model": "google_gemma-3-27b-it-bf16.gguf",
+  "weights_gb": 54.03,
+  "carveout_gb": 96.0,
+  "unified_pool_gb": 128.0,
+  "discrete_budget_gb": 32.0,
+  "ctx": 8192,
+  "prompt_toks": 4096,
+  "gen_toks": 256,
+  "reps": 3,
+  "peak_gpu_gb_full_igpu": 56.13,
+  "peak_vram_gb_full_igpu": 56.11,
+  "peak_gtt_gb_full_igpu": 0.02,
+  "exceeds_16gb": true,
+  "exceeds_32gb": true,
+  "conditions": {
+    "full_igpu": {
+      "ngl": 99,
+      "peak_vram_gb": 56.11,
+      "peak_gtt_gb": 0.02,
+      "peak_gpu_gb": 56.13,
+      "prefill_tps": 496.46,
+      "gen_tps": 4.04
+    },
+    "cap_32gb": {
+      "ngl": 34,
+      "peak_vram_gb": 31.83,
+      "peak_gtt_gb": 0.03,
+      "peak_gpu_gb": 31.85,
+      "prefill_tps": 375.56,
+      "gen_tps": 2.78
+    }
+  },
+  "host": "Halo B (test001-stxh), AMD Ryzen AI MAX+ 395 / Radeon 8060S gfx1151, 128GB config, 96GB VRAM carveout, ROCm 7.2.0",
+  "mem_note": "GPU-resident footprint = VRAM carveout used + GTT used (rocm-smi, sampled 0.4s). Reported peak_gpu_gb is the SUSTAINED compute-phase peak (held >=2s); a sub-second model-load page-cache transient (cap_32gb raw max 54.40 GB) is excluded so the cap row reflects the true GPU-resident working set (~32GB). On the 96GB-carveout config the BF16 weights land in the VRAM carveout (GTT ~0).",
+  "honesty": "Accelerates the AI model (RAG generator), NOT the proof; RISC0 STARK stays CPU-only. Measured on Halo B (128GB/96GB-carveout Strix Halo), NOT the presenter Z2 (whose ROCr compute pool caps at ~47GiB and cannot hold a 54GB BF16 model). The 32GB-cap contrast is generous to a discrete card (CPU spill here is the same LPDDR5X, not PCIe). CPU (-ngl 0) baseline omitted: the 54GB BF16 model far exceeds the ~30GB system RAM under the 96GB carveout, so an -ngl 0 run measures NVMe thrash, not CPU compute (it hit the 420s cap during load).",
+  "captured": "2026-07-18T20:03:57+08:00",
+  "measured_on": "Halo B (Strix Halo 128GB, 96GB VRAM carveout) — NOT the presenter Z2 (ROCr pool caps ~47GiB)"
+}

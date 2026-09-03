@@ -1,0 +1,100 @@
+------------------------------------------------------------------
+[solo-guard] iGPU busy : 0%  (max 25%)
+[solo-guard] loadavg(1m): 7.34   (max 8.00, nproc=32)
+[solo-guard] lockfile  : /tmp/zkp-gpu.lock
+[solo-guard] STATUS    : SOLO (safe to record)
+------------------------------------------------------------------
+==> [07/ONCHAIN] Groth16 on-chain verifyStep
+    installing forge/anvil via foundryup
+
+
+.xOx.xOx.xOx.xOx.xOx.xOx.xOx.xOx.xOx.xOx.xOx.xOx.xOx.xOx.xOx.xOx.xOx.xOx
+
+ ╔═╗ ╔═╗ ╦ ╦ ╔╗╔ ╔╦╗ ╦═╗ ╦ ╦         Portable and modular toolkit
+ ╠╣  ║ ║ ║ ║ ║║║  ║║ ╠╦╝ ╚╦╝    for Ethereum Application Development
+ ╚   ╚═╝ ╚═╝ ╝╚╝ ═╩╝ ╩╚═  ╩                 written in Rust.
+
+.xOx.xOx.xOx.xOx.xOx.xOx.xOx.xOx.xOx.xOx.xOx.xOx.xOx.xOx.xOx.xOx.xOx.xOx
+
+Repo       : https://github.com/foundry-rs/foundry
+Book       : https://book.getfoundry.sh/
+Chat       : https://t.me/foundry_rs/
+Support    : https://t.me/foundry_support/
+Contribute : https://github.com/foundry-rs/foundry/blob/HEAD/CONTRIBUTING.md
+
+.xOx.xOx.xOx.xOx.xOx.xOx.xOx.xOx.xOx.xOx.xOx.xOx.xOx.xOx.xOx.xOx.xOx.xOx
+
+foundryup: checking if foundryup is up to date...
+
+Your installation of foundryup is out of date.
+
+Installed: 1.8.5 → Latest: 1.9.2
+
+To update, run:
+
+  foundryup --update
+
+Updating is highly recommended as it gives you access to the latest features and bug fixes.
+
+foundryup: fetching latest release tag from foundry-rs/foundry...
+foundryup: resolved release tag: v1.7.1
+foundryup: installing foundry (version v1.7.1, tag v1.7.1)
+foundryup: checking if forge, cast, anvil, and chisel for v1.7.1 version are already installed
+#=#=#                                                                          ##O#-#                                                                         ##O=#  #                                                                       #=#=-#  #                                                                      -#O#- #   #                                                                    -=#=#   #   #                                                                  -=O#-#   #   #                                                                 -=O=#  #   #   #                                                               -=O=-#  #    #   #                                                             -=O=- #   #   #    #                                                           ######################################################################## 100.0%
+foundryup: found attestation for v1.7.1 version, downloading attestation artifact, checking...
+#=#=#                                                                          ##O#-#                                                                         ##O=#  #                                                                       #=#=-#  #                                                                      #####################################                                     51.8%######################################################################## 100.0%
+foundryup: version v1.7.1 already installed and verified, activating...
+foundryup: use - forge 1.7.1 (4072e48705 2026-05-08T07:50:55.527285345Z)
+foundryup: use - cast 1.7.1 (4072e48705 2026-05-08T07:50:55.527285345Z)
+foundryup: use - anvil 1.7.1 (4072e48705 2026-05-08T07:50:55.527285345Z)
+foundryup: use - chisel 1.7.1 (4072e48705 2026-05-08T07:50:55.527285345Z)
+    [skip] forge-std already present
+    [skip] openzeppelin-contracts already present
+==> [07/ONCHAIN] forge build
+No files changed, compilation skipped
+==> starting local anvil on :8545
+==> [07/ONCHAIN] forge script deploy + verifyStep on anvil
+No files changed, compilation skipped
+Script ran successfully.
+
+== Logs ==
+  image_id:
+  0x3aec8c717d9b47f9b617c1695955d75e2bb525085283c1076591f97ae643c990
+  pre_root:
+  0xc9067ff04efcf6e968a1f66716db8a446327850919064c4feb2d0beb35a5f800
+  post_root:
+  0x67ad4ca97cc3de2f5eda3f74a01865c301e51a5bf919a0beb4281c6ad2525eed
+  mcycle: 100
+  seal bytes: 260
+  RiscZeroGroth16Verifier deployed at: 0x5FbDB2315678afecb367f032d93F642f64180aa3
+  StepVerifier deployed at: 0xe7f1725E7734CE288F8367e1Bb143E90bb3F0512
+  STEP_DEPLOY verifier=0x5FbDB2315678afecb367f032d93F642f64180aa3
+  STEP_DEPLOY step_verifier=0xe7f1725E7734CE288F8367e1Bb143E90bb3F0512
+  STEP_DEPLOY image_id=0x3aec8c717d9b47f9b617c1695955d75e2bb525085283c1076591f97ae643c990
+  STEP_DEPLOY chain_id=31337
+  verifyStep(seal, pre, mcycle, post) -> true  [ON-CHAIN VERIFY OK]
+
+## Setting up 1 EVM.
+
+==========================
+
+Chain 31337
+
+Estimated gas price: 2.000000001 gwei
+
+Estimated total gas used for script: 1833352
+
+Estimated amount required: 0.003666704001833352 ETH
+
+==========================
+
+
+==========================
+
+ONCHAIN EXECUTION COMPLETE & SUCCESSFUL.
+
+Transactions saved to: <repo-groth16-seam>/poc/risc0-cartesi-step-demo/forge/broadcast/StepVerify.s.sol/31337/run-latest.json
+
+Sensitive values saved to: <repo-groth16-seam>/poc/risc0-cartesi-step-demo/forge/cache/StepVerify.s.sol/31337/run-latest.json
+
+==> [07/ONCHAIN] OK — verifyStep(seal, pre, post) returned true on anvil

@@ -1,0 +1,13 @@
+size_MB,op,best_ms,GBps
+412,H2D_hipMemcpy,5.429,79.58
+412,D2H_hipMemcpy,6.239,69.24
+412,managed_GPUread_afterCPUwrite,2.488,173.65
+844,H2D_hipMemcpy,11.068,79.96
+844,D2H_hipMemcpy,12.846,68.89
+844,managed_GPUread_afterCPUwrite,4.526,195.52
+1256,H2D_hipMemcpy,16.350,80.55
+1256,D2H_hipMemcpy,19.100,68.95
+1256,managed_GPUread_afterCPUwrite,6.509,202.34
+2048,H2D_hipMemcpy,26.472,81.12
+2048,D2H_hipMemcpy,31.127,68.99
+2048,managed_GPUread_afterCPUwrite,11.048,194.38

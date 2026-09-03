@@ -1,0 +1,6 @@
+source,n,work_units,window_size,ported_ms,signed_ms,binned_ms,binned_speedup,scalars
+standalone,4194304,10240,8,305.84,406.03,207.73,1.4744,uniform-random
+standalone,4194304,10240,10,308.24,280.02,228.17,1.3509,uniform-random
+standalone,4194304,16384,10,262.50,233.06,243.48,1.0781,uniform-random
+standalone,8388608,16384,10,438.46,421.63,416.74,1.0521,uniform-random
+container,5200000-8388608,16384,10,1218.42,na,1514.25,0.8046,groth16-witness

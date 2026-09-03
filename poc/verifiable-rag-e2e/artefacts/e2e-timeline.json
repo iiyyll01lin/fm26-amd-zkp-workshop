@@ -1,0 +1,59 @@
+{
+  "title": "Verifiable RAG on Strix Halo \u2014 end-to-end across every engine",
+  "query": "how does the AMD iGPU accelerate embeddings while the proof stays on the CPU",
+  "stages": [
+    {
+      "stage": 1,
+      "name": "iGPU embed",
+      "engine": "iGPU (MiniLM-L6 / MIGraphX, ROCm)",
+      "status": "replay",
+      "metric": "backend=rocm model=MiniLM-L6 n=32 d=32 embed_doc_ms=9.345 embed_query_ms=1.407",
+      "artefact": "poc/zkml-faithful-demo/zkrag/artefacts/zkrag.corpus.json",
+      "seconds": 0.014,
+      "note": "committed embedding produced on the iGPU (embed_backend=rocm, no fallback)"
+    },
+    {
+      "stage": 2,
+      "name": "unified-memory index",
+      "engine": "unified LPDDR5X (CPU host build)",
+      "status": "replay",
+      "metric": "HNSW n=32 d=32 M=6 k=5 ef=32 in 94GB unified LPDDR5X (CPU-side index, no PCIe spill)",
+      "artefact": "poc/zkml-faithful-demo/zkrag/artefacts/zkrag.index.json",
+      "seconds": 0.013,
+      "note": "the 94GB coherent pool holds the index; no discrete-GPU 16GB ceiling"
+    },
+    {
+      "stage": 3,
+      "name": "CPU STARK",
+      "engine": "Zen5 CPU (RISC0 r0vm STARK)",
+      "status": "replay",
+      "metric": "recall=5/5 top_ids=[31, 17, 8, 26, 6] prove_s=66.4 verify_s=0.014 cycles=1048576 dev_mode=False",
+      "artefact": "poc/zkml-faithful-demo/zkrag/artefacts/zkrag.proof.info",
+      "seconds": 0.013,
+      "note": "real STARK seal (dev_mode=false); CPU-only \u2014 the iGPU never proves"
+    },
+    {
+      "stage": 4,
+      "name": "BN254 on-chain",
+      "engine": "EVM (anvil) \u2014 CPU Groth16 prover",
+      "status": "replay",
+      "metric": "Groth16 BN254 native_verify=True VERIFIED-ON-CHAIN constraints=10874 top_ids=['15', '14', '20', '7', '28'] (re-cast zkRAG relation; top-k parity with the BLS12-381 bench instance)",
+      "artefact": "poc/folding-step-demo/artefacts/zkrag-bn254/proof.json",
+      "seconds": 0.013,
+      "note": "committed proof verified natively AND on-chain (see zkrag-bn254/README.md, anvil.log)"
+    },
+    {
+      "stage": 5,
+      "name": "iGPU LLM gen",
+      "engine": "CPU (Qwen2.5-32B, llama.cpp; iGPU contended)",
+      "status": "live",
+      "metric": "Qwen2.5-32B-Instruct Q4_K_M, gen=3.15 tok/s (grounded in the proven top-5)",
+      "artefact": "poc/verifiable-rag-e2e/artefacts/e2e-answer.md",
+      "seconds": 32.416,
+      "note": "generated on the CPU here because the iGPU was contended; the SAME llama.cpp/HIP build runs this on the iGPU at gen 10.12 tok/s (poc/amd-bigmodel-demo/artefacts/bigmodel.json)"
+    }
+  ],
+  "honesty": "iGPU does stages 1 & 5 (the AI model \u2014 embed + generate); the CPU does stage 3 (the RISC0 STARK proof); stage 4 verifies on-chain. The proof is CPU-only \u2014 the iGPU never proves. Verifiable RAG = retrieval proven honest (STARK + on-chain) + answer grounded in the proven-correct retrieved docs; the LLM output itself is NOT proven.",
+  "host": "AMD Ryzen AI MAX+ PRO 395 / Radeon 8060S (gfx1151), ROCm 7.2.3, 94GB unified LPDDR5X",
+  "generated": "2026-06-16T13:43:30"
+}

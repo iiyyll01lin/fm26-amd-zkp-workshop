@@ -1,0 +1,11 @@
+==> [1/3] dump golden vectors from pinned risc0 CpuHal
+[dump] wrote field.txt, poseidon2.txt, sha256.txt to "<repo>/poc/risc0-rocm-prover/hip/vectors" + constants -> "<repo>/poc/risc0-rocm-prover/kernels/hip/poseidon2_constants_generated.hpp"
+==> [2/3] hipcc compile harnesses (--offload-arch=gfx1151)
+    built field_test
+    built poseidon2_test
+    built sha256_test
+==> [3/3] run bit-for-bit gates on gfx1151
+[STAGE1-FIELD] checked=5632 fail=0 -> PASS (GPU==CPU bit-for-bit, host+device)
+[STAGE1-POSEIDON2] checked=1768 fail=0 -> PASS (GPU==CPU bit-for-bit incl. golden test vectors)
+[STAGE1-SHA256] checked=400 fail=0 -> PASS (GPU==CPU bit-for-bit, host+device)
+STAGE 1: PASS (all field/Poseidon2/SHA ops GPU==CPU bit-for-bit)

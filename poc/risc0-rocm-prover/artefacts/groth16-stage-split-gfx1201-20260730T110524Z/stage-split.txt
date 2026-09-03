@@ -1,0 +1,9 @@
+ROCm prover         6676.2 ms
+  msm_g1            3351.5 ms   50.2%   4 calls
+  msm_g2            2182.1 ms   32.7%   1 call
+  ntt                436.3 ms    6.5%   6 calls
+  outside the lib    706.4 ms   10.6%
+MSM share f = 82.9%   accelerated share = 89.4%
+CPU prover          1674.0 ms   gap 3.99x
+
+per call: g1 838 ms, g2 2182 ms -> G2 costs 2.6x a G1 call (Fq2)

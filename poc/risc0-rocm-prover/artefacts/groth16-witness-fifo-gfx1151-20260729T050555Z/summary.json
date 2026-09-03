@@ -1,0 +1,22 @@
+{
+  "journal_sha256": "c07fc6646401c025e2a276df15efabacf7d5cf48cbcb414e4107f5bf8a5cb127",
+  "measured_opt_levels": [
+    "O0"
+  ],
+  "modes": {
+    "O0": {
+      "count": 3,
+      "groth16_container_share": 0.052852,
+      "image_digest": "sha256:5196774f1312a68a5766d5e6df83485175269bf3ebe848c2d77068e3e9d5a8b4",
+      "pre_groth16_median_s": 199.462048,
+      "prove_median_s": 11.122012,
+      "r0vm_total_median_s": 210.592337,
+      "total_median_s": 11.130289,
+      "witness_binary_sha256": "a8910a574b6d158d97407b825777e399efa1cbed095f48cadf72697e69fb8135",
+      "witness_median_s": 1.718337
+    }
+  },
+  "recorded_rows": 3,
+  "schema": "risc0-groth16-witness-baseline-v1",
+  "witness_mode": "fifo"
+}

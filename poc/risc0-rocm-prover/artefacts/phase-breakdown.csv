@@ -1,0 +1,22 @@
+# RISC0 rv32im segment-STARK per-phase wall breakdown (HYBRID build, gfx1151, ROCm 7.2.3, solo)
+# Workload: Demo B ~4-segment Cartesi-step composite (3x po2=20 + 1x po2=19), poseidon2, RAYON_NUM_THREADS=32
+# Method: env-gated CPU Instant timers wrap each HipHal/HipCircuitHal op. Every HipHal FFI wrapper is
+#   synchronous (launch_done()->hipDeviceSynchronize), so the CPU timer captures that op's GPU time.
+#   Cross-checked against an independent rocprofv3 --kernel-trace run (2026-07-20, solo).
+# prove_total = sum of 4 segment proves = 25687.870 ms ; end-to-end r0vm wall = 26110 ms (26.11 s)
+# GPU kernels (rocprofv3) = 15266.841 ms (59.4% of prove) ; CPU = 10420.9 ms (40.6% of prove)
+phase,engine,cpu_timer_ms,pct_of_prove,hal_op_calls,rocprofv3_kernel_ms,note
+eval_check,GPU_iGPU,7502.695,29.21,4,7452.585,generated 26k-LOC rv32im check-poly on the iGPU
+accum,CPU_delegated,5149.052,20.05,4,0.000,grand-product permutation (steps.cpp cpu_accum); GPU idle
+NTT,GPU_iGPU,5199.822,20.24,68,5205.010,batch_expand+evaluate+interpolate+bit_reverse(+normalize)
+witgen,CPU_delegated,2265.772,8.82,4,0.000,witness generation (steps.cpp cpu_witgen); GPU idle
+merkle_poseidon2,GPU_iGPU,2042.367,7.95,541,2083.847,hash_rows+hash_fold (poseidon2 Merkle commit)
+combos,CPU_default,409.099,1.59,8,0.000,poly_divide DEEP combos (rayon CPU trait default)
+other_poly,GPU_iGPU,342.545,1.33,52,224.013,zk_shift+scatter+eltwise_copy+eltwise_zeroize
+fri_deep,GPU_iGPU,307.484,1.20,48,301.356,fri_fold+mix_poly_coeffs+batch_evaluate_any+eltwise_sum
+cpu_glue,CPU,2469.034,9.61,0,0.000,Fiat-Shamir hashing+IOP+alloc+Merkle-tree glue (residual = prove_total - sum)
+prove_total,MIXED,25687.870,100.00,4,15266.841,GPU 59.4% / CPU 40.6%
+# --- Part B target (witgen+accum, CPU-delegated) ---
+# witgen+accum = 7414.824 ms = 28.87% of prove_total, 28.40% of end-to-end wall.
+# Amdahl ceiling if witgen+accum -> 0 on GPU: prove 1/(1-0.2887)=1.406x ; end-to-end 1/(1-0.2840)=1.397x.
+# accum (20.05%) > witgen (8.82%); accum is a sequential grand-product (prefix-product dep) = hardest to parallelize on GPU.

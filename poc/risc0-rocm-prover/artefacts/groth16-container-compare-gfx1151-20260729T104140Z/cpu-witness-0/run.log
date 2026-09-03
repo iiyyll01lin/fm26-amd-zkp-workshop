@@ -1,0 +1,17 @@
+[risc0-groth16-stage] run_id=cmp-cpu-witness-0 mode=fifo stage=entrypoint event=start t_ns=957309053186963
+[risc0-groth16-stage] run_id=cmp-cpu-witness-0 mode=fifo stage=fifo event=create t_ns=957309055322990
+[risc0-groth16-stage] run_id=cmp-cpu-witness-0 mode=fifo stage=witness event=start t_ns=957309056033964
+[risc0-groth16-stage] run_id=cmp-cpu-witness-0 mode=fifo stage=prover event=start t_ns=957309056830909
+[90m10:42:32[0m DBG constraint system loaded [36mtook=[0m318.653665
+[90m10:42:32[0m DBG proving key loaded [36mtook=[0m546.610615
+[risc0-groth16-stage] run_id=cmp-cpu-witness-0 mode=fifo stage=fifo event=first_payload t_ns=957310649478878 wchar=770048 threshold=65536
+[90m10:42:33[0m DBG WTNS header [36mnInputs=[0m5635930 [36mnWitnesses=[0m5635930
+[risc0-groth16-stage] run_id=cmp-cpu-witness-0 mode=fifo stage=witness event=finish t_ns=957310771991581 rc=0
+[90m10:42:33[0m DBG witness data loaded [36mtook=[0m1008.442696
+[90m10:42:33[0m DBG constraint system solver done [36mnbConstraints=[0m5676573 [36mtook=[0m138.99006
+[90m10:42:37[0m DBG prover done [36macceleration=[0mnone [36mbackend=[0mgroth16 [36mcurve=[0mbn254 [36mnbConstraints=[0m5676573 [36mtook=[0m3454.0855
+[risc0-groth16-stage] run_id=cmp-cpu-witness-0 mode=fifo stage=prover event=finish t_ns=957314768155074 rc=0
+[risc0-groth16-stage] run_id=cmp-cpu-witness-0 mode=fifo stage=wait event=finish t_ns=957314769796943 witness_rc=0 prover_rc=0
+[risc0-groth16-stage] run_id=cmp-cpu-witness-0 mode=fifo stage=artifact event=record t_ns=957314773639140 kind=proof bytes=727 sha256=8981580ac08af918a51344f55eafa03652b56ba427ff11ba69e6ac05f44feaaf
+[risc0-groth16-stage] run_id=cmp-cpu-witness-0 mode=fifo stage=entrypoint event=finish t_ns=957314774850453 rc=0
+[risc0-groth16-stage] run_id=cmp-cpu-witness-0 mode=fifo stage=total event=finish t_ns=957314776014716 rc=0

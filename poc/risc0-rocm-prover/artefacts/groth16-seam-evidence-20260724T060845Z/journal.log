@@ -1,0 +1,26 @@
+------------------------------------------------------------------
+[solo-guard] iGPU busy : 57%  (max 25%)
+[solo-guard] loadavg(1m): 21.30   (max 8.00, nproc=32)
+[solo-guard] lockfile  : /tmp/zkp-gpu.lock
+[solo-guard] STATUS    : CONTENDED — iGPU busy 57% > 25%
+------------------------------------------------------------------
+------------------------------------------------------------------
+[solo-guard] iGPU busy : 0%  (max 25%)
+[solo-guard] loadavg(1m): 12.91   (max 8.00, nproc=32)
+[solo-guard] lockfile  : /tmp/zkp-gpu.lock
+[solo-guard] STATUS    : CONTENDED — loadavg 12.91 > 8.00
+------------------------------------------------------------------
+------------------------------------------------------------------
+[solo-guard] iGPU busy : 0%  (max 25%)
+[solo-guard] loadavg(1m): 7.89   (max 8.00, nproc=32)
+[solo-guard] lockfile  : /tmp/zkp-gpu.lock
+[solo-guard] STATUS    : SOLO (safe to record)
+------------------------------------------------------------------
+SEAL_HEX=0xbb001d4424e6c3d077006e27d951838048a4c9f65f00bd188c1b76fdd9998f88d39882bb24bf8f1508a211d3dddad5ca39ecec4c07c145ef7ca1f379ede1d8cda8b8c13a02a1774b1d496d5c83d86452293c05edd6c04e9e233dae0e882c9f8c7d5d08bf0775593bbc6c52585f7df59c7ee90048a21d742a0de4b53faee51b73ec40ec1003fa0350246c648fa1a9d9e8edd60d3ec9fc3334def8372eeb01cd6ad801df5402333601feb3b1f51d720372a7e1b9492f2bb808794afdfa1867c42fbacf406b066185b10cf1bf6376dadcb9a468986be61587232866fcdfe54c9d74496176941030c9039587739e4190b016ecdce586abbd67670ec50ccd02092186002fa167
+SEAL_BYTES=260
+JOURNAL_HEX=0xc9067ff04efcf6e968a1f66716db8a446327850919064c4feb2d0beb35a5f800000000000000000000000000000000000000000000000000000000000000006467ad4ca97cc3de2f5eda3f74a01865c301e51a5bf919a0beb4281c6ad2525eed
+JOURNAL_DIGEST=0x6ffd15b4566971e82332ddfb05c81c7a95f484bd0621bebcc1aaa000769ab50d
+SEAL_HEX=0xbb001d4429a77e42c9a37e2ecfe6649029f12adfef80d31df33fdc5632d89bc316cc3ef12d313c83bc59430bb6bd7ef45f50ba3fd9ce56241d6e3e7910b135026628e44c2be2ae34bc09ec13a2aaaced5717f7105d224d5abf3a07bbba6134cba3443e000880980af4323be3fbacca1f43ad834c1c8a620cac01f0536770cacc5e9a5ee404e7125fbb14b64a04fab98688b8eb17c90f31ecd15081e5dbc39f1fe31e0f1a20c0034e4a587a0a66c6cb576affc1987e39c6636cfefcbb35bc6258ca3a2a3c0bdf4799528c6577b44a7b225724c27f563f5d1f27762e09687cd0f8d109b53c05509f541c0b7f06b23aebd6a2c3c95ccedff8a9ff54a81535c6914829700ded
+SEAL_BYTES=260
+JOURNAL_HEX=0xc9067ff04efcf6e968a1f66716db8a446327850919064c4feb2d0beb35a5f800000000000000000000000000000000000000000000000000000000000000006467ad4ca97cc3de2f5eda3f74a01865c301e51a5bf919a0beb4281c6ad2525eed
+JOURNAL_DIGEST=0x6ffd15b4566971e82332ddfb05c81c7a95f484bd0621bebcc1aaa000769ab50d

@@ -1,0 +1,11 @@
+started_utc=2026-08-06T09:12:55Z
+image=risc0-groth16-prover:rocm-witgen-o0
+image_digest=sha256:91f515e2995be1cb61b4ae458fa6f998c724db3324af1813e1acaff54466e4ef
+input_sha256=b5da3c426f08a628d5d19c56eb405bc4858a22df052bf9d74424c37c14bd4a92
+witness_sha256=62de86f1c3d97f2630154250dd5f3e05797a09999a71967d35d8796740313e24
+target_gpu_bdf=all
+target_render_node=all
+gomaxprocs=container-default
+host_nproc=32
+rocm_lib_host=image-default
+probe_adds=1

@@ -1,0 +1,45 @@
+=== fork-GPU (rocm gfx1151) ===
+------------------------------------------------------------------
+[solo-guard] iGPU busy : 0%  (max 25%)
+[solo-guard] loadavg(1m): 0.65   (max 8.00, nproc=32)
+[solo-guard] lockfile  : /tmp/zkp-gpu.lock
+[solo-guard] STATUS    : SOLO (safe to record)
+------------------------------------------------------------------
+[a3] fork-gpu run1: 26.4s
+[a3] fork-gpu run2: 26.1s
+fork-gpu,r0vm-rocm-knowngood,26.1,1112064,valid,true,0.65
+=== fork-CPU (no-rocm, same code) ===
+[a3] cooldown load=0.99 gpu=58% (waited 0s)
+------------------------------------------------------------------
+[solo-guard] iGPU busy : 0%  (max 25%)
+[solo-guard] loadavg(1m): 0.77   (max 8.00, nproc=32)
+[solo-guard] lockfile  : /tmp/zkp-gpu.lock
+[solo-guard] STATUS    : SOLO (safe to record)
+------------------------------------------------------------------
+[a3] fork-cpu run1: 145.1s
+[a3] fork-cpu run2: 142.4s
+fork-cpu,r0vm-cpu-fresh,142.4,1112064,valid,true,0.77
+=== installed r0vm 2.3.2 (rzup) ===
+[a3] cooldown load=28.99 gpu=0% (waited 0s)
+[a3] cooldown load=22.57 gpu=0% (waited 15s)
+[a3] cooldown load=17.64 gpu=0% (waited 30s)
+[a3] cooldown load=13.80 gpu=0% (waited 45s)
+[a3] cooldown load=10.81 gpu=0% (waited 60s)
+[a3] cooldown load=8.41 gpu=0% (waited 75s)
+[a3] cooldown load=6.63 gpu=0% (waited 90s)
+[a3] cooldown load=5.16 gpu=0% (waited 105s)
+------------------------------------------------------------------
+[solo-guard] iGPU busy : 0%  (max 25%)
+[solo-guard] loadavg(1m): 4.02   (max 8.00, nproc=32)
+[solo-guard] lockfile  : /tmp/zkp-gpu.lock
+[solo-guard] STATUS    : SOLO (safe to record)
+------------------------------------------------------------------
+[a3] installed run1: 177.6s
+installed,r0vm,177.6,1112064,valid,true,4.02
+=== A3 headline done ===
+config,backend,wall_s,receipt_bytes,verify,solo,loadavg
+fork-gpu,r0vm-rocm-knowngood,26.1,1112064,valid,true,0.65
+fork-cpu,r0vm-cpu-fresh,142.4,1112064,valid,true,0.77
+installed,r0vm,177.6,1112064,valid,true,4.02
+fork-GPU speedup vs fork-CPU: 5.46x
+fork-CPU vs installed codegen gap: installed/fork-cpu = 1.25x

@@ -1,0 +1,12 @@
+[path-e] GPU: gfx1151 | 20 CUs | 47.0 GiB   vs   CPU baseline: 32 rayon threads
+[path-e] reps/cell = 3 (reporting best/min wall ms)
+[path-e][msm] generating 2^22 = 4194304 random bases + scalars ...
+[path-e][msm] 2^16 n=65536     gpu=    74.7ms cpu=    60.0ms speedup=0.80x
+[path-e][msm] 2^18 n=262144    gpu=   230.8ms cpu=   209.4ms speedup=0.91x
+[path-e][msm] 2^20 n=1048576   gpu=   804.3ms cpu=   851.8ms speedup=1.06x
+[path-e][msm] 2^22 n=4194304   gpu=  2641.5ms cpu=  3204.0ms speedup=1.21x
+[path-e][fft] 2^16 n=65536     gpu=     1.5ms cpu=     6.9ms speedup=4.75x
+[path-e][fft] 2^18 n=262144    gpu=     7.8ms cpu=    24.1ms speedup=3.11x
+[path-e][fft] 2^20 n=1048576   gpu=    27.2ms cpu=   104.0ms speedup=3.83x
+[path-e][fft] 2^22 n=4194304   gpu=    90.2ms cpu=   500.9ms speedup=5.55x
+[path-e][fft] 2^24 n=16777216  gpu=   360.1ms cpu=  1847.9ms speedup=5.13x

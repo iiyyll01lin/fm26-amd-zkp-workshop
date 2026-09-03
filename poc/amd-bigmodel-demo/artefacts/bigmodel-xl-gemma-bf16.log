@@ -1,0 +1,53 @@
+######################################################################
+# Phase F XL — Gemma-3-27B-it BF16 on the gfx1151 iGPU  ·  MEASURED ON HALO B
+#   model  = google_gemma-3-27b-it-bf16 (sharded: 00001-of-00002 + 00002-of-00002)
+#   source = bartowski/google_gemma-3-27b-it-GGUF (public), 54.03 GB on disk
+#   weights= 54.03 GB   ctx=8192   pp=4096   tg=256   reps=3
+#   host   = Halo B (test001-stxh): AMD Ryzen AI MAX+ 395 / Radeon 8060S (gfx1151)
+#            128 GB Strix Halo, 96 GB VRAM carveout, ROCm 7.2.0
+#   NOTE   : run on Halo B, NOT the presenter Z2 (whose ROCr compute pool caps at
+#            ~47 GiB and therefore cannot hold a 54 GB BF16 model).
+######################################################################
+[run] shards:
+-rw-rw-r-- 1 test001 test001 39987970624 google_gemma-3-27b-it-bf16-00001-of-00002.gguf
+-rw-rw-r-- 1 test001 test001 14039304192 google_gemma-3-27b-it-bf16-00002-of-00002.gguf
+[run] devices:
+Available devices:
+  ROCm0: Radeon 8060S Graphics (98304 MiB = 96 GiB VRAM carveout, gfx1151)
+
+=== condition: full_igpu  (-ngl 99, pp=4096, tg=256, r=3) ===
+[run] full_igpu: prefill=496.46 tok/s  gen=4.04 tok/s  peak GPU mem=56.13 GB (VRAM 56.11 + GTT 0.02)
+
+=== condition: cap_32gb  (-ngl 34, pp=4096, tg=256, r=3) ===
+[run] cap_32gb: prefill=375.56 tok/s  gen=2.78 tok/s  peak GPU mem=31.85 GB (VRAM 31.83 + GTT 0.03)
+[note] rocm-smi raw max for cap_32gb was 54.40 GB for a SINGLE 0.4 s sample during model LOAD (the
+       54 GB file transiently mmap'd into the carveout-backed page cache on this 30 GB-system-RAM box).
+       The reported peak is the SUSTAINED compute-phase value (held >= 2 s): 31.85 GB — the true
+       GPU-resident working set when GPU offload is capped to ~32 GB. full_igpu has no such transient
+       (it genuinely holds all 54 GB of weights resident: 56.13 GB sustained = raw max).
+
+=== condition: cpu  (-ngl 0) — OMITTED ===
+[run] cpu FAILED (rc=124): -ngl 0 with a 54 GB BF16 model on ~30 GB system RAM (under the 96 GB VRAM
+      carveout) measures NVMe thrash, not CPU compute; it hit the 420 s cap during load. Row omitted.
+
+=== sample generation (real pretrained weights, iGPU full offload -ngl 99) ===
+# The in-harness sample hit its 600 s cap during the slow 54 GB load; re-run standalone with a longer
+# timeout on the SAME model at -ngl 99 (full iGPU offload). Output verbatim:
+> <start_of_turn>user
+In three sentences, explain what unified memory on the AMD Ryzen AI MAX+ 395 (Strix Halo) APU lets you do when running a 27-billion-parameter LLM in BF16 that a 32 GB discrete GPU cannot.<end_of_turn>
+<start_of_turn>model
+Unified memory on the Ryzen AI MAX+ 395 APU pools the system RAM and APU memory into a single, large resource, allowing it to load and run a 27B parameter LLM in BF16 *entirely* within that combined pool—something a 32GB discrete GPU cannot do due to its limited VRAM. This eliminates the need to offload layers to slower system RAM, resulting in significantly faster inference speeds and lower latency for large language models. Essentially, it unlocks the ability to run models that simply wouldn't fit on a typical dedicated GPU without performance-crippling workarounds.
+[ Prompt: 53.0 t/s | Generation: 4.0 t/s ]
+
+=== reconciled CSV (sustained peaks) ===
+condition,ngl,weights_gb,peak_vram_gb,peak_gtt_gb,peak_gpu_gb,prefill_tps,gen_tps
+full_igpu,99,54.03,56.11,0.02,56.13,496.46,4.04
+cap_32gb,34,54.03,31.83,0.03,31.85,375.56,2.78
+
+=== acceptance ===
+full_igpu peak GPU-resident = 56.13 GB > 32 GB  ->  PASS  (a 54 GB BF16 27B model held resident on the iGPU)
+coherent Gemma-3 generation                      ->  PASS  (see sample above)
+32 GB-cap contrast: 31.85 GB @ gen 2.78 tok/s vs full 56.13 GB @ gen 4.04 tok/s (throughput cliff)
+MEASURED ON: Halo B (test001-stxh) — Strix Halo 128 GB / 96 GB VRAM carveout / ROCm 7.2.0.
+NOT the presenter Z2 (ROCr compute pool caps ~47 GiB; cannot hold a 54 GB BF16 model).
+captured: 2026-07-18

@@ -1,0 +1,15 @@
+# Same stack as poc/ezkl-embedding-demo (Demo A): EZKL 22.3.0 + CPU torch.
+# These versions are known-good for the attention-block circuit on this box.
+ezkl==22.3.0
+
+# Tiny ONNX export only; CPU-only torch keeps the image small.
+torch==2.4.1 --index-url https://download.pytorch.org/whl/cpu
+
+onnx==1.16.2
+onnxruntime==1.19.2
+
+numpy==1.26.4
+
+# Notebook support (optional).
+jupyter==1.0.0
+ipykernel==6.29.5

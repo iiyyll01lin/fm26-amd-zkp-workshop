@@ -1,0 +1,5 @@
+fixed           41.30 ms  (19.9% of the k=1 run)
+per mixed add  166.17 ms  (80.1%)  = 1.238 ns
+residual at k=1: predicted 207.47 ms vs measured 206.65 ms
+multiply floor 0.946 ns -> per-add efficiency 76.4%
+batch affine at 5.5 muls: 124.4 ms -> 1.66x over binned, 2.42x over the port

@@ -1,0 +1,23 @@
+[fold] N=2 chained steps (schema v1), genesis_pre=0xde22660f0b61cae6.. final_post=0x71b586fe83b44c8d..
+[fold] sha256(pre||mcycle_be32||post) journal relation (byte-identical to StepVerifier.verifyStep = sha256(abi.encode(pre,mcycle,post)))
+[fold] preprocessing Nova params...
+[fold] preprocessing DeciderEth (Groth16+KZG) params...
+[fold] Nova::prove_step 0: 302.355429ms
+[fold] Nova::prove_step 1: 299.449606ms
+[fold] generating DeciderEth (Groth16/BN254) proof...
+[gpu-msm] BN254 GPU context -> AMD Radeon Graphics (20 CUs, 48160 MiB)
+[zkp-hip] msm_g1 n=16777215 work_units=2560 window=10 kernel=0
+[zkp-hip] msm_g1 n=6013755 work_units=2560 window=10 kernel=0
+[zkp-hip] msm_g1 n=3019867 work_units=2560 window=10 kernel=0
+[zkp-hip] msm_g1 n=5701007 work_units=2560 window=10 kernel=0
+[fold] decider proof generated in 60.625470983s
+[fold] DeciderEth native verification: OK
+[fold] wrote:
+         /tmp/democ-clean/NovaDecider.sol
+         /tmp/democ-clean/folded.proof.json
+         /tmp/democ-clean/folded.public.json
+         /tmp/democ-clean/folded.calldata.hex
+[fold] DONE — N=2 steps folded -> 1 Groth16 proof -> NovaDecider.sol
+[zkp-hip] stage_ms msm_g1=7730.340 msm_g2=0.000 ntt=0.000 calls=4/0/0 kernel=ported
+[zkp-hip] g1_phase_ms alloc=482.713 h2d=178.529 kernel=7019.535 d2h=0.277 free=49.285
+EXIT=0

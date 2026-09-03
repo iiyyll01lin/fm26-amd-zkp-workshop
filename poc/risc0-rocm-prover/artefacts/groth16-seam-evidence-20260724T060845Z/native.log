@@ -1,0 +1,11 @@
+------------------------------------------------------------------
+[solo-guard] iGPU busy : 1%  (max 25%)
+[solo-guard] loadavg(1m): 0.25   (max 8.00, nproc=32)
+[solo-guard] lockfile  : /tmp/zkp-gpu.lock
+[solo-guard] STATUS    : SOLO (safe to record)
+------------------------------------------------------------------
+applied Groth16 ROCm seam to risc0 218e3bc4a8ffcd203a9cd4e46f921bf60aa7e2bd at <repo-groth16-seam>/poc/risc0-rocm-prover/vendor/risc0
+=== RUN   TestROCmProofNativeVerify
+--- PASS: TestROCmProofNativeVerify (0.08s)
+PASS
+ok  	circom-compat/test	0.100s

@@ -1,0 +1,22 @@
+# A2 — unified-memory CPU->GPU handoff cost vs hipMemcpy/PCIe counterfactual (gfx1151 APU, solo)
+# Boundary buffers the CPU witgen/accum write and the GPU STARK reads (Val=4B):
+#   data = cycles*211 cols ; accum = cycles*103 cols ; code = cycles*1 col
+# Measured bandwidths from hip/a2_handoff.hip (best of 6 reps, solo); PCIe rows are cited specs (no discrete GPU on this box).
+metric,value,unit,source
+boundary_bytes_po2_20,1.3212,GB,data 844MB + accum 412MB + code 4MB
+boundary_bytes_po2_19,0.6606,GB,data 422MB + accum 206MB + code 2MB
+boundary_bytes_session,4.6242,GB,3x po2=20 + 1x po2=19 (the ~4-seg Demo B prove)
+measured_hipMemcpy_H2D_bw,80.2,GB/s,a2_handoff.hip (844MB=11.07ms)
+measured_hipMemcpy_D2H_bw,69.0,GB/s,a2_handoff.hip
+measured_managed_GPUread_bw,193.0,GB/s,a2_handoff.hip (GPU reads CPU-written managed buf; no migration penalty)
+actual_handoff_memcpy_calls,0,count,rocprofv3 --memory-copy-trace produced no trace file (only 0.031ms internal rocclr copy)
+actual_handoff_copy_cost,0.00,ms,unified memory = zero explicit copy (managed buffers are CPU-written & GPU-read in place)
+# --- counterfactual: H2D copy a discrete-GPU hybrid would pay for the session (4.6242 GB) ---
+counterfactual_H2D_apu_memcpy_80GBps,57.8,ms,0.22% of 26.11s prove
+counterfactual_H2D_pcie5_x16_55GBps,84.1,ms,0.32% of 26.11s prove
+counterfactual_H2D_pcie4_x16_26GBps,177.9,ms,0.68% of 26.11s prove
+counterfactual_H2D_unified_managed,0.0,ms,0.00% (measured actual)
+# --- structural unified-memory wins (bigger than the copy time for this compute-bound prove) ---
+duplicate_ram_avoided_session,4.6242,GB,discrete hybrid needs trace in host RAM AND device VRAM; APU keeps ONE copy
+peak_working_set_po2_20,9.78,GB,single unified pool (would be VRAM+host on discrete)
+peak_working_set_po2_21,18.9,GB,exceeds 16GB discrete VRAM; 94GB unified pool holds it (roofline OOM ceiling)

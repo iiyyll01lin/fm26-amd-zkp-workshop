@@ -1,0 +1,11 @@
+{
+  "image_id_hex": "40553104b4d4caea3ea1c9a9e7992c1dcaa8aff1423aff7d08b48e8c1ae8466c",
+  "dev_mode": false,
+  "total_cycles": 1048576,
+  "user_cycles": 632175,
+  "segments": 1,
+  "prove_seconds": 66.446771964,
+  "verify_seconds": 0.014037323,
+  "receipt_bytes": 282218,
+  "journal_bytes": 424
+}

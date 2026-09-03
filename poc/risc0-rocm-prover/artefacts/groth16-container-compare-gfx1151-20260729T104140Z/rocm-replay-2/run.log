@@ -1,0 +1,19 @@
+[risc0-groth16-stage] run_id=cmp-rocm-replay-2 mode=fifo stage=entrypoint event=start t_ns=957491490074538
+[risc0-groth16-stage] run_id=cmp-rocm-replay-2 mode=fifo stage=witness event=replay t_ns=957491490870721 path=/mnt/witness.wtns
+[risc0-groth16-stage] run_id=cmp-rocm-replay-2 mode=fifo stage=fifo event=create t_ns=957491492959099
+[risc0-groth16-stage] run_id=cmp-rocm-replay-2 mode=fifo stage=witness event=start t_ns=957491493678979
+[risc0-groth16-stage] run_id=cmp-rocm-replay-2 mode=fifo stage=prover event=start t_ns=957491494464482
+[90m10:45:34[0m DBG constraint system loaded [36mtook=[0m305.670311
+[90m10:45:35[0m DBG proving key loaded [36mtook=[0m544.887223
+[risc0-groth16-stage] run_id=cmp-rocm-replay-2 mode=fifo stage=fifo event=first_payload t_ns=957492351165068 wchar=2621440 threshold=65536
+[90m10:45:35[0m DBG WTNS header [36mnInputs=[0m5635930 [36mnWitnesses=[0m5635930
+[risc0-groth16-stage] run_id=cmp-rocm-replay-2 mode=fifo stage=witness event=finish t_ns=957492398310421 rc=0
+[90m10:45:35[0m DBG witness data loaded [36mtook=[0m232.512095
+[90m10:45:35[0m [32mINF[0m [1m[risc0-groth16-rocm] ACTIVE[0m [36macceleration=[0mrocm [36mbackend=[0mgroth16 [36mcompute_units=[0m20 [36mcurve=[0mbn254 [36mdevice=[0m"Radeon 8060S Graphics" [36mnbConstraints=[0m5676573
+[90m10:45:35[0m DBG constraint system solver done [36mnbConstraints=[0m5676573 [36mtook=[0m143.528363
+[90m10:45:44[0m DBG prover done [36macceleration=[0mrocm [36mbackend=[0mgroth16 [36mcurve=[0mbn254 [36mnbConstraints=[0m5676573 [36mtook=[0m8844.447561
+[risc0-groth16-stage] run_id=cmp-rocm-replay-2 mode=fifo stage=prover event=finish t_ns=957501822143244 rc=0
+[risc0-groth16-stage] run_id=cmp-rocm-replay-2 mode=fifo stage=wait event=finish t_ns=957501823792027 witness_rc=0 prover_rc=0
+[risc0-groth16-stage] run_id=cmp-rocm-replay-2 mode=fifo stage=artifact event=record t_ns=957501827662236 kind=proof bytes=727 sha256=9655d9c63f3513da1177579e4b2de2fc5cd7c175a7a7f4f97943fec4aab8ad77
+[risc0-groth16-stage] run_id=cmp-rocm-replay-2 mode=fifo stage=entrypoint event=finish t_ns=957501828842149 rc=0
+[risc0-groth16-stage] run_id=cmp-rocm-replay-2 mode=fifo stage=total event=finish t_ns=957501829914851 rc=0

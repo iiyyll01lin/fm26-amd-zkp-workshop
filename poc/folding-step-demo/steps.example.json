@@ -1,0 +1,35 @@
+{
+  "version": "1",
+  "hash_function": "sha256",
+  "abi_encoding": "abi.encode(bytes32,uint256,bytes32) == pre||mcycle||post (96 bytes)",
+  "n": 4,
+  "genesis_pre_root": "0x1111111111111111111111111111111111111111111111111111111111111111",
+  "final_post_root": "0x5555555555555555555555555555555555555555555555555555555555555555",
+  "note": "Example input for a standalone `cargo run -- --steps steps.example.json`. Matches the schema produced by 08-fold-steps.sh: steps[0].pre_root == genesis_pre_root and each step's post_root == the next step's pre_root (one contiguous chain). 08 generates artefacts/steps.json automatically; this file is just for direct runs.",
+  "steps": [
+    {
+      "index": 0,
+      "pre_root":  "0x1111111111111111111111111111111111111111111111111111111111111111",
+      "post_root": "0x2222222222222222222222222222222222222222222222222222222222222222",
+      "mcycle_count": 1
+    },
+    {
+      "index": 1,
+      "pre_root":  "0x2222222222222222222222222222222222222222222222222222222222222222",
+      "post_root": "0x3333333333333333333333333333333333333333333333333333333333333333",
+      "mcycle_count": 1
+    },
+    {
+      "index": 2,
+      "pre_root":  "0x3333333333333333333333333333333333333333333333333333333333333333",
+      "post_root": "0x4444444444444444444444444444444444444444444444444444444444444444",
+      "mcycle_count": 1
+    },
+    {
+      "index": 3,
+      "pre_root":  "0x4444444444444444444444444444444444444444444444444444444444444444",
+      "post_root": "0x5555555555555555555555555555555555555555555555555555555555555555",
+      "mcycle_count": 1
+    }
+  ]
+}

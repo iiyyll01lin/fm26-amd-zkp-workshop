@@ -1,0 +1,38 @@
+# Demo B — maximal full run on AMD Strix Halo
+generated_utc=2026-06-09T13:10:32Z
+host=aup-HP-Z2-Mini-G1a-Workstation-Desktop-PC
+kernel=6.17.0-29-generic
+
+## Capabilities (AI inference; proofs are CPU-only on AMD)
+cpu_model=AMD RYZEN AI MAX+ PRO 395 w/ Radeon 8060S
+rayon_num_threads=32
+unified_ram_gb=94
+ai_gpu_backend=rocm
+hsa_override_gfx_version=<unset>
+hsa_enable_sdma=0
+
+## Targets
+demo-b-full.status=PASS  wall_seconds=163
+demo-b-full-rootfs.status=skipped  wall_seconds=n/a
+demo-b-groth16.status=PASS  wall_seconds=159
+integration-full.status=skipped  wall_seconds=n/a
+bench.status=PASS  wall_seconds=24682
+demo-c-fold.status=skipped  wall_seconds=n/a
+npu-probe.status=PASS  wall_seconds=1
+
+## Proof artefacts
+image_id=3aec8c717d9b47f9b617c1695955d75e2bb525085283c1076591f97ae643c990
+last_mode=full
+pre_root=0x9137e1ec36576f5ac2eab045cd143cb9944f12d7f108247031ac83c7ec7a2125
+post_root=0xd140940c18940a63197463549c1b0c1932c5ff5b13f204af87cc705157906def
+step.proof.bin_bytes=1393314
+prover_peak_rss=n/a
+step.groth16.bin_bytes=260
+groth16_journal_digest_matches_step_verifier=true
+
+## Next-step stages (opt-in; --bench/--folding/--npu-probe; n/a = not run)
+bench.throughput_csv_rows=28
+folding.folded_proof_bytes=n/a
+npu.detected=yes
+npu.verdict=DRIVER-READY — amdxdna + accel node present, but XRT did not enumerate it (check fw/XRT version match)
+sepolia=manual: STEP_SEPOLIA=1 make deploy-sepolia (see docs/sepolia-deploy.md)

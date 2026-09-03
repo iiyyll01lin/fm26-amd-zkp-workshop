@@ -1,0 +1,255 @@
+{
+  "schema_version": 1,
+  "title": "zkLLM on AMD Strix Halo \u2014 one attention block across three engines",
+  "host": {
+    "cpu_model": "AMD RYZEN AI MAX+ PRO 395 w/ Radeon 8060S",
+    "threads": 32,
+    "ram_gb": 94,
+    "kernel": "6.17.0-35-generic"
+  },
+  "captured": {
+    "forward": "live",
+    "prove": "delegated-committed",
+    "msm": "reused-path-e-committed",
+    "parity": "live"
+  },
+  "forward_ms_igpu": 0.129,
+  "forward_ms_cpu": 0.012,
+  "forward_speedup": 0.093,
+  "prove_seconds": 7.852,
+  "verify_seconds": null,
+  "verify_status": "PROOF VERIFIED",
+  "proof_bytes": 545679,
+  "msm_speedup_min": 0.654,
+  "msm_speedup_max": 1.091,
+  "msm_blocker": "EZKL-GPU-BLOCKED-ON-AMD",
+  "parity_igpu_vs_circuit_max_abs": 0.0006009489297866821,
+  "parity_cpu_vs_circuit_max_abs": 0.000600963830947876,
+  "parity_within_tolerance": true,
+  "stage1_forward": {
+    "engine": "iGPU gfx1151 (MIGraphX/ROCm) vs Zen5 CPU (onnxruntime)",
+    "igpu_available_on_host": true,
+    "device_igpu": "gfx1151",
+    "cpu_threads": 32,
+    "proven_workload": {
+      "batch": 1,
+      "seq_len": 8
+    },
+    "grid": [
+      {
+        "batch": 1,
+        "seq_len": 8,
+        "cpu_ms": 0.012,
+        "igpu_ms": 0.129,
+        "speedup": 0.093
+      },
+      {
+        "batch": 1,
+        "seq_len": 32,
+        "cpu_ms": 0.02,
+        "igpu_ms": 0.133,
+        "speedup": 0.15
+      },
+      {
+        "batch": 1,
+        "seq_len": 128,
+        "cpu_ms": 0.102,
+        "igpu_ms": 0.135,
+        "speedup": 0.756
+      },
+      {
+        "batch": 1,
+        "seq_len": 512,
+        "cpu_ms": 0.22,
+        "igpu_ms": 0.179,
+        "speedup": 1.229
+      },
+      {
+        "batch": 8,
+        "seq_len": 8,
+        "cpu_ms": 0.038,
+        "igpu_ms": 0.134,
+        "speedup": 0.284
+      },
+      {
+        "batch": 8,
+        "seq_len": 32,
+        "cpu_ms": 0.099,
+        "igpu_ms": 0.147,
+        "speedup": 0.673
+      },
+      {
+        "batch": 8,
+        "seq_len": 128,
+        "cpu_ms": 0.217,
+        "igpu_ms": 0.181,
+        "speedup": 1.199
+      },
+      {
+        "batch": 8,
+        "seq_len": 512,
+        "cpu_ms": 0.416,
+        "igpu_ms": 0.397,
+        "speedup": 1.048
+      },
+      {
+        "batch": 32,
+        "seq_len": 8,
+        "cpu_ms": 0.133,
+        "igpu_ms": 0.142,
+        "speedup": 0.937
+      },
+      {
+        "batch": 32,
+        "seq_len": 32,
+        "cpu_ms": 0.193,
+        "igpu_ms": 0.16,
+        "speedup": 1.206
+      },
+      {
+        "batch": 32,
+        "seq_len": 128,
+        "cpu_ms": 0.318,
+        "igpu_ms": 0.295,
+        "speedup": 1.078
+      },
+      {
+        "batch": 32,
+        "seq_len": 512,
+        "cpu_ms": 1.176,
+        "igpu_ms": 2.629,
+        "speedup": 0.447
+      }
+    ],
+    "forward_ms_cpu": 0.012,
+    "forward_ms_igpu": 0.129,
+    "forward_speedup": 0.093,
+    "best_igpu_speedup": {
+      "batch": 1,
+      "seq_len": 512,
+      "cpu_ms": 0.22,
+      "igpu_ms": 0.179,
+      "speedup": 1.229
+    },
+    "path_f_full_forward": {
+      "range_text": "1.9-10.6x",
+      "derived": true,
+      "source": "poc/amd-ai-inference-demo/artefacts/ai-inference.csv",
+      "configs": 9,
+      "speedup_min": 1.896,
+      "speedup_max": 10.562,
+      "gates": "solo=true and matching loadavg on both rows of each pair"
+    },
+    "verdict": "iGPU forward is dispatch-bound for a SINGLE attention head: at the proven seq=8 scale the CPU wins (sub-0.1 ms vs the ~0.13 ms iGPU kernel-launch floor); the iGPU only reaches parity/slight win (best 1.23x at batch=1\u00b7seq=512) once batch\u00d7seq grows. Forward acceleration is real but SIZE-GATED \u2014 the clean 1.9-10.6x iGPU win is the FULL MiniLM (Path F), not one sub-block."
+  },
+  "stage2_prove": {
+    "engine": "Zen5 CPU (16c/32t) + 94 GB unified memory \u2014 EZKL Halo2 (KZG/BN254)",
+    "logrows": 16,
+    "witness_seconds": 0.274,
+    "prove_seconds": 7.852,
+    "proof_bytes": 545679,
+    "verify_status": "PROOF VERIFIED",
+    "verify_seconds": null,
+    "source": "delegated to poc/zkml-faithful-demo (committed prove.info)",
+    "verdict": "EZKL Halo2 proving is CPU-only on AMD. The iGPU/NPU never touch the proof; the Strix Halo win is 32 threads + 94 GB unified memory holding the CPU-side prover working set at scale."
+  },
+  "stage3_msm_frontier": {
+    "curve": "BN254 G1 (the curve EZKL/Halo2 KZG proves over)",
+    "primitive": "MSM (multi-scalar multiplication \u2014 dominates Halo2 KZG proving)",
+    "device": "gfx1151",
+    "cpu_threads": 32,
+    "speedup_min": 0.654,
+    "speedup_max": 1.091,
+    "sizes": [
+      {
+        "log_size": 16,
+        "size": 65536,
+        "gpu_ms": 39.255,
+        "cpu_ms": 25.681,
+        "speedup": 0.654
+      },
+      {
+        "log_size": 18,
+        "size": 262144,
+        "gpu_ms": 123.316,
+        "cpu_ms": 100.361,
+        "speedup": 0.814
+      },
+      {
+        "log_size": 20,
+        "size": 1048576,
+        "gpu_ms": 452.99,
+        "cpu_ms": 383.001,
+        "speedup": 0.845
+      },
+      {
+        "log_size": 22,
+        "size": 4194304,
+        "gpu_ms": 1518.493,
+        "cpu_ms": 1656.943,
+        "speedup": 1.091
+      }
+    ],
+    "blocker": "EZKL-GPU-BLOCKED-ON-AMD",
+    "offloadable": true,
+    "wired_in_ezkl": false,
+    "verdict": "The KZG-commitment MSM that dominates Halo2 proving CAN run on this iGPU via OpenCL (Path E), but that is a capability, NOT a speedup at these sizes: the clean-solo BN254 G1 MSM reads 0.654/0.814/0.845x at 2^16/2^18/2^20 and 1.091x at 2^22 over the 32-thread CPU \u2014 below parity until ~2^22 (the old 1.1-1.35x small-size win was contention-inflated and is retired). And EZKL upstream wires GPU acceleration only through CUDA (icicle) / Apple Metal \u2014 there is no OpenCL/ROCm/Vulkan device path in EZKL's prover. So this is a DOCUMENTED FRONTIER, not a claim of GPU-accelerated proving (see ezkl-gpu.md)."
+  },
+  "parity": {
+    "unit": "head \u2014 proven attention.onnx (seq=8, d_model=384, d_head=32, softmax inside)",
+    "n_values": 256,
+    "output_scale": 11,
+    "quant_step": 0.00048828125,
+    "tolerance_abs": 0.0078125,
+    "igpu_captured": true,
+    "cpu_captured": true,
+    "igpu_vs_circuit_max_abs": 0.0006009489297866821,
+    "cpu_vs_circuit_max_abs": 0.000600963830947876,
+    "within_tolerance": true,
+    "errors": {
+      "igpu_vs_circuit": {
+        "max_abs": 0.0006009489297866821,
+        "mean_abs": 0.00015824253885199369
+      },
+      "cpu_vs_circuit": {
+        "max_abs": 0.000600963830947876,
+        "mean_abs": 0.00015824342745673903
+      },
+      "torch_vs_circuit": {
+        "max_abs": 0.0006009787321090698,
+        "mean_abs": 0.00015824402063913112
+      },
+      "igpu_vs_cpu": {
+        "max_abs": 4.470348358154297e-08,
+        "mean_abs": 9.990145599658717e-09
+      }
+    },
+    "circuit_vs_torch_rel": 0.0052141959396603335,
+    "statement": "The iGPU/CPU forward output and the EZKL Halo2 public output agree within the circuit's fixed-point quantisation tolerance (output scale 2^11, step 4.883e-04); the proof therefore attests the SAME attn_out the engines computed from the committed weights. Exact equality is impossible \u2014 the proof is fixed-point, the forward is fp32 \u2014 so parity is asserted within tolerance, the strongest claim a quantised SNARK supports.",
+    "captured": "live"
+  },
+  "timeline": [
+    {
+      "stage": "1 \u00b7 forward",
+      "engine": "iGPU forward",
+      "seconds": 0.000129
+    },
+    {
+      "stage": "2 \u00b7 prove",
+      "engine": "CPU (EZKL Halo2)",
+      "seconds": 7.852
+    },
+    {
+      "stage": "2 \u00b7 verify",
+      "engine": "CPU (EZKL verify)",
+      "seconds": null
+    }
+  ],
+  "verdict": {
+    "iGPU (forward)": "iGPU forward is dispatch-bound for a SINGLE attention head: at the proven seq=8 scale the CPU wins (sub-0.1 ms vs the ~0.13 ms iGPU kernel-launch floor); the iGPU only reaches parity/slight win (best 1.23x at batch=1\u00b7seq=512) once batch\u00d7seq grows. Forward acceleration is real but SIZE-GATED \u2014 the clean 1.9-10.6x iGPU win is the FULL MiniLM (Path F), not one sub-block.",
+    "CPU (proof)": "EZKL Halo2 proving is CPU-only on AMD. The iGPU/NPU never touch the proof; the Strix Halo win is 32 threads + 94 GB unified memory holding the CPU-side prover working set at scale.",
+    "iGPU (MSM frontier)": "The KZG-commitment MSM that dominates Halo2 proving CAN run on this iGPU via OpenCL (Path E), but that is a capability, NOT a speedup at these sizes: the clean-solo BN254 G1 MSM reads 0.654/0.814/0.845x at 2^16/2^18/2^20 and 1.091x at 2^22 over the 32-thread CPU \u2014 below parity until ~2^22 (the old 1.1-1.35x small-size win was contention-inflated and is retired). And EZKL upstream wires GPU acceleration only through CUDA (icicle) / Apple Metal \u2014 there is no OpenCL/ROCm/Vulkan device path in EZKL's prover. So this is a DOCUMENTED FRONTIER, not a claim of GPU-accelerated proving (see ezkl-gpu.md).",
+    "parity (iGPU out == proven out)": "The iGPU/CPU forward output and the EZKL Halo2 public output agree within the circuit's fixed-point quantisation tolerance (output scale 2^11, step 4.883e-04); the proof therefore attests the SAME attn_out the engines computed from the committed weights. Exact equality is impossible \u2014 the proof is fixed-point, the forward is fp32 \u2014 so parity is asserted within tolerance, the strongest claim a quantised SNARK supports."
+  },
+  "honesty": "iGPU accelerates the model FORWARD only (size-gated; a single attention sub-block at seq=8 is dispatch-bound so the CPU wins). EZKL Halo2 proving is CPU-only on AMD (win = 32 threads + 94 GB unified memory). The KZG MSM could run on the iGPU, but not faster at these sizes (Path E BN254 G1 MSM clean-solo 0.654-1.091x, below parity until ~2^22; the old 1.1-1.35x was contention-inflated and is retired), and EZKL wires only CUDA/Metal -> documented frontier, NOT a GPU-proving claim. Weights are seeded; swapping trained HF tensors is a one-liner that does not change the circuit."
+}

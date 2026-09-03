@@ -1,0 +1,6 @@
+config,work_units,window_cap,mode,fold_n,decider_prove_s,msm_g1_stage_ms,native_verify,onchain_verify,speedup_vs_cpu_median,gpu_device,solo,loadavg,note
+baseline,,,cpu-median,2,66.52,,OK,OK,1.00,,true,0.15,clean-solo CPU median (durable baseline reused by both arms)
+shipped-default,2560,10,hip-gpu,2,69.972959596,6342.461,OK,OK,0.95,gfx1151,true,0.15,128*CU with the saturated window; bucket 240 MB
+shipped-default,2560,10,hip-wide,2,79.347015917,,OK,OK,0.84,gfx1151,true,0.15,same pair; G1+G2+FFT all offloaded; stage split not captured
+capped-pair,10240,8,hip-gpu,2,67.699454634,4350.224,OK,OK,0.98,gfx1151,true,4.21,512*CU with the window capped at 8; bucket 240 MB (identical)
+capped-pair,10240,8,hip-wide,2,75.873830154,,OK,OK,0.88,gfx1151,true,4.21,same pair; G1+G2+FFT all offloaded; stage split not captured

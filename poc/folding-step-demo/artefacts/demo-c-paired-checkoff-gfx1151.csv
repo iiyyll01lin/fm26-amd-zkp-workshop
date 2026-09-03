@@ -1,0 +1,44 @@
+# Demo C DeciderEth @2^24 (FOLD_N=2) — PAIRED, same-session, check-OFF re-bench.
+#
+# Why this file exists. The published native-HIP rows in demo-c-gpu-hip.csv
+# (hip-gpu 0.86x, hip-wide 0.77x) are unpaired twice over:
+#   (1) scripts/run-gpu-fold-hip.sh line 74 defaults FOLD_GPU_MSM_CHECK=1 on its
+#       GPU arms, which recomputes every offloaded MSM on the CPU *inside the
+#       timed region*, while run_cpu() never pays it; and
+#   (2) CPU_RERUN defaults to 0, so the CPU denominator is a durable CPU_MED
+#       of 66.52 s captured 2026-06-16 against a different build.
+# Both defects push the ratio the same way. This run fixes both: one session,
+# one binary, both arms FOLD_GPU_MSM_CHECK=0, arms INTERLEAVED (cpu, gpu, cpu,
+# gpu, ...) so thermal or clock drift hits both equally, 3 reps each, median.
+#
+# RESULT: the sign flips. cpu 61.602 s vs hip-gpu 58.762 s = 1.048x, a small
+# WIN, not the published 0.86x slowdown. The check-on control below reproduces
+# the published figure almost exactly (61.602 / 69.640 = 0.885x), so the whole
+# discrepancy is the harness asymmetry, not drift.
+#
+# Cross-check against the Amdahl denominator: msm_g1 stage median 6336.7 ms of a
+# 58.762 s D::prove = 10.8% offloadable, ceiling 1.12x. The measured 1.048x sits
+# BELOW that ceiling, so the two independent measurements agree.
+#
+# Provenance: 2026-08-29T01:15:15+08:00 .. 01:43:09+08:00, gfx1151 / 16C-32T Zen 5,
+# binary built 2026-08-12 10:05:37 with --features gpu-msm-hip (7746976 bytes),
+# RAYON_NUM_THREADS=32, shipped defaults work_units=2560 window=10.
+# Solo guard re-checked before EVERY run: iGPU busy 0% (rocm-smi) and foreign CPU
+# 1-2% (2 s /proc/stat delta; the 1-min loadavg is NOT usable between runs because
+# it is still decaying from our own previous arm). Every timed run asserted
+# "DeciderEth native verification: OK".
+# Raw log: demo-c-paired-checkoff-gfx1151.log
+#
+# SCOPE: this measures the native-HIP G1-only arm. It does NOT re-measure
+# hip-wide, and it does NOT re-measure the OpenCL rows behind the deck's
+# 0.70x / 0.74x headline (demo-c-gpu.csv) — those remain as published.
+arm,rep,decider_prove_s,msm_g1_stage_ms,nova_prove_step_s,native_verify,msm_check,backend,gpu_device,cpu_threads,fold_n,solo,igpu_busy_pct,foreign_cpu_pct,note
+cpu,1,61.602324659,,0.607041348,OK,off,cpu,,32,2,true,0,1,paired same-session check-off CPU arm
+cpu,2,62.059159276,,0.608163100,OK,off,cpu,,32,2,true,0,1,paired same-session check-off CPU arm
+cpu,3,61.546733438,,0.598039434,OK,off,cpu,,32,2,true,0,1,paired same-session check-off CPU arm
+hip-gpu,1,58.927197738,6790.715,0.597285052,OK,off,hip,gfx1151,32,2,true,0,1,paired same-session check-off native-HIP G1-only arm
+hip-gpu,2,58.570482658,6325.137,0.607831776,OK,off,hip,gfx1151,32,2,true,0,2,paired same-session check-off native-HIP G1-only arm
+hip-gpu,3,58.761866462,6336.684,0.598138360,OK,off,hip,gfx1151,32,2,true,0,2,paired same-session check-off native-HIP G1-only arm
+cpu-median,,61.602324659,,,OK,off,cpu,,32,2,true,,,median of 3 reps; spread 0.83%
+hip-gpu-median,,58.761866462,6336.684,,OK,off,hip,gfx1151,32,2,true,,,median of 3 reps; spread 0.61%; speedup_vs_cpu_median=1.048
+hip-gpu-checkon,,69.640303498,6350.257,0.595125506,OK,ON,hip,gfx1151,32,2,true,0,1,NOT TIMED FOR THE MEDIAN - independent correctness control. All 4 offloaded BN254 G1 MSMs logged GPU == CPU OK; native verify OK. Same session and binary as the rows above; the only change is FOLD_GPU_MSM_CHECK=1. 69.640 - 58.762 = 10.878 s of CPU recomputation inside the timed region (18.5%). 61.602/69.640 = 0.885x reproduces the published 0.86x

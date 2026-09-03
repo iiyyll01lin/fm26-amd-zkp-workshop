@@ -1,0 +1,47 @@
+# Plan Part 2 gfx1151 kernel tuning — native-HIP BN254 direct MSM (G1 + G2).
+# Solo gfx1151 (solo-guard pass at start; min wall over 20 reps mitigates CPU jitter).
+# 2a rocprof finding: direct MSM is VALU-bound (SQ_INSTS_VALU 7.1e9 vs SQ_INSTS_LDS
+# 2.57e7, VGPR=176, ~80 wavefronts/dispatch, 100% GRBM busy) => latency/occupancy-
+# bound, NOT memory-bound. So the lever is occupancy (2c work_units), not LDS
+# bucketing (2b) nor cheaper-mul (2d). See hip-msm-tune.solo-2026-06-18.md.
+
+# (2c) work_units sweep, candidate direct G1 kernel, min ms over 20 reps:
+section,log2n,work_units,min_ms
+sweep_g1,18,1280,136.41916
+sweep_g1,18,2560,76.33115
+sweep_g1,18,5120,60.51060
+sweep_g1,18,10240,56.46914
+sweep_g1,20,1280,451.89471
+sweep_g1,20,2560,263.11847
+sweep_g1,20,5120,207.40616
+sweep_g1,20,10240,195.63876
+sweep_g1,20,20480,214.31371
+
+# (2c) FINAL tuned direct G1 MSM (512*CU=10240 default) vs prior 128*CU baseline
+# (baseline from hip-msm-rocprim.solo / path-e §A3) and OpenCL/ec-gpu G1:
+primitive,log2n,baseline128cu_ms,tuned512cu_ms,tuned_vs_baseline,opencl_ms,tuned_vs_opencl
+msm_g1_hip,16,24.82,17.77526,1.40,38.66,2.17
+msm_g1_hip,18,77.30,59.48186,1.30,121.08,2.04
+msm_g1_hip,20,268.23,202.85884,1.32,434.56,2.14
+
+# (2c) G2 MSM work_units 128*CU vs 512*CU (G2 gains MORE than G1) + vs OpenCL G2:
+primitive,log2n,wu2560_ms,wu10240_ms,tuned_vs_baseline,opencl_g2_ms,tuned_vs_opencl
+msm_g2_hip,16,87.69562,59.90249,1.46,104.24,1.74
+msm_g2_hip,18,291.70837,178.48230,1.63,335.50,1.88
+msm_g2_hip,20,1032.37463,549.22089,1.88,1138.02,2.07
+
+# (2d) cheaper Montgomery mul (branchless final reduction in bn254_fr/fq add/mul/double):
+# bit-for-bit GATE PASS (GPU==ark @2^10/16/18/20) but NO timing win — A/B base(branchy)
+# vs cand(branchless): 2^16 24.78->27.25ms (0.91x, SLOWER), 2^18 78.39->76.41ms (1.03x).
+# The branchless variant does extra unconditional subtract ALU which a latency-bound
+# kernel cannot hide; the montmul macs themselves are irreducible (__uint128_t already
+# lowers to v_mad_u64_u32). REVERTED (kept the validated reference kernel).
+tune2d,montmul_branchless,gate=PASS,timing=no_win,decision=REVERTED
+
+# (2b) LDS bucket accumulation: NOT pursued — data-driven honest-negative. The 2a
+# profile shows the kernel is VALU/occupancy-bound (not memory/bucket-bound), and the
+# prior rocPRIM segmented-bucket reduction (hip-msm-rocprim) was already 3.2-4.4x
+# SLOWER. LDS bucketing optimizes bucket memory traffic, which is not the bottleneck,
+# and 96B/point caps LDS at ~680 buckets (< 1023 for window_size=10). The occupancy
+# lever (2c) delivered the real win instead.
+tune2b,lds_bucket,decision=NOT_PURSUED_data_driven_honest_negative

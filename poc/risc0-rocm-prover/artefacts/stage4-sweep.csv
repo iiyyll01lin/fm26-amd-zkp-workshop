@@ -1,0 +1,34 @@
+config,backend,hashfn,segment_po2,wall_s,receipt_bytes,gpu_markers,peak_rss_mb,verify,solo,loadavg
+fork-cpu,cpu(no-rocm) 32t Zen5,poseidon2,16,340.2,30932304,0,645,valid,true,0.40
+fork-gpu,rocm gfx1151 (+CPU witgen),poseidon2,16,64.2,30932304,140,828,valid,true,3.77
+fork-cpu,cpu(no-rocm) 32t Zen5,poseidon2,18,157.4,4092760,0,2359,valid,true,2.98
+fork-gpu,rocm gfx1151 (+CPU witgen),poseidon2,18,30.0,4092760,16,2573,valid,true,3.86
+fork-cpu,cpu(no-rocm) 32t Zen5,poseidon2,20,144.2,1112064,0,9366,valid,true,0.07
+fork-gpu,rocm gfx1151 (+CPU witgen),poseidon2,20,26.1,1112064,4,9549,valid,true,4.94
+fork-cpu,cpu(no-rocm) 32t Zen5,poseidon2,21,168.7,612092,0,18703,valid,true,4.68
+fork-gpu,rocm gfx1151 (+CPU witgen),poseidon2,21,30.6,612092,2,18889,valid,true,4.77
+# Solo roofline sweep, 2026-07-20, gfx1151, ROCm 7.2.3. SAME ~4-segment Cartesi-step session,
+# re-partitioned by segment po2 via the RISC0_SEGMENT_LIMIT_PO2 knob added to the fork r0vm.
+# Every row: solo-guarded BEFORE the row (iGPU idle + loadavg, cooled down between rows), min-of-reps
+# (GPU reps=2, CPU reps=1), verified by the STOCK `cargo risczero verify` (verify=valid), GPU rows
+# carry HipHal markers (>0 = real iGPU path, not a CPU fallback).
+#
+# hashfn AXIS COLLAPSES: risc0 2.3.2's rv32im composite prover REJECTS sha-256
+#   ("provided ProverOpts has unsupported hashfn value of \"sha-256\"; supported values are: poseidon2")
+#   for BOTH cpu and gpu -> poseidon2 is the only option for this workload (the CPU-expensive /
+#   GPU-friendly hash), so there is no hashfn crossover to measure. This SHARPENS the caveat.
+#
+# speedup (fork iGPU vs same-code fork-CPU): po2=16 5.30x, po2=18 5.25x, po2=20 5.52x, po2=21 5.51x.
+#   FLAT ~5.3-5.5x across po2 16..21 -- NO crossover/reversal; the iGPU wins at every segment size.
+#   GPU wall is stable (~26-31s; 64s at po2=16 from 56-segment launch overhead); the CPU baseline
+#   (144-340s) carries all the variance. The cleanest solo CPU baseline (po2=20, loadavg 0.07) = 144.2s
+#   -> 5.52x. The earlier single-point 6.6x / audited 6.79x used a slower CPU baseline (172.9 / 178.0s);
+#   the GPU wall is unchanged (~26s), so the 5.5-6.8x spread is ENTIRELY CPU-baseline variance.
+#
+# OOM-ceiling axis (peak RSS, GPU rows): 0.83 -> 2.6 -> 9.5 -> 18.9 GB for po2 16/18/20/21 (~2x per step).
+#   po2=21 peak RSS 18.9 GB CROSSES the 16 GB wall a discrete 16 GB card / box cannot hold; the 94 GB
+#   unified LPDDR5X carries it (po2>=22 would extrapolate to ~37 GB, still within the 94 GB pool).
+#
+# HONESTY: correctness (bit-for-bit == risc0 CpuHal, stock verify PASS every row) is the hard guarantee.
+#   Speed is workload-/poseidon2-/hybrid-specific (witgen+accum CPU-delegated; recursion+Groth16 CPU) and
+#   CPU-baseline-sensitive -- NOT a general "iGPU is faster" claim. The stock r0vm stays CPU-only.

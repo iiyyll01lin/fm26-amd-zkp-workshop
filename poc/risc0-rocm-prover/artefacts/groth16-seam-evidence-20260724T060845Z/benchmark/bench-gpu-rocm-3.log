@@ -1,0 +1,14 @@
+[90m06:38:42[0m DBG constraint system loaded [36mtook=[0m335.533346
+[90m06:38:42[0m DBG proving key loaded [36mtook=[0m576.625805
+[90m06:38:43[0m DBG WTNS header [36mnInputs=[0m5635930 [36mnWitnesses=[0m5635930
+[90m06:38:43[0m DBG witness data loaded [36mtook=[0m987.089083
+[90m06:38:43[0m [32mINF[0m [1m[risc0-groth16-rocm] ACTIVE[0m [36macceleration=[0mrocm [36mbackend=[0mgroth16 [36mcompute_units=[0m20 [36mcurve=[0mbn254 [36mdevice=[0m"Radeon 8060S Graphics" [36mnbConstraints=[0m5676573
+[90m06:38:43[0m DBG constraint system solver done [36mnbConstraints=[0m5676573 [36mtook=[0m151.233295
+[90m06:38:52[0m DBG prover done [36macceleration=[0mrocm [36mbackend=[0mgroth16 [36mcurve=[0mbn254 [36mnbConstraints=[0m5676573 [36mtook=[0m8920.678932
++ WITNESS_FILE=/tmp/output.wtns
++ ulimit -s 16384
++ mkfifo /tmp/output.wtns
++ prover stark_verify.cs stark_verify_final.pk.dmp /tmp/output.wtns /mnt/proof.json
++ stark_verify /mnt/input.json /tmp/output.wtns
++ wait
++ rm /tmp/output.wtns

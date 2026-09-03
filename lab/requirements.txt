@@ -1,0 +1,20 @@
+# lab/ — Jupyter environment for the AMD Strix Halo ZK acceleration lab.
+#
+# Installed via `make install` from the repo root.
+#
+# NOTE on pins: the ranges deliberately retain the versions this course was
+# validated against while capping the next major for replay reproducibility.
+
+# --- Jupyter runtime (interactive: `make lab`; headless replay: `make replay`) ---
+jupyterlab>=4.2,<5
+ipykernel>=6.29,<7
+nbconvert>=7.16,<8
+
+# --- data + plotting used by labkit.py and every notebook ---
+matplotlib>=3.10,<4
+numpy>=2.4,<3
+pandas>=2.2,<3
+
+# The upstream repo also pins jupyter-book + sphinxcontrib-mermaid to build the
+# course site. Replay never imports them, so this attendee export leaves them
+# out to keep `make install` short.

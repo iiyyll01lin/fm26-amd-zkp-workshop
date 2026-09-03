@@ -1,0 +1,17 @@
+# zkLLM AMD engine-split demo — Stage-1 forward-bench + synth/plot deps (Python 3.13).
+#
+# torch is installed separately from the CPU index in scripts/run-all.sh:
+#   pip install --index-url https://download.pytorch.org/whl/cpu torch
+# It is only the AUTHORING tool that re-exports the dynamic-axis copy of the
+# proven attention head; the CPU baseline runs through onnxruntime. The iGPU
+# backend uses AMD's MIGraphX python bindings, which ship with ROCm at
+# /opt/rocm-*/lib (added to PYTHONPATH by run-all.sh) and are NOT on PyPI.
+#
+# Stage 2 (EZKL Halo2 proof) is delegated to poc/zkml-faithful-demo (Docker);
+# Stage 3 (iGPU MSM) reuses Path E's committed gpu-bn254.csv — neither needs
+# anything here. synth uses only the stdlib; plot needs matplotlib.
+onnx>=1.21
+onnxscript>=0.5            # required by torch>=2.9 onnx exporter
+onnxruntime>=1.26          # CPU baseline (CPUExecutionProvider)
+numpy>=2.0
+matplotlib>=3.8            # split.png (degrades to split.md if absent)

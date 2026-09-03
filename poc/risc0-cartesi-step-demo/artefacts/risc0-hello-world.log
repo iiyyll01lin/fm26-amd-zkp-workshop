@@ -1,0 +1,6 @@
+   Compiling methods v0.1.0 (/work/risc0-hello-world/methods)
+   Compiling host v0.1.0 (/work/risc0-hello-world/host)
+    Finished `release` profile [optimized + debuginfo] target(s) in 39.98s
+     Running `target/release/host`
+[00] receipt serialised: /work/artefacts/risc0-hello-world.receipt.bin (209506 bytes)
+[00] receipt verified successfully against MULTIPLY_ID (real STARK seal)

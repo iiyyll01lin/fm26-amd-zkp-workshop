@@ -1,0 +1,5 @@
+base_image=risc0-groth16-prover:rocm-witgen-o0
+base_digest=sha256:5196774f1312a68a5766d5e6df83485175269bf3ebe848c2d77068e3e9d5a8b4
+derived_image=risc0-groth16-prover:rocm-witgen-o0-instr
+derived_digest=sha256:0c39c4c8fff2503f778b3d5bb9669a4928e479b596a3d2862585303471f19b51
+entrypoint_sha256=014a07c7926f780b8b799b35e16ddcfe513b0d9a3a538320098622592f207d32

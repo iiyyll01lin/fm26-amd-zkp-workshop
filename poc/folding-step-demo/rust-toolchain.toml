@@ -1,0 +1,8 @@
+# Track 2 (Demo C, todo `demo-c-fork`): the `gpu-msm` build pulls the B0 GPU lib
+# (`amd-gpu-zk-primitive-demo`) as a path dependency, whose ec-gpu-gen 0.7 tree
+# transitively requires edition2024 (needs stable >= 1.85), so this crate builds
+# on the host `stable` toolchain (1.96 here), not the RISC0-pinned 1.83 default.
+# Mirrors poc/amd-gpu-zk-primitive-demo/rust-toolchain.toml. The default
+# (CPU-only) build also builds fine on stable.
+[toolchain]
+channel = "stable"

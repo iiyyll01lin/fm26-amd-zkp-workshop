@@ -1,0 +1,18 @@
+[risc0-groth16-stage] run_id=cmp-rocm-witness-3 mode=fifo stage=entrypoint event=start t_ns=729279755417193
+[risc0-groth16-stage] run_id=cmp-rocm-witness-3 mode=fifo stage=fifo event=create t_ns=729279757298386
+[risc0-groth16-stage] run_id=cmp-rocm-witness-3 mode=fifo stage=witness event=start t_ns=729279758060262
+[risc0-groth16-stage] run_id=cmp-rocm-witness-3 mode=fifo stage=prover event=start t_ns=729279758584476
+[90m11:26:41[0m DBG constraint system loaded [36mtook=[0m317.863034
+[90m11:26:41[0m DBG proving key loaded [36mtook=[0m575.928624
+[90m11:26:42[0m DBG WTNS header [36mnInputs=[0m5635930 [36mnWitnesses=[0m5635930
+[risc0-groth16-stage] run_id=cmp-rocm-witness-3 mode=fifo stage=witness event=finish t_ns=729281325967256 rc=0
+[90m11:26:42[0m DBG witness data loaded [36mtook=[0m808.358959
+[90m11:26:42[0m [32mINF[0m [1m[risc0-groth16-rocm] ACTIVE[0m [36macceleration=[0mrocm [36mbackend=[0mgroth16 [36mcompute_units=[0m32 [36mcurve=[0mbn254 [36mdevice=[0m"AMD Radeon Graphics" [36mnbConstraints=[0m5676573
+[90m11:26:42[0m DBG constraint system solver done [36mnbConstraints=[0m5676573 [36mtook=[0m166.405286
+[90m11:26:46[0m DBG prover done [36macceleration=[0mrocm [36mbackend=[0mgroth16 [36mcurve=[0mbn254 [36mnbConstraints=[0m5676573 [36mtook=[0m3963.113965
+[zkp-hip] stage_ms msm_g1=2042.036 msm_g2=759.069 ntt=442.356 calls=4/1/6 kernel=binned
+[risc0-groth16-stage] run_id=cmp-rocm-witness-3 mode=fifo stage=prover event=finish t_ns=729285869513877 rc=0
+[risc0-groth16-stage] run_id=cmp-rocm-witness-3 mode=fifo stage=wait event=finish t_ns=729285870700105 witness_rc=0 prover_rc=0
+[risc0-groth16-stage] run_id=cmp-rocm-witness-3 mode=fifo stage=artifact event=record t_ns=729285874620024 kind=proof bytes=721 sha256=8b07b512bab4b3fe7fcb278eba44014249ef7134b9b6e8e41b37555f02761411
+[risc0-groth16-stage] run_id=cmp-rocm-witness-3 mode=fifo stage=entrypoint event=finish t_ns=729285875341299 rc=0
+[risc0-groth16-stage] run_id=cmp-rocm-witness-3 mode=fifo stage=total event=finish t_ns=729285876132105 rc=0

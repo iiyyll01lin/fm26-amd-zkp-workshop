@@ -1,0 +1,4 @@
+witgen_opt_level=0
+compiler=Debian clang version 14.0.6
+stark_verify_sha256=a8910a574b6d158d97407b825777e399efa1cbed095f48cadf72697e69fb8135  stark_verify_cpp/stark_verify
+stark_verify_dat_sha256=7832c9694eed855a5bdb120e972cce402a133f428513185f97e1bdfdde27a2bc  stark_verify_cpp/stark_verify.dat

@@ -1,0 +1,43 @@
+{
+  "accelerator": {
+    "cpu_over_rocm": 0.481931,
+    "cpu_total_median_s": 5.790889,
+    "rocm_minus_cpu_s": 6.225128,
+    "rocm_total_median_s": 12.016017
+  },
+  "configs": {
+    "cpu-witness": {
+      "accelerator": "cpu",
+      "count": 3,
+      "prove_median_s": 5.78141,
+      "total_median_s": 5.790889,
+      "witness_median_s": 1.70774,
+      "witness_source": "generate"
+    },
+    "rocm-replay": {
+      "accelerator": "rocm",
+      "count": 3,
+      "prove_median_s": 11.204706,
+      "total_median_s": 11.216145,
+      "witness_median_s": 0.869607,
+      "witness_source": "replay"
+    },
+    "rocm-witness": {
+      "accelerator": "rocm",
+      "count": 3,
+      "prove_median_s": 12.006302,
+      "total_median_s": 12.016017,
+      "witness_median_s": 1.716074,
+      "witness_source": "generate"
+    }
+  },
+  "image_digest": "sha256:91f515e2995be1cb61b4ae458fa6f998c724db3324af1813e1acaff54466e4ef",
+  "input_sha256": "b5da3c426f08a628d5d19c56eb405bc4858a22df052bf9d74424c37c14bd4a92",
+  "schema": "risc0-groth16-container-compare-v1",
+  "witness_critical_path": {
+    "measured_saving_s": 0.799872,
+    "note": "same FIFO transport; only witness compute removed",
+    "replayed_witness_total_median_s": 11.216145,
+    "with_witness_total_median_s": 12.016017
+  }
+}

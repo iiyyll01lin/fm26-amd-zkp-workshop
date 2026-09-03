@@ -1,0 +1,18 @@
+[90m05:23:24[0m DBG constraint system loaded [36mtook=[0m321.48751
+[90m05:23:25[0m DBG proving key loaded [36mtook=[0m564.310004
+[90m05:23:26[0m DBG WTNS header [36mnInputs=[0m5635930 [36mnWitnesses=[0m5635930
+[90m05:23:26[0m DBG witness data loaded [36mtook=[0m984.441606
+[90m05:23:26[0m [32mINF[0m [1m[risc0-groth16-rocm] ACTIVE[0m [36macceleration=[0mrocm [36mbackend=[0mgroth16 [36mcompute_units=[0m20 [36mcurve=[0mbn254 [36mdevice=[0m"Radeon 8060S Graphics" [36mnbConstraints=[0m5676573
+[90m05:23:26[0m DBG constraint system solver done [36mnbConstraints=[0m5676573 [36mtook=[0m147.689659
+[90m05:23:35[0m DBG prover done [36macceleration=[0mrocm [36mbackend=[0mgroth16 [36mcurve=[0mbn254 [36mnbConstraints=[0m5676573 [36mtook=[0m8841.180543
+[risc0-groth16-stage] run_id=w0-fifo-o0-recorded-3 mode=fifo stage=entrypoint event=start t_ns=938161663363053
+[risc0-groth16-stage] run_id=w0-fifo-o0-recorded-3 mode=fifo stage=fifo event=create t_ns=938161665406977
+[risc0-groth16-stage] run_id=w0-fifo-o0-recorded-3 mode=fifo stage=witness event=start t_ns=938161665915801
+[risc0-groth16-stage] run_id=w0-fifo-o0-recorded-3 mode=fifo stage=prover event=start t_ns=938161666500648
+[risc0-groth16-stage] run_id=w0-fifo-o0-recorded-3 mode=fifo stage=witness event=finish t_ns=938163385409731 rc=0
+[risc0-groth16-stage] run_id=w0-fifo-o0-recorded-3 mode=fifo stage=prover event=finish t_ns=938172788512730 rc=0
+[risc0-groth16-stage] run_id=w0-fifo-o0-recorded-3 mode=fifo stage=wait event=finish t_ns=938172789543984 witness_rc=0 prover_rc=0
+[risc0-groth16-stage] run_id=w0-fifo-o0-recorded-3 mode=fifo stage=artifact event=record t_ns=938172792298501 kind=proof bytes=724 sha256=c2447ae9a6938630777f63af9659bae9109d06e9d57b053c514d60c7ad4f9a3e
+[risc0-groth16-stage] run_id=w0-fifo-o0-recorded-3 mode=fifo stage=entrypoint event=finish t_ns=938172793076270 rc=0
+[risc0-groth16-stage] run_id=w0-fifo-o0-recorded-3 mode=fifo stage=total event=finish t_ns=938172793652020 rc=0
+✅ Receipt is valid!

@@ -1,0 +1,41 @@
+[export] re-exporting dynamic-axis attention head -> <repo>/poc/zkllm-amd-split-demo/artefacts/attention.dyn.onnx (opset 17)
+<repo>/poc/zkllm-amd-split-demo/src/01_attention_forward_bench.py:138: UserWarning: # 'dynamic_axes' is not recommended when dynamo=True, and may lead to 'torch._dynamo.exc.UserError: Constraints violated.' Supply the 'dynamic_shapes' argument instead if export is unsuccessful.
+  torch.onnx.export(
+W0611 19:33:20.106000 2237187 torch/onnx/_internal/exporter/_compat.py:114] Setting ONNX exporter to use operator set version 18 because the requested opset_version 17 is a lower version than we have implementations for. Automatic version conversion will be performed, which may not be successful at converting to the requested version. If version conversion is unsuccessful, the opset version of the exported model will be kept at 18. Please consider setting opset_version >=18 to leverage latest ONNX features
+W0611 19:33:20.427000 2237187 torch/onnx/_internal/exporter/_registration.py:107] torchvision is not installed. Skipping torchvision::nms
+W0611 19:33:20.427000 2237187 torch/onnx/_internal/exporter/_registration.py:107] torchvision is not installed. Skipping torchvision::roi_align
+W0611 19:33:20.428000 2237187 torch/onnx/_internal/exporter/_registration.py:107] torchvision is not installed. Skipping torchvision::roi_pool
+[torch.onnx] Obtain model graph for `AttentionHead([...]` with `torch.export.export(..., strict=False)`...
+[torch.onnx] Obtain model graph for `AttentionHead([...]` with `torch.export.export(..., strict=False)`... ✅
+[torch.onnx] Run decomposition...
+[torch.onnx] Run decomposition... ✅
+[torch.onnx] Translate the graph into ONNX...
+[torch.onnx] Translate the graph into ONNX... ✅
+The model version conversion is not supported by the onnxscript version converter and fallback is enabled. The model will be converted using the onnx C API (target version: 17).
+[bench] backends=['cpu', 'rocm'] batches=[1, 8, 32] seq_lens=[8, 32, 128, 512] reps=30 warmup=8 cpu_threads=32
+[cpu] onnxruntime 1.26.0 CPUExecutionProvider intra_op=32
+[cpu] b=1   s=8    best=   0.012 ms (median=0.013 stdev=0.001)
+[cpu] b=1   s=32   best=   0.020 ms (median=0.024 stdev=0.039)
+[cpu] b=1   s=128  best=   0.102 ms (median=0.112 stdev=0.030)
+[cpu] b=1   s=512  best=   0.220 ms (median=0.417 stdev=0.108)
+[cpu] b=8   s=8    best=   0.038 ms (median=0.039 stdev=0.001)
+[cpu] b=8   s=32   best=   0.099 ms (median=0.106 stdev=0.977)
+[cpu] b=8   s=128  best=   0.217 ms (median=0.482 stdev=0.925)
+[cpu] b=8   s=512  best=   0.416 ms (median=0.614 stdev=1.390)
+[cpu] b=32  s=8    best=   0.133 ms (median=0.151 stdev=0.016)
+[cpu] b=32  s=32   best=   0.193 ms (median=0.204 stdev=0.551)
+[cpu] b=32  s=128  best=   0.318 ms (median=0.351 stdev=0.792)
+[cpu] b=32  s=512  best=   1.176 ms (median=5.605 stdev=4.558)
+[rocm] MIGraphX gpu target — compiling per shape for gfx1151
+[rocm] b=1   s=8    best=   0.129 ms (median=0.344 stdev=2.942)
+[rocm] b=1   s=32   best=   0.133 ms (median=0.208 stdev=0.584)
+[rocm] b=1   s=128  best=   0.135 ms (median=0.267 stdev=2.520)
+[rocm] b=1   s=512  best=   0.179 ms (median=0.515 stdev=0.763)
+[rocm] b=8   s=8    best=   0.134 ms (median=0.250 stdev=3.000)
+[rocm] b=8   s=32   best=   0.147 ms (median=0.321 stdev=0.704)
+[rocm] b=8   s=128  best=   0.181 ms (median=0.777 stdev=5.653)
+[rocm] b=8   s=512  best=   0.397 ms (median=2.578 stdev=8.679)
+[rocm] b=32  s=8    best=   0.142 ms (median=0.293 stdev=3.345)
+[rocm] b=32  s=32   best=   0.160 ms (median=0.340 stdev=0.815)
+[rocm] b=32  s=128  best=   0.295 ms (median=0.666 stdev=8.378)
+[rocm] b=32  s=512  best=   2.629 ms (median=7.467 stdev=20.806)

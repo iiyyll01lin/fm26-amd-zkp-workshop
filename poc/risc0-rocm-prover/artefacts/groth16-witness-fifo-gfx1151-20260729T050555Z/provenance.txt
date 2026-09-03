@@ -1,0 +1,3 @@
+started_utc=2026-07-29T05:05:55Z
+commit=efe3c382957d0107e9bfe4c05a11c7c66804b266
+branch=feature/risc0-rocm-witness-apu

@@ -1,0 +1,97 @@
+bash <repo>/poc/amd-ai-inference-demo/scripts/run-all.sh
+######################################################################
+# Path F (Demo F) — iGPU AI-inference (MiniLM forward) vs CPU
+#   BATCHES=1,8,32  SEQ_LENS=32,128,256  REPS=20  WARMUP=5
+######################################################################
+######################################################################
+# AMD Strix Halo capability map (2026-06-18T04:47:12Z)
+#   CPU            : AMD RYZEN AI MAX+ PRO 395 w/ Radeon 8060S
+#   Logical threads: 32  -> RAYON_NUM_THREADS=32
+#   Unified RAM    : 94 GB (LPDDR5X)
+#   Kernel         : 6.17.0-35-generic
+#   ROCm (rocminfo): yes  (gpu=gfx1151)
+#   ROCm version   : 7.2.3
+#   gfx profile    : gfx1151 -> Strix Halo APU — authoritative for this box
+#   recommend      : kernel >=6.18.4 (HSA override on 6.19.x)  ·  ROCm >=6.4 (7.2.x tested here)
+#   Vulkan         : no
+#   NPU (xrt-smi)  : no
+#   AI_GPU_BACKEND : rocm   (AI inference only)
+#   HSA_OVERRIDE_GFX_VERSION=<unset>  HSA_ENABLE_SDMA=0
+#
+#   NOTE: r0vm STARK + Groth16 wrap are CPU-ONLY on AMD (no ROCm/Vulkan
+#   prover). The iGPU/NPU above accelerate the AI MODEL, not the proof.
+######################################################################
+[run-all] AI_GPU_BACKEND=rocm  RAYON_NUM_THREADS=32
+[run-all] running MiniLM forward sweep (iGPU MIGraphX vs CPU onnxruntime)...
+[run-all] sweep complete -> artefacts/ai-inference.csv
+[bench] backends=['cpu', 'rocm'] batches=[1, 8, 32] seq_lens=[32, 128, 256] reps=20 warmup=5 cpu_threads=32
+[bench] perf/watt ON — per-shape ~2.0s power window (labkit gpu_telemetry); power_w is whole-SoC package draw (set AI_BENCH_ENERGY=0 to skip)
+[cpu] onnxruntime 1.26.0 CPUExecutionProvider intra_op=32
+[telemetry] sampling rocm-smi every 0.20s -> ai-embed-energy-cpu-b1-s32.telemetry.csv
+[telemetry] captured 6 samples over ~1.8s -> /tmp/ai-embed-energy-cpu-b1-s32.telemetry.csv
+[cpu] b=1   s=32   best=    1.94 ms (median=2.28 stdev=1.24)  | 95.3 W pkg, 3.8 emb/J (6 samples)
+[telemetry] sampling rocm-smi every 0.20s -> ai-embed-energy-cpu-b1-s128.telemetry.csv
+[telemetry] captured 6 samples over ~1.7s -> /tmp/ai-embed-energy-cpu-b1-s128.telemetry.csv
+[cpu] b=1   s=128  best=    4.42 ms (median=4.54 stdev=1.67)  | 123.1 W pkg, 1.6 emb/J (6 samples)
+[telemetry] sampling rocm-smi every 0.20s -> ai-embed-energy-cpu-b1-s256.telemetry.csv
+[telemetry] captured 6 samples over ~1.9s -> /tmp/ai-embed-energy-cpu-b1-s256.telemetry.csv
+[cpu] b=1   s=256  best=    6.93 ms (median=7.22 stdev=1.08)  | 126.9 W pkg, 0.9 emb/J (6 samples)
+[telemetry] sampling rocm-smi every 0.20s -> ai-embed-energy-cpu-b8-s32.telemetry.csv
+[telemetry] captured 7 samples over ~2.0s -> /tmp/ai-embed-energy-cpu-b8-s32.telemetry.csv
+[cpu] b=8   s=32   best=    9.20 ms (median=10.65 stdev=1.47)  | 122.6 W pkg, 3.9 emb/J (7 samples)
+[telemetry] sampling rocm-smi every 0.20s -> ai-embed-energy-cpu-b8-s128.telemetry.csv
+[telemetry] captured 6 samples over ~1.8s -> /tmp/ai-embed-energy-cpu-b8-s128.telemetry.csv
+[cpu] b=8   s=128  best=   22.82 ms (median=34.26 stdev=9.72)  | 123.6 W pkg, 2.0 emb/J (6 samples)
+[telemetry] sampling rocm-smi every 0.20s -> ai-embed-energy-cpu-b8-s256.telemetry.csv
+[telemetry] captured 6 samples over ~1.8s -> /tmp/ai-embed-energy-cpu-b8-s256.telemetry.csv
+[cpu] b=8   s=256  best=   53.43 ms (median=71.92 stdev=16.06)  | 123.6 W pkg, 0.9 emb/J (6 samples)
+[telemetry] sampling rocm-smi every 0.20s -> ai-embed-energy-cpu-b32-s32.telemetry.csv
+[telemetry] captured 6 samples over ~1.9s -> /tmp/ai-embed-energy-cpu-b32-s32.telemetry.csv
+[cpu] b=32  s=32   best=   40.02 ms (median=48.26 stdev=7.27)  | 121.7 W pkg, 5.2 emb/J (6 samples)
+[telemetry] sampling rocm-smi every 0.20s -> ai-embed-energy-cpu-b32-s128.telemetry.csv
+[telemetry] captured 6 samples over ~2.0s -> /tmp/ai-embed-energy-cpu-b32-s128.telemetry.csv
+[cpu] b=32  s=128  best=   71.88 ms (median=103.15 stdev=25.89)  | 119.0 W pkg, 2.1 emb/J (6 samples)
+[telemetry] sampling rocm-smi every 0.20s -> ai-embed-energy-cpu-b32-s256.telemetry.csv
+[telemetry] captured 6 samples over ~1.9s -> /tmp/ai-embed-energy-cpu-b32-s256.telemetry.csv
+[cpu] b=32  s=256  best=  208.03 ms (median=257.68 stdev=27.89)  | 121.7 W pkg, 1.1 emb/J (6 samples)
+[rocm] MIGraphX gpu target — compiling per shape for gfx1151
+[telemetry] sampling rocm-smi every 0.20s -> ai-embed-energy-rocm-b1-s32.telemetry.csv
+[telemetry] captured 7 samples over ~1.9s -> /tmp/ai-embed-energy-rocm-b1-s32.telemetry.csv
+[rocm] b=1   s=32   best=    1.02 ms (median=1.05 stdev=0.01)  | 83.4 W pkg, 11.8 emb/J (7 samples)
+[telemetry] sampling rocm-smi every 0.20s -> ai-embed-energy-rocm-b1-s128.telemetry.csv
+[telemetry] captured 6 samples over ~1.7s -> /tmp/ai-embed-energy-rocm-b1-s128.telemetry.csv
+[rocm] b=1   s=128  best=    1.10 ms (median=1.15 stdev=0.02)  | 96.2 W pkg, 10.7 emb/J (6 samples)
+[telemetry] sampling rocm-smi every 0.20s -> ai-embed-energy-rocm-b1-s256.telemetry.csv
+[telemetry] captured 7 samples over ~2.0s -> /tmp/ai-embed-energy-rocm-b1-s256.telemetry.csv
+[rocm] b=1   s=256  best=    1.75 ms (median=1.80 stdev=0.03)  | 108.8 W pkg, 5.1 emb/J (7 samples)
+[telemetry] sampling rocm-smi every 0.20s -> ai-embed-energy-rocm-b8-s32.telemetry.csv
+[telemetry] captured 1 samples over ~0.0s -> /tmp/ai-embed-energy-rocm-b8-s32.telemetry.csv
+[rocm] b=8   s=32   best=    1.60 ms (median=1.65 stdev=0.02)
+[telemetry] sampling rocm-smi every 0.20s -> ai-embed-energy-rocm-b8-s128.telemetry.csv
+[telemetry] captured 1 samples over ~0.0s -> /tmp/ai-embed-energy-rocm-b8-s128.telemetry.csv
+[rocm] b=8   s=128  best=    3.77 ms (median=4.04 stdev=0.13)
+[telemetry] sampling rocm-smi every 0.20s -> ai-embed-energy-rocm-b8-s256.telemetry.csv
+[telemetry] captured 5 samples over ~1.7s -> /tmp/ai-embed-energy-rocm-b8-s256.telemetry.csv
+[rocm] b=8   s=256  best=   10.76 ms (median=10.86 stdev=0.08)  | 132.4 W pkg, 6.5 emb/J (5 samples)
+[telemetry] sampling rocm-smi every 0.20s -> ai-embed-energy-rocm-b32-s32.telemetry.csv
+[telemetry] captured 1 samples over ~0.0s -> /tmp/ai-embed-energy-rocm-b32-s32.telemetry.csv
+[rocm] b=32  s=32   best=    3.79 ms (median=3.86 stdev=0.03)
+[telemetry] sampling rocm-smi every 0.20s -> ai-embed-energy-rocm-b32-s128.telemetry.csv
+[telemetry] captured 5 samples over ~2.0s -> /tmp/ai-embed-energy-rocm-b32-s128.telemetry.csv
+[rocm] b=32  s=128  best=   15.89 ms (median=16.02 stdev=0.10)  | 141.2 W pkg, 14.4 emb/J (5 samples)
+[telemetry] sampling rocm-smi every 0.20s -> ai-embed-energy-rocm-b32-s256.telemetry.csv
+[telemetry] captured 2 samples over ~1.0s -> /tmp/ai-embed-energy-rocm-b32-s256.telemetry.csv
+[rocm] b=32  s=256  best=   42.41 ms (median=43.00 stdev=0.29)  | 146.5 W pkg, 9.6 emb/J (2 samples)
+[plot-ai] wrote markdown table -> <repo>/poc/amd-ai-inference-demo/artefacts/ai-inference.md
+[plot-ai] wrote plot -> <repo>/poc/amd-ai-inference-demo/artefacts/ai-inference.png
+[run-all] artefacts:
+total 176816
+-rw-rw-r-- 1 <user> <user>     1149 Jun 18 12:49 ai-inference.csv
+-rw-rw-r-- 1 <user> <user>     5304 Jun 18 12:49 ai-inference.log
+-rw-rw-r-- 1 <user> <user>     3455 Jun 18 12:49 ai-inference.md
+-rw-rw-r-- 1 <user> <user>   100126 Jun 18 12:49 ai-inference.png
+-rw-rw-r-- 1 <user> <user>     7012 Jun 18 12:49 ai-inference.solo-rebench-2026-06-18.log
+-rw-rw-r-- 1 <user> <user>   289595 Jun 11 15:52 minilm-l6.onnx
+-rw-rw-r-- 1 <user> <user> 90266624 Jun 11 15:52 minilm-l6.onnx.data
+-rw-rw-r-- 1 <user> <user> 90368787 Jun 15 19:19 minilm-l6-trained.onnx
+drwxrwxr-x 2 <user> <user>     4096 Jun 16 09:23 telemetry

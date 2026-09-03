@@ -1,0 +1,7 @@
+alloc_kind,bytes,op,reps,ms_per_iter,gbytes_s,note,device,verify,solo,loadavg
+hipMalloc,67108864,memcpy_h2d,50,1.7903,74.97,explicit-staging-copy,AMD Radeon Graphics,na,true,7.50
+hipMalloc,67108864,kernel_saxpy,50,0.9243,217.80,device-resident,AMD Radeon Graphics,na,true,7.50
+hipMalloc,67108864,memcpy_d2h,50,1.0604,63.29,explicit-staging-copy,AMD Radeon Graphics,na,true,7.50
+hipHostMalloc,67108864,kernel_saxpy,50,0.9617,209.35,zero-copy-no-staging,AMD Radeon Graphics,ok,true,7.50
+hipMallocManaged,67108864,kernel_saxpy_cold,1,1.6243,123.94,first-touch-migrate,AMD Radeon Graphics,na,true,7.50
+hipMallocManaged,67108864,kernel_saxpy_warm,50,0.9471,212.57,pages-resident,AMD Radeon Graphics,ok,true,7.50

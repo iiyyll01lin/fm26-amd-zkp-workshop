@@ -1,0 +1,177 @@
+------------------------------------------------------------------
+[solo-guard] iGPU busy : 2%  (max 25%)
+[solo-guard] loadavg(1m): 0.25   (max 8.00, nproc=32)
+[solo-guard] lockfile  : /tmp/zkp-gpu.lock
+[solo-guard] STATUS    : SOLO (safe to record)
+------------------------------------------------------------------
+applied Groth16 ROCm seam to risc0 218e3bc4a8ffcd203a9cd4e46f921bf60aa7e2bd at <repo-groth16-seam>/poc/risc0-rocm-prover/vendor/risc0
+   Compiling risc0-groth16 v2.0.3 (<repo-groth16-seam>/poc/risc0-rocm-prover/vendor/risc0/risc0/groth16)
+   Compiling risc0-zkvm v2.3.2 (<repo-groth16-seam>/poc/risc0-rocm-prover/vendor/risc0/risc0/zkvm)
+   Compiling risc0-r0vm v2.3.2 (<repo-groth16-seam>/poc/risc0-rocm-prover/vendor/risc0/risc0/r0vm)
+    Finished `release` profile [optimized] target(s) in 44.54s
+#0 building with "default" instance using docker driver
+
+#1 [internal] load build definition from prover-rocm.Dockerfile
+#1 transferring dockerfile: 3.24kB done
+#1 DONE 0.0s
+
+#2 resolve image config for docker-image://docker.io/docker/dockerfile:1.7
+#2 DONE 1.4s
+
+#3 docker-image://docker.io/docker/dockerfile:1.7@sha256:a57df69d0ea827fb7266491f2813635de6f17269be881f696fbfdf2d83dda33e
+#3 resolve docker.io/docker/dockerfile:1.7@sha256:a57df69d0ea827fb7266491f2813635de6f17269be881f696fbfdf2d83dda33e done
+#3 CACHED
+
+#4 [internal] load metadata for docker.io/rocm/dev-ubuntu-24.04:7.2.4-complete
+#4 DONE 1.2s
+
+#5 [internal] load metadata for docker.io/library/rust:1.84-bookworm
+#5 DONE 1.2s
+
+#6 [internal] load metadata for docker.io/library/debian:bookworm
+#6 DONE 1.2s
+
+#7 [internal] load metadata for docker.io/library/golang:1.23-bookworm
+#7 DONE 1.2s
+
+#8 [internal] load .dockerignore
+#8 transferring context: 2B done
+#8 DONE 0.0s
+
+#9 [gnark  3/12] ADD --checksum=sha256:69c6056451ea814b37e30ccbc44639dbaafef73540cbfbff6ec7e68e2d325735   https://risc0-artifacts.s3.us-west-2.amazonaws.com/zkey/2024-05-17.1/stark_verify_final.zkey.gz groth16/stark_verify_final.zkey.gz
+#9 DONE 0.0s
+
+#10 [circom 3/7] ADD https://github.com/iden3/circom.git#2eaaa6dface934356972b34cab64b25d382e59de circom
+#10 DONE 0.0s
+
+#11 [stage-4  1/11] FROM docker.io/rocm/dev-ubuntu-24.04:7.2.4-complete@sha256:92f309c51b52cef8762867848f1529dee821624f23cd5df38455e819538f762f
+#11 resolve docker.io/rocm/dev-ubuntu-24.04:7.2.4-complete@sha256:92f309c51b52cef8762867848f1529dee821624f23cd5df38455e819538f762f 0.0s done
+#11 DONE 0.0s
+
+#12 [witgen 1/5] FROM docker.io/library/debian:bookworm@sha256:9344f8b8992482f80cba753f323adeaf17690076c095ccff6cc9536be98185dc
+#12 resolve docker.io/library/debian:bookworm@sha256:9344f8b8992482f80cba753f323adeaf17690076c095ccff6cc9536be98185dc 0.0s done
+#12 DONE 0.0s
+
+#13 [internal] load build context
+#13 transferring context: 93.81kB done
+#13 DONE 0.0s
+
+#14 [gnark  1/12] FROM docker.io/library/golang:1.23-bookworm@sha256:167053a2bb901972bf2c1611f8f52c44d5fe7e762e5cab213708d82c421614db
+#14 resolve docker.io/library/golang:1.23-bookworm@sha256:167053a2bb901972bf2c1611f8f52c44d5fe7e762e5cab213708d82c421614db 0.0s done
+#14 DONE 0.0s
+
+#15 [circom 1/7] FROM docker.io/library/rust:1.84-bookworm@sha256:738ae99a3d75623f41e6882566b4ef37e38a9840244a47efd4a0ca22e9628b88
+#15 resolve docker.io/library/rust:1.84-bookworm@sha256:738ae99a3d75623f41e6882566b4ef37e38a9840244a47efd4a0ca22e9628b88 0.0s done
+#15 DONE 0.0s
+
+#16 [witgen 5/5] RUN sed -i 's/g++/clang++/' stark_verify_cpp/Makefile &&     echo "stark_verify.o: stark_verify.cpp $(DEPS_HPP)\n\t$(CC) -c $< $(CFLAGS) -O0" >> stark_verify_cpp/Makefile &&     (cd stark_verify_cpp; make)
+#16 CACHED
+
+#17 [gnark 10/12] RUN /usr/src/rocm-seam/prepare-gnark.sh /usr/src/gnark /usr/src/gnark-rocm
+#17 CACHED
+
+#18 [gnark 12/12] RUN go run ./cmd/converter --dump groth16/stark_verify.r1cs groth16/stark_verify_final.zkey.gz
+#18 CACHED
+
+#19 [native 4/4] RUN mkdir -p /out &&     hipcc --offload-arch="gfx1151" -O3 -fPIC -shared       zkp_hip_ffi.cpp -o /out/libzkp_hip.so
+#19 CACHED
+
+#20 [circom 6/7] COPY groth16/stark_verify.circom groth16/stark_verify.circom
+#20 CACHED
+
+#21 [stage-4  6/11] COPY --from=witgen /usr/src/stark_verify_cpp/stark_verify /usr/local/bin/stark_verify
+#21 CACHED
+
+#22 [stage-4  4/11] COPY --from=gnark /usr/src/gnark/groth16/stark_verify.cs /app/stark_verify.cs
+#22 CACHED
+
+#23 [stage-4  9/11] COPY scripts/prover.sh /app/prover.sh
+#23 CACHED
+
+#24 [witgen 3/5] RUN apt-get update -q -y &&     apt-get install -q -y build-essential clang libgmp-dev nasm nlohmann-json3-dev
+#24 CACHED
+
+#25 [circom 7/7] RUN (cd groth16; circom --r1cs --c stark_verify.circom)
+#25 CACHED
+
+#26 [gnark  2/12] WORKDIR /usr/src/gnark
+#26 CACHED
+
+#27 [stage-4 10/11] RUN chmod +x /app/prover.sh
+#27 CACHED
+
+#28 [gnark  3/12] ADD --checksum=sha256:69c6056451ea814b37e30ccbc44639dbaafef73540cbfbff6ec7e68e2d325735   https://risc0-artifacts.s3.us-west-2.amazonaws.com/zkey/2024-05-17.1/stark_verify_final.zkey.gz groth16/stark_verify_final.zkey.gz
+#28 CACHED
+
+#29 [stage-4  3/11] COPY --from=gnark /out/prover /usr/local/bin/prover
+#29 CACHED
+
+#30 [gnark  7/12] COPY circom-compat/. ./
+#30 CACHED
+
+#31 [native 2/4] WORKDIR /usr/src/native
+#31 CACHED
+
+#32 [circom 4/7] RUN (cd circom; cargo install --locked --path circom)
+#32 CACHED
+
+#33 [witgen 2/5] WORKDIR /usr/src/
+#33 CACHED
+
+#34 [stage-4  5/11] COPY --from=gnark /usr/src/gnark/groth16/stark_verify_final.pk.dmp /app/stark_verify_final.pk.dmp
+#34 CACHED
+
+#35 [circom 5/7] COPY groth16/risc0.circom groth16/risc0.circom
+#35 CACHED
+
+#36 [gnark  5/12] COPY circom-compat/go.mod circom-compat/go.sum ./
+#36 CACHED
+
+#37 [witgen 4/5] COPY --from=circom /usr/src/groth16/stark_verify_cpp/ stark_verify_cpp/
+#37 CACHED
+
+#38 [stage-4  8/11] COPY --from=native /out/libzkp_hip.so /opt/risc0-rocm/lib/libzkp_hip.so
+#38 CACHED
+
+#39 [stage-4  2/11] RUN apt-get update -q -y &&     apt-get install -q -y --no-install-recommends ca-certificates libgmp10 &&     rm -rf /var/lib/apt/lists/*
+#39 CACHED
+
+#40 [gnark  8/12] COPY rocm-seam/ /usr/src/rocm-seam/
+#40 CACHED
+
+#41 [gnark  9/12] RUN apt-get update -q -y &&     apt-get install -q -y --no-install-recommends patch &&     rm -rf /var/lib/apt/lists/*
+#41 CACHED
+
+#42 [native 3/4] COPY rocm-seam/native/ ./
+#42 CACHED
+
+#43 [gnark 11/12] RUN mkdir -p /out && go build -tags rocm -o /out/prover ./cmd/prover
+#43 CACHED
+
+#44 [gnark  6/12] RUN go mod download && go mod verify
+#44 CACHED
+
+#45 [circom 3/7] ADD https://github.com/iden3/circom.git#2eaaa6dface934356972b34cab64b25d382e59de circom
+#45 CACHED
+
+#46 [gnark  4/12] COPY --from=circom /usr/src/groth16/stark_verify.r1cs groth16/stark_verify.r1cs
+#46 CACHED
+
+#47 [circom 2/7] WORKDIR /usr/src/
+#47 CACHED
+
+#48 [stage-4  7/11] COPY --from=witgen /usr/src/stark_verify_cpp/stark_verify.dat /app/stark_verify.dat
+#48 CACHED
+
+#49 [stage-4 11/11] WORKDIR /app
+#49 CACHED
+
+#50 exporting to image
+#50 exporting layers done
+#50 exporting manifest sha256:c6cd34cdc98e19b5818cbcb6d673c3429b2fa44e70cb68b7a2febbac469a3662 0.0s done
+#50 exporting config sha256:c72efdd21aa6d941238fa7df7651b9914d69e00eaa8eb43be00f31d4ea96dac5 done
+#50 exporting attestation manifest sha256:7dc4e7bbae427f01c4cc2df74b7c40fd8f030e040adf7e823696b53e9378b32d done
+#50 exporting manifest list sha256:db8050c814e671e27faeb35a0345a1097e1c0f9f0eaf019b84bff0294b323036 done
+#50 naming to docker.io/library/risc0-groth16-prover:rocm done
+#50 unpacking to docker.io/library/risc0-groth16-prover:rocm done
+#50 DONE 0.0s

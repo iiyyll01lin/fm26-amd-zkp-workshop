@@ -1,0 +1,23 @@
+	Command being timed: "env VALIDATION_DIR=<repo-groth16-seam>/poc/risc0-rocm-prover/artefacts/groth16-seam-validation RISC0_GROTH16_EVIDENCE_DIR=<repo-groth16-seam>/poc/risc0-rocm-prover/artefacts/groth16-seam-evidence-20260724T060845Z bash <repo-groth16-seam>/poc/risc0-rocm-prover/groth16-seam/scripts/validate-later.sh benchmark"
+	User time (seconds): 29302.22
+	System time (seconds): 76.46
+	Percent of CPU this job got: 1972%
+	Elapsed (wall clock) time (h:mm:ss or m:ss): 24:49.61
+	Average shared text size (kbytes): 0
+	Average unshared data size (kbytes): 0
+	Average stack size (kbytes): 0
+	Average total size (kbytes): 0
+	Maximum resident set size (kbytes): 9591292
+	Average resident set size (kbytes): 0
+	Major (requiring I/O) page faults: 5
+	Minor (reclaiming a frame) page faults: 70325694
+	Voluntary context switches: 529038
+	Involuntary context switches: 7073914
+	Swaps: 0
+	File system inputs: 232
+	File system outputs: 25360
+	Socket messages sent: 0
+	Socket messages received: 0
+	Signals delivered: 0
+	Page size (bytes): 4096
+	Exit status: 0

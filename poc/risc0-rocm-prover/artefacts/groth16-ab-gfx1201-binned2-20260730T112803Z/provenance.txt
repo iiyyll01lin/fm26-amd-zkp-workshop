@@ -1,0 +1,7 @@
+started_utc=2026-07-30T11:28:03Z
+image=risc0-groth16-prover:rocm-gfx1201-instr
+image_digest=sha256:ee9a74a56fab5445d885343c6d4c4c9948731d0064cc806bcbe7187f0317920b
+input_sha256=b5da3c426f08a628d5d19c56eb405bc4858a22df052bf9d74424c37c14bd4a92
+witness_sha256=62de86f1c3d97f2630154250dd5f3e05797a09999a71967d35d8796740313e24
+target_gpu_bdf=0000:03:00.0
+target_render_node=renderD130

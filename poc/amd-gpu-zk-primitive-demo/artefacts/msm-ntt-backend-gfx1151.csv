@@ -1,0 +1,13 @@
+primitive,log_size,size,backend,gpu_ms,cpu_ms,speedup_vs_cpu,hip_over_opencl,gpu_device,cpu_threads,note
+msm,16,65536,opencl,39.602,25.572,0.646,,gfx1151,32,same binary; backend chosen by FOLD_GPU_BACKEND only
+msm,16,65536,hip,18.005,27.182,1.510,2.200,gfx1151,32,
+msm,18,262144,opencl,122.475,100.276,0.819,,gfx1151,32,
+msm,18,262144,hip,58.788,102.498,1.744,2.083,gfx1151,32,
+msm,20,1048576,opencl,443.479,364.093,0.821,,gfx1151,32,
+msm,20,1048576,hip,219.943,359.033,1.632,2.016,gfx1151,32,
+ntt,16,65536,opencl,1.152,2.437,2.116,,gfx1151,32,
+ntt,16,65536,hip,0.940,2.511,2.672,1.226,gfx1151,32,
+ntt,18,262144,opencl,8.141,7.839,0.963,,gfx1151,32,
+ntt,18,262144,hip,5.987,7.294,1.218,1.360,gfx1151,32,
+ntt,20,1048576,opencl,34.336,37.537,1.093,,gfx1151,32,
+ntt,20,1048576,hip,31.041,37.783,1.217,1.106,gfx1151,32,

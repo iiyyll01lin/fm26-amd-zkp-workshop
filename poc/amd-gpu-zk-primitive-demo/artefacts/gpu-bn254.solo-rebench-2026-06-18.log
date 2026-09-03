@@ -1,0 +1,10 @@
+[path-e][bn254] GPU: gfx1151 | 20 CUs | 47.0 GiB   vs   CPU: 32 rayon threads (arkworks)
+[path-e][bn254] reps/cell = 3 (reporting best/min wall ms)
+[path-e][bn254] generating 2^22 = 4194304 random BN254 G1 bases + Fr scalars ...
+[path-e][bn254][msm] 2^16 n=65536     gpu=     39.3ms cpu=     25.7ms speedup=0.65x verify=OK
+[path-e][bn254][msm] 2^18 n=262144    gpu=    123.3ms cpu=    100.4ms speedup=0.81x verify=OK
+[path-e][bn254][msm] 2^20 n=1048576   gpu=    453.0ms cpu=    383.0ms speedup=0.85x verify=OK
+[path-e][bn254][msm] 2^22 n=4194304   gpu=   1518.5ms cpu=   1656.9ms speedup=1.09x verify=OK
+[path-e][bn254][ntt] 2^8  n=256       gpu=    0.150ms cpu_dft=      1.1ms verify=OK
+[path-e][bn254][ntt] 2^10 n=1024      gpu=    0.156ms cpu_dft=     17.9ms verify=OK
+[path-e][bn254][ntt] 2^12 n=4096      gpu=    0.199ms cpu_dft=    292.2ms verify=OK

@@ -1,0 +1,42 @@
+{
+  "params": {
+    "scale": 64,
+    "base": 16,
+    "n_digits": 3
+  },
+  "table_sizes": {
+    "tlookup_total_entries": 48,
+    "tlookup_per_digit": [
+      16,
+      16,
+      16
+    ],
+    "naive_flat_exp_table_entries": 598,
+    "compression_ratio": 12.458
+  },
+  "reconstruction": {
+    "max_abs_exp_error": 9.275860085441665e-05,
+    "max_abs_softmax_error": 0.00011746842601889629
+  },
+  "softmax_lookup": [
+    0.004572881534779659,
+    0.014993901308280166,
+    0.0015317234494190135,
+    0.00012972266402491172,
+    0.0007465023895363493,
+    8.641392380363014e-05,
+    0.005780663907506152,
+    0.9721581908226501
+  ],
+  "softmax_true": [
+    0.004588060245411178,
+    0.015082254693210565,
+    0.0015249861001858838,
+    0.0001295315707220869,
+    0.0007407097551650872,
+    8.646206612397041e-05,
+    0.0058072731725500966,
+    0.9720407223966312
+  ],
+  "note": "Plaintext prototype of zkLLM base-b exp decomposition. exp(x) is reconstructed as a product of O(base) per-digit lookups; total table is tlookup_total_entries vs naive_flat_exp_table_entries. EZKL's generic per-op softmax lookup does NOT use this batched tensorised scheme \u2014 that is the documented gap to the zkLLM paper."
+}

@@ -1,0 +1,97 @@
+######################################################################
+# Unified-memory flagship — Llama-3.3-70B-Instruct-Q4_K_M.gguf on the gfx1151 iGPU
+#   weights=42.52 GB  ctx=8192  pp=4096  tg=256  reps=3
+#   ROCM_PATH=/opt/rocm-7.2.3
+######################################################################
+[run] devices:
+Available devices:
+  ROCm0: AMD Radeon Graphics (48160 MiB, 91300 MiB free)
+
+=== condition: full_igpu  (-ngl 99) ============================
+ggml_cuda_init: found 1 ROCm devices (Total VRAM: 48160 MiB):
+  Device 0: AMD Radeon Graphics, gfx1151 (0x1151), VMM: no, Wave Size: 32, VRAM: 48160 MiB
+[run] full_igpu: prefill=124.64 tok/s  gen=4.86 tok/s  peak GPU mem=44.77 GB (VRAM 0.39 + GTT 44.39)
+
+=== condition: cap_16gb  (-ngl 55) ============================
+ggml_cuda_init: found 1 ROCm devices (Total VRAM: 48160 MiB):
+  Device 0: AMD Radeon Graphics, gfx1151 (0x1151), VMM: no, Wave Size: 32, VRAM: 48160 MiB
+[run] cap_16gb: prefill=118.15 tok/s  gen=3.76 tok/s  peak GPU mem=30.87 GB (VRAM 0.32 + GTT 30.54)
+
+=== condition: cpu  (-ngl 0) ============================
+ggml_cuda_init: found 1 ROCm devices (Total VRAM: 48160 MiB):
+  Device 0: AMD Radeon Graphics, gfx1151 (0x1151), VMM: no, Wave Size: 32, VRAM: 48160 MiB
+[run] cpu: prefill=111.61 tok/s  gen=2.55 tok/s  peak GPU mem=2.40 GB (VRAM 0.31 + GTT 2.09)
+
+=== sample generation (real weights, iGPU full offload) ================
+0.00.025.734 I llama_completion: llama backend init
+0.00.025.742 I llama_completion: load the model and apply lora adapter, if any
+0.00.025.757 I common_init_result: fitting params to device memory ...
+0.00.025.757 I common_init_result: (for bugs during this step try to reproduce them with -fit off, or provide --verbose logs if the bug only occurs with -fit on)
+0.05.230.014 W llama_context: n_ctx_seq (2048) < n_ctx_train (131072) -- the full capacity of the model will not be utilized
+0.05.571.687 I common_init_from_params: warming up the model with an empty run - please wait ... (--no-warmup to disable)
+0.05.863.638 I llama_completion: llama threadpool init, n_threads = 16
+0.05.863.667 I llama_completion: chat template is available, enabling conversation mode (disable it with -no-cnv)
+0.05.863.668 W *** User-specified prompt will pre-start conversation, did you mean to set --system-prompt (-sys) instead?
+0.05.864.718 I llama_completion: chat template example:
+<|start_header_id|>system<|end_header_id|>
+
+You are a helpful assistant<|eot_id|><|start_header_id|>user<|end_header_id|>
+
+Hello<|eot_id|><|start_header_id|>assistant<|end_header_id|>
+
+Hi there<|eot_id|><|start_header_id|>user<|end_header_id|>
+
+How are you?<|eot_id|><|start_header_id|>assistant<|end_header_id|>
+
+
+0.05.864.719 I 
+0.05.864.823 I system_info: n_threads = 16 (n_threads_batch = 16) / 32 | ROCm : NO_VMM = 1 | PEER_MAX_BATCH_SIZE = 128 | CPU : SSE3 = 1 | SSSE3 = 1 | AVX = 1 | AVX_VNNI = 1 | AVX2 = 1 | F16C = 1 | FMA = 1 | BMI2 = 1 | AVX512 = 1 | AVX512_VBMI = 1 | AVX512_VNNI = 1 | AVX512_BF16 = 1 | LLAMAFILE = 1 | OPENMP = 1 | REPACK = 1 | 
+0.05.864.823 I 
+0.05.864.978 I llama_completion: interactive mode on.
+0.05.864.983 I sampler seed: 1669121865
+0.05.865.097 I sampler params: 
+	repeat_last_n = 64, repeat_penalty = 1.000, frequency_penalty = 0.000, presence_penalty = 0.000
+	dry_multiplier = 0.000, dry_base = 1.750, dry_allowed_length = 2, dry_penalty_last_n = -1
+	top_k = 40, top_p = 0.950, min_p = 0.050, xtc_probability = 0.000, xtc_threshold = 0.100, typical_p = 1.000, top_n_sigma = -1.000, temp = 0.200
+	mirostat = 0, mirostat_lr = 0.100, mirostat_ent = 5.000, adaptive_target = -1.000, adaptive_decay = 0.900
+0.05.865.105 I sampler chain: logits -> ?penalties -> ?dry -> ?top-n-sigma -> top-k -> ?typical -> top-p -> min-p -> ?xtc -> temp-ext -> dist 
+0.05.865.106 I generate: n_ctx = 2048, n_batch = 2048, n_predict = 96, n_keep = 1
+0.05.865.106 I 
+0.05.865.106 I == Running in interactive mode. ==
+0.05.865.106 I  - Press Ctrl+C to interject at any time.
+0.05.865.107 I  - Press Return to return control to the AI.
+ - To return control without starting a new line, end your input with '/'.
+ - If you want to submit another line, end your input with '\'.
+0.05.865.107 I  - Not using system message. To change it, set a different value via -sys PROMPT
+0.05.865.107 I 
+user
+
+In one sentence, explain what unified memory lets a Strix Halo APU do that a 16GB discrete GPU cannot.assistant
+
+Unified memory in the Strix Halo APU allows it to seamlessly share system memory with the GPU, enabling it to access and utilize the entire system's memory (up to 128GB or more) for graphics and compute tasks, whereas a 16GB discrete GPU is limited to its own dedicated 16GB of video memory.
+
+> 0.20.039.709 EOF by user
+
+
+I common_perf_print:    sampling time =       8.38 ms
+0.20.039.710 I common_perf_print:    samplers time =       3.52 ms /   102 tokens
+0.20.039.717 I common_perf_print:        load time =    5568.46 ms
+0.20.039.718 I common_perf_print: prompt eval time =     583.52 ms /    35 tokens (   16.67 ms per token,    59.98 tokens per second)
+0.20.039.719 I common_perf_print:        eval time =   13581.57 ms /    66 runs   (  205.78 ms per token,     4.86 tokens per second)
+0.20.039.726 I common_perf_print:       total time =   14176.08 ms /   101 tokens
+0.20.039.728 I common_perf_print: unaccounted time =       2.61 ms /   0.0 %      (total - sampling - prompt eval - eval) / (total)
+0.20.039.728 I common_perf_print:    graphs reused =         65
+
+[run] CSV -> <repo>/poc/amd-bigmodel-demo/artefacts/bigmodel.csv
+condition,ngl,weights_gb,peak_vram_gb,peak_gtt_gb,peak_gpu_gb,prefill_tps,gen_tps
+full_igpu,99,42.52,0.39,44.39,44.77,124.64,4.86
+cap_16gb,55,42.52,0.32,30.54,30.87,118.15,3.76
+cpu,0,42.52,0.31,2.09,2.40,111.61,2.55
+[run] JSON -> <repo>/poc/amd-bigmodel-demo/artefacts/bigmodel.json
+
+[run] artefacts:
+-rw-rw-r-- 1 <user> <user>    216 Jul 18 04:37 <repo>/poc/amd-bigmodel-demo/artefacts/bigmodel.csv
+-rw-rw-r-- 1 <user> <user>   1564 Jul 18 04:37 <repo>/poc/amd-bigmodel-demo/artefacts/bigmodel.json
+-rw-rw-r-- 1 <user> <user>   5904 Jul 18 04:37 <repo>/poc/amd-bigmodel-demo/artefacts/bigmodel.log
+-rw-rw-r-- 1 <user> <user>   1004 Jul 18 04:37 <repo>/poc/amd-bigmodel-demo/artefacts/bigmodel.md
+-rw-rw-r-- 1 <user> <user> 108751 Jul 18 04:37 <repo>/poc/amd-bigmodel-demo/artefacts/bigmodel.png

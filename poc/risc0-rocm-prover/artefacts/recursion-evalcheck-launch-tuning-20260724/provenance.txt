@@ -1,0 +1,6 @@
+date=2026-07-24T16:30:27+08:00
+commit=10d5aed7604818fa1f0570d4980ea11fbc43b592
+arch=gfx1151
+rocprof=             version: 1.1.0
+test=hip::tests::eval_check (domain=64)
+vgpr_per_thread=192

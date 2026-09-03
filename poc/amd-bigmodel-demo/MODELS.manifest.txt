@@ -1,0 +1,21 @@
+# Model weights present on aup-HP-Z2-Mini-G1a (gfx1151) before the 2026-08 disk reclaim.
+# None of these are tracked by git; all are ignored. This file is the record that
+# makes them recoverable: fetch-model.sh reads this file, downloads from REPO,
+# and refuses the result unless BYTES and SHA256 both match.
+# generated: 2026-08-06T09:01:25+08:00  host: aup-HP-Z2-Mini-G1a-Workstation-Desktop-PC
+
+FILE                                                                             BYTES  SHA256                                                            REPO
+google_gemma-3-27b-it-bf16/google_gemma-3-27b-it-bf16-00001-of-00002.gguf  39987970624  d766201186b219086aa28a28c4bcb538bb3983defd01712716be5ca4a14f4d5d  bartowski/google_gemma-3-27b-it-GGUF
+google_gemma-3-27b-it-bf16/google_gemma-3-27b-it-bf16-00002-of-00002.gguf  14039304192  cd07a0a61035b8dd1f0d16ab48ba545efc225d8a3a079978dc85b4fc5b208b8b  bartowski/google_gemma-3-27b-it-GGUF
+google_gemma-3-27b-it-Q8_0.gguf  28707605120  f997aef7f4ed368819f8bcd3e66262612eab4b9ecd562efbad2a7fdebc872693  bartowski/google_gemma-3-27b-it-GGUF
+Llama-3.3-70B-Instruct-Q4_K_M.gguf  42520398816  32df3baccb556f9840059b2528b2dee4d3d516b24afdfb9d0c56ff5f63e3a664  bartowski/Llama-3.3-70B-Instruct-GGUF
+Qwen2.5-32B-Instruct-Q4_K_M.gguf  19851336576  2e5f6daea180dbc59f65a40641e94d3973b5dbaa32b3c0acf54647fa874e519e  bartowski/Qwen2.5-32B-Instruct-GGUF
+
+# --- directory tree, so the layout can be recreated exactly ---
+ 39987970624  ./google_gemma-3-27b-it-bf16/google_gemma-3-27b-it-bf16-00001-of-00002.gguf
+ 14039304192  ./google_gemma-3-27b-it-bf16/google_gemma-3-27b-it-bf16-00002-of-00002.gguf
+ 28707605120  ./google_gemma-3-27b-it-Q8_0.gguf
+ 42520398816  ./Llama-3.3-70B-Instruct-Q4_K_M.gguf
+ 19851336576  ./Qwen2.5-32B-Instruct-Q4_K_M.gguf
+
+# --- small config/tokenizer files, inlined so nothing has to be guessed ---

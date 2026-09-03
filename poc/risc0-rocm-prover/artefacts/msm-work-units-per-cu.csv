@@ -1,0 +1,15 @@
+source,arch,compute_units,work_units,per_cu,window_max,metric_ms,cpu_ms
+standalone,gfx1201,32,2048,64,10,2185.403,na
+standalone,gfx1201,32,4096,128,10,1150.765,na
+standalone,gfx1201,32,8192,256,10,641.694,na
+standalone,gfx1201,32,12288,384,10,526.374,na
+standalone,gfx1201,32,16384,512,10,446.846,na
+standalone,gfx1201,32,24576,768,10,559.123,na
+standalone,gfx1201,32,32768,1024,10,537.648,na
+standalone,gfx1201,32,49152,1536,9,528.329,na
+standalone,gfx1201,32,65536,2048,9,582.693,na
+container,gfx1201,32,4096,128,9,7020.389,1676.076
+container,gfx1201,32,8192,256,9,4398.076,1665.642
+container,gfx1201,32,16384,512,9,3145.117,1684.491
+container,gfx1201,32,32768,1024,9,3348.398,1661.447
+container,gfx1151,20,10240,512,8,5235.700,3508.100

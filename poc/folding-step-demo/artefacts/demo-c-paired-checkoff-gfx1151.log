@@ -1,0 +1,94 @@
+=== paired check-off re-bench, Demo C DeciderEth @2^24 (FOLD_N=2) ===
+=== paired check-off re-bench  2026-08-29T01:15:15+08:00 ===
+binary: 2026-08-12 10:05:37.983927071 +0800  7746976 bytes
+host:   gfx1151 / 32 threads
+reps:   3 per arm, interleaved, FOLD_GPU_MSM_CHECK=0 on BOTH arms
+
+seeded cpu rep1 = 61.602324659s (first attempt of this session, verify OK)
+--- round 1 ---
+    cpu rep1: seeded, not re-run
+    [settle] before gpu r1: foreign cpu 1% after 0s
+    [guard] gpu r1: igpu_busy=0% foreign_cpu=1% loadavg=0.89 (decaying, informational)
+    gpu rep1: D::prove=58.927197738s  verify=OK  (wall 271s)
+--- round 2 ---
+    [settle] before cpu r2: foreign cpu 1% after 0s
+    [guard] cpu r2: igpu_busy=0% foreign_cpu=1% loadavg=12.10 (decaying, informational)
+    cpu rep2: D::prove=62.059159276s  verify=OK  (wall 276s)
+    [settle] before gpu r2: foreign cpu 1% after 0s
+    [guard] gpu r2: igpu_busy=0% foreign_cpu=2% loadavg=12.48 (decaying, informational)
+    gpu rep2: D::prove=58.570482658s  verify=OK  (wall 273s)
+--- round 3 ---
+    [settle] before cpu r3: foreign cpu 1% after 0s
+    [guard] cpu r3: igpu_busy=0% foreign_cpu=1% loadavg=12.01 (decaying, informational)
+    cpu rep3: D::prove=61.546733438s  verify=OK  (wall 276s)
+    [settle] before gpu r3: foreign cpu 1% after 0s
+    [guard] gpu r3: igpu_busy=0% foreign_cpu=2% loadavg=13.97 (decaying, informational)
+    gpu rep3: D::prove=58.761866462s  verify=OK  (wall 272s)
+
+cpu reps: 61.602324659 62.059159276 61.546733438   median=61.602324659
+gpu reps: 58.927197738 58.570482658 58.761866462   median=58.761866462
+speedup (cpu_med/gpu_med) = 1.048x
+
+--- independent check-ON correctness run (NOT timed, excluded from median) ---
+    [guard] check-on: igpu_busy=0% foreign_cpu=1% loadavg=13.98 (decaying, informational)
+    check-on rc=0 verify_ok_lines=1 check_lines=0 D::prove=69.640303498s (informational)
+[gpu-msm][check] BN254 G1 MSM n=16777215 (live 16777215): GPU == CPU OK
+[gpu-msm][check] BN254 G1 MSM n=10651819 (live 6006791): GPU == CPU OK
+[gpu-msm][check] BN254 G1 MSM n=10651861 (live 3012936): GPU == CPU OK
+[gpu-msm][check] BN254 G1 MSM n=10651861 (live 5693744): GPU == CPU OK
+         /tmp/paired-rebench/checkon/NovaDecider.sol
+         /tmp/paired-rebench/checkon/folded.proof.json
+         /tmp/paired-rebench/checkon/folded.public.json
+         /tmp/paired-rebench/checkon/folded.calldata.hex
+
+=== DONE  2026-08-29T01:43:09+08:00  loadavg_end=11.19 ===
+csv staged at /tmp/paired-rebench/paired.csv
+
+=== per-run tails ===
+--- cpu-r1 ---
+[fold] Nova::prove_step 0: 296.995454ms
+[fold] Nova::prove_step 1: 310.045894ms
+[fold] decider proof generated in 61.602324659s
+[fold] DeciderEth native verification: OK
+--- gpu-r1 ---
+[fold] Nova::prove_step 0: 290.87138ms
+[fold] Nova::prove_step 1: 306.413672ms
+[fold] decider proof generated in 58.927197738s
+[fold] DeciderEth native verification: OK
+[zkp-hip] stage_ms msm_g1=6790.715 msm_g2=0.000 ntt=0.000 calls=4/0/0 kernel=ported
+[zkp-hip] g1_phase_ms alloc=170.642 h2d=97.679 kernel=6515.758 d2h=0.296 free=6.338
+--- cpu-r2 ---
+[fold] Nova::prove_step 0: 296.891508ms
+[fold] Nova::prove_step 1: 311.271592ms
+[fold] decider proof generated in 62.059159276s
+[fold] DeciderEth native verification: OK
+--- gpu-r2 ---
+[fold] Nova::prove_step 0: 293.933337ms
+[fold] Nova::prove_step 1: 313.898439ms
+[fold] decider proof generated in 58.570482658s
+[fold] DeciderEth native verification: OK
+[zkp-hip] stage_ms msm_g1=6325.137 msm_g2=0.000 ntt=0.000 calls=4/0/0 kernel=ported
+[zkp-hip] g1_phase_ms alloc=155.021 h2d=86.784 kernel=6076.595 d2h=0.265 free=6.472
+--- cpu-r3 ---
+[fold] Nova::prove_step 0: 296.686002ms
+[fold] Nova::prove_step 1: 301.353432ms
+[fold] decider proof generated in 61.546733438s
+[fold] DeciderEth native verification: OK
+--- gpu-r3 ---
+[fold] Nova::prove_step 0: 294.532616ms
+[fold] Nova::prove_step 1: 303.605744ms
+[fold] decider proof generated in 58.761866462s
+[fold] DeciderEth native verification: OK
+[zkp-hip] stage_ms msm_g1=6336.684 msm_g2=0.000 ntt=0.000 calls=4/0/0 kernel=ported
+[zkp-hip] g1_phase_ms alloc=149.064 h2d=102.334 kernel=6079.233 d2h=0.201 free=5.852
+--- checkon ---
+[fold] Nova::prove_step 0: 295.211104ms
+[fold] Nova::prove_step 1: 299.914402ms
+[gpu-msm][check] BN254 G1 MSM n=16777215 (live 16777215): GPU == CPU OK
+[gpu-msm][check] BN254 G1 MSM n=10651819 (live 6006791): GPU == CPU OK
+[gpu-msm][check] BN254 G1 MSM n=10651861 (live 3012936): GPU == CPU OK
+[gpu-msm][check] BN254 G1 MSM n=10651861 (live 5693744): GPU == CPU OK
+[fold] decider proof generated in 69.640303498s
+[fold] DeciderEth native verification: OK
+[zkp-hip] stage_ms msm_g1=6350.257 msm_g2=0.000 ntt=0.000 calls=4/0/0 kernel=ported
+[zkp-hip] g1_phase_ms alloc=155.021 h2d=90.626 kernel=6098.115 d2h=0.200 free=6.295

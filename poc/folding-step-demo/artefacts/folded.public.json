@@ -1,0 +1,19 @@
+{
+  "final_post_root": "0x71b586fe83b44c8dbae33ba6d3cb0b8fa14b51798896bb0936483049fb98d89a",
+  "genesis_pre_root": "0xde22660f0b61cae65731ba5bc3e5707dceccc2c5e5d4902768c7645ca4d48104",
+  "n_steps": 2,
+  "note": "z_0 = [acc_iv=0, genesis_pre packed]; z_i = [acc_N, final_post packed]. acc_N is the Poseidon accumulator over all N journal digests.",
+  "relation_mode": "sha256(pre||mcycle_be32||post) == StepVerifier.verifyStep sha256(abi.encode(pre,mcycle,post)) (96-byte preimage)",
+  "scheme": "Nova+CycleFold -> DeciderEth Groth16 (BN254)",
+  "state_len": 3,
+  "z_0": [
+    "0x0000000000000000000000000000000000000000000000000000000000000000",
+    "0x0081d4a45c64c7682790d4e5c5c2ccce7d70e5c35bba3157e6ca610b0f6622de",
+    "0x0000000000000000000000000000000000000000000000000000000000000004"
+  ],
+  "z_i": [
+    "0x288ab6c008bb1f0fd5073e3a0757a1060670518f2db59dea4f748f364f3602a4",
+    "0x00d898fb4930483609bb968879514ba18f0bcbd3a63be3ba8d4cb483fe86b571",
+    "0x000000000000000000000000000000000000000000000000000000000000009a"
+  ]
+}

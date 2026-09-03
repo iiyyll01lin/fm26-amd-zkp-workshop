@@ -1,0 +1,9 @@
+accumulation 2.144 ns per mixed add
+reduction    7.070 ms per 1e6 buckets
+  w     pred     meas     err   accum  reduce
+  8   306.26   306.62  -0.12%   94.0%    6.0%
+  9   297.81   297.24   0.19%   87.6%   12.4%
+ 10   307.75   307.94  -0.06%   76.0%   24.0%
+
+arithmetic floor per mixed add 0.946 ns
+accumulation efficiency 44.1%, headroom 2.27x
